@@ -2,6 +2,7 @@ from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from forms import FormDeRegistro, FormDeLogin, FormDeProposta
+from flask_login import LoginManager, login_required
 
 
 # Configurar aplicação
@@ -15,6 +16,17 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 
+# Configurar login geral para bloquar acesso de alguma páginas
+login_manager = LoginManager()
+login_manager.init_app(app)
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+@login_manager.unauthorized_handler
+def unauthorized():
+    # Mostrar uma página de erro
+    return render_template("erro.html", codigo=403, mensagem="NÃO AUTORIZADO - LOGIN NECESSÁRIO")
+
 # Configurar banco de dados
 db = SQL("sqlite:///innovation-hub.db")
 
@@ -27,8 +39,9 @@ def index():
     return render_template("index.html", formDeRegistro=formDeRegistro, formDeLogin=FormDeLogin(), abrirModalDeRegistro=False, abrirModalDeLogin=False)
 
 
-# Página inicial
+# Feed
 @app.route("/feed")
+@login_required
 def feed():
     formDeProposta = FormDeProposta()
     return render_template("feed.html", formDeProposta=formDeProposta)
