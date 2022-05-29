@@ -5,7 +5,7 @@ Feed
 {% endblock %}
 
 {% block main %}
-<div class="container m-auto px-auto" style="display: flex; flex-direction: column;">
+<div class="container mx-auto px-auto" style="display: flex; flex-direction: column;">
     <button id="toggle-item-feed-postar" type="button" class="btn btn-primary">Postar nova Proposta</button>
 
     <div class="card mx-auto item-feed item-feed-postar">
@@ -40,9 +40,9 @@ Feed
                     {% endfor %}
                 </div>
                 <div class="mb-2" style="display: inline-block; width: 100%; padding-right: auto;">
-                    {{ formDeProposta.restricaoIdade.label(class_="form-label restricao-idade-label") }}
-                    {{ formDeProposta.restricaoIdade(class_="form-control postar-restricao-idade") }}
-                    {% for error in formDeProposta.restricaoIdade.errors %}
+                    {{ formDeProposta.restricao_idade.label(class_="form-label restricao-idade-label") }}
+                    {{ formDeProposta.restricao_idade(class_="form-control postar-restricao-idade") }}
+                    {% for error in formDeProposta.restricao_idade.errors %}
                     <span class="text-danger">{{ error }}</span>
                     {% endfor %}
                 </div>
@@ -73,11 +73,13 @@ Feed
 <script type="text/javascript">
     function formatar_baseado_em_largura() {
         if ($(window).width() < 600) {
-            $('#toggle-item-feed-postar').css("visibility", "visible")
-            $('.item-feed-postar').css("visibility", "hidden")
+            $('#toggle-item-feed-postar').css("visibility", "visible");
+            $('#toggle-item-feed-postar').css("height", "38px");
+            $('.item-feed-postar').css("visibility", "hidden");
         } else {
-            $('#toggle-item-feed-postar').css("visibility", "hidden")
-            $('.item-feed-postar').css("visibility", "visible")
+            $('#toggle-item-feed-postar').css("visibility", "hidden");
+            $('#toggle-item-feed-postar').css("height", "0px");
+            $('.item-feed-postar').css("visibility", "visible");
         }
     }
 
@@ -91,8 +93,9 @@ Feed
 
     $(document).ready(function () {
         $('#toggle-item-feed-postar').on("click", function () {
-            $('#toggle-item-feed-postar').css("visibility", "hidden")
-            $('.item-feed-postar').css("visibility", "visible")
+            $('#toggle-item-feed-postar').css("visibility", "hidden");
+            $('#toggle-item-feed-postar').css("height", "0px");
+            $('.item-feed-postar').css("visibility", "visible");
         });
     });
 </script>

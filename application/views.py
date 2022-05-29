@@ -2,7 +2,7 @@ from flask import flash, redirect, render_template, request
 from flask_login import login_required, login_user, logout_user, login_manager, current_user
 from application import app, login_manager, db
 from application.forms import FormDeLogin, FormDeRegistro, FormDeProposta
-from application.models import User
+from application.models import User, Proposta
 
 
 # Popular campos de categorias da proposta
@@ -55,6 +55,28 @@ def feed():
     return render_template("feed.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user)
 
 
+# Postar proposta
+@app.route("/postar", methods=["POST"])
+@login_required
+def postar():
+    formDeProposta = FormDeProposta()
+
+    if not formDeProposta.validate_on_submit():
+        return render_template("feed.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user)
+    
+    if not int(request.form.get("tipo_proposta")) in tipo_proposta.values():
+        return render_template("erro.html", codigo=500, mensagem="ERRO NO SERVER - TENTE NOVAMENTE")
+
+    privado = True if request.form.get("privado") == "on" else False
+
+    nova_proposta = Proposta(formDeProposta.titulo.data, formDeProposta.descricao.data, formDeProposta.restricao_idade.data, privado, current_user)
+
+    db.session.add(nova_proposta)
+    db.session.commit()
+
+    return redirect("/feed")
+
+
 # Registrar
 @app.route("/registrar", methods=["POST"])
 def registrar():
@@ -77,7 +99,7 @@ def login():
     formDeLogin = FormDeLogin()
 
     if not formDeLogin.validate_on_submit():
-        return render_template("index.html", formDeRegistro=FormDeRegistro(), formDeLogin=formDeLogin, abrirModalDeRegistro=False, abrirModalDeLogin=True)
+        return render_template("index.html", formDeRegistro=FormDeRegistro(), formDeLogin=formDeLogin, abrirModalDeRegistro=False, abrirModalDeLogin=True, user=current_user)
     
     # Logar
     user = User.query.filter_by(apelido=formDeLogin.apelido.data).first()

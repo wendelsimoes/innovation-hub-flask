@@ -89,4 +89,4 @@ class FormDeProposta(FlaskForm):
         InputRequired("Este campo é necessário"), 
         Length(min=50, max=1000, message="Campo deve conter entre 50 e 1000 caracteres")], render_kw={"placeholder": "Descrição"})
 
-    restricaoIdade = IntegerField("Restrição de Idade")
+    restricao_idade = IntegerField("Restrição de Idade")
