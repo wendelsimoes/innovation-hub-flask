@@ -1,7 +1,7 @@
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
-from forms import FormDeRegistro, FormDeLogin
+from forms import FormDeRegistro, FormDeLogin, FormDeProposta
 
 
 # Configurar aplicação
@@ -25,6 +25,13 @@ def index():
     formDeRegistro = FormDeRegistro()
 
     return render_template("index.html", formDeRegistro=formDeRegistro, formDeLogin=FormDeLogin(), abrirModalDeRegistro=False, abrirModalDeLogin=False)
+
+
+# Página inicial
+@app.route("/feed")
+def feed():
+    formDeProposta = FormDeProposta()
+    return render_template("feed.html", formDeProposta=formDeProposta)
 
 
 # Registrar

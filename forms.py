@@ -1,13 +1,14 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, DateField, EmailField
+from wtforms import StringField, PasswordField, DateField, EmailField, TextAreaField, IntegerField, BooleanField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from datetime import date
 from cs50 import SQL
+from categorias import categorias
 
 # Configurar banco de dados
 db = SQL("sqlite:///innovation-hub.db")
 
-# Form de registro
+# Form de Registro
 class FormDeRegistro(FlaskForm):
     email = EmailField("Email", validators=[
         InputRequired("Este campo é necessário")])
@@ -50,7 +51,7 @@ class FormDeRegistro(FlaskForm):
             raise ValidationError("Data de nascimento deve ser menor que data atual")
 
 
-# Form de login
+# Form de Login
 class FormDeLogin(FlaskForm):
     apelido = StringField("Apelido", validators=[
         InputRequired("Este campo é necessário"), 
@@ -78,3 +79,22 @@ class FormDeLogin(FlaskForm):
             self.senha.errors.append("Senha invalida")
             return False
         return True
+
+
+# Form de Proposta
+class FormDeProposta(FlaskForm):
+    titulo = StringField("Título", validators=[
+        InputRequired("Este campo é necessário"), 
+        Length(min=3, max=200, message="Campo deve conter entre 3 e 200 caracteres")])
+
+    descricao = TextAreaField("Descrição", validators=[
+        InputRequired("Este campo é necessário"), 
+        Length(min=50, max=1000, message="Campo deve conter entre 50 e 1000 caracteres")])
+
+    restricaoIdade = IntegerField("Restrição de Idade", validators=[
+        InputRequired("Este campo é necessário")
+    ])
+
+    privado = BooleanField("É Privado?")
+
+    categorias = BooleanField("Categorias", false_values=categorias)
