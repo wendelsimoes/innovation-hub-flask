@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, DateField, EmailField, TextAreaField, IntegerField, BooleanField
+from wtforms import StringField, PasswordField, DateField, EmailField, TextAreaField, IntegerField, BooleanField, validators
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from datetime import date
 from application import db
@@ -89,4 +89,4 @@ class FormDeProposta(FlaskForm):
         InputRequired("Este campo é necessário"), 
         Length(min=50, max=1000, message="Campo deve conter entre 50 e 1000 caracteres")], render_kw={"placeholder": "Descrição"})
 
-    restricao_idade = IntegerField("Restrição de Idade")
+    restricao_idade = IntegerField("Restrição de Idade", validators=[validators.Optional()])

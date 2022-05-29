@@ -1,8 +1,31 @@
+@font-face {
+    font-family: NanumGothic;
+    src: url(fonts/NanumGothic-Regular.ttf);
+}
+
+@font-face {
+    font-family: NanumGothicBold;
+    src: url(fonts/NanumGothic-Bold.ttf);
+}
+
+body, html {
+    height: 100% !important;
+}
+
+.gothic {
+    font-family: NanumGothic !important;
+}
+
+.gothic-bold {
+    font-family: NanumGothicBold !important;
+}
+
 .postar-restricao-idade {
     width: 20% !important;
 }
 
-.restricao-idade-label, .tipo-proposta-label {
+.restricao-idade-label,
+.tipo-proposta-label {
     width: 100% !important;
     text-align: start !important;
 }
@@ -45,7 +68,7 @@
     .div-postar-tipo {
         width: 100% !important;
     }
-    
+
     .div-postar-titulo {
         width: 100% !important;
     }
@@ -53,12 +76,30 @@
     .postar-titulo {
         margin-top: -20px !important;
     }
+
+    .background {
+        background: url(images/background-para-tela-mobile.png) no-repeat center center fixed !important;
+        -webkit-background-size: cover !important;
+        -moz-background-size: cover !important;
+        -o-background-size: cover !important;
+        background-size: cover !important;
+        height: 100% !important;
+    }
 }
 
 /* Medium devices (landscape tablets, 600px and up) */
 @media only screen and (min-width: 600px) {
     .item-feed {
         width: 90% !important;
+    }
+
+    .background {
+        background: url(images/background-para-tela-grande.png) no-repeat center center fixed;
+        -webkit-background-size: cover !important;
+        -moz-background-size: cover !important;
+        -o-background-size: cover !important;
+        background-size: cover !important;
+        height: 100% !important;
     }
 }
 

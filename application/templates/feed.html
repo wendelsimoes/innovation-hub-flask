@@ -6,7 +6,7 @@ Feed
 
 {% block main %}
 <div class="container mx-auto px-auto" style="display: flex; flex-direction: column;">
-    <button id="toggle-item-feed-postar" type="button" class="btn btn-primary">Postar nova Proposta</button>
+    <button id="toggle-item-feed-postar" type="button" class="btn btn-primary gothic-bold">Postar nova Proposta</button>
 
     <div class="card mx-auto item-feed item-feed-postar">
         <div class="card-body">
@@ -14,8 +14,8 @@ Feed
                 {{ formDeProposta.csrf_token }}
                 <div class="row tipo-titulo">
                     <div class="mb-2 div-postar-tipo" style="display: inline-block;">
-                        <label class="form-label tipo-proposta-label" for="tipo_proposta">Criar um(a)</label>
-                        <select class="form-select" name="tipo_proposta" id="tipo_proposta">
+                        <label class="form-label tipo-proposta-label gothic-bold" for="tipo_proposta">Criar um(a)</label>
+                        <select class="form-select gothic" name="tipo_proposta" id="tipo_proposta">
                             {% for tipo, valor in tipo_proposta.items() %}
                             {% if valor == 0 %}
                             <option selected value="{{ valor }}">{{ tipo }}</option>
@@ -27,28 +27,28 @@ Feed
                     </div>
                     <div class="mb-2 div-postar-titulo" style="display: inline-block;">
                         {{ formDeProposta.titulo.label(class_="form-label postar-titulo-label") }}
-                        {{ formDeProposta.titulo(class_="form-control postar-titulo") }}
+                        {{ formDeProposta.titulo(class_="form-control postar-titulo gothic") }}
                         {% for error in formDeProposta.titulo.errors %}
-                        <span class="text-danger">{{ error }}</span>
+                        <span class="text-danger gothic-bold">{{ error }}</span>
                         {% endfor %}
                     </div>
                 </div>
                 <div class="mb-2">
-                    {{ formDeProposta.descricao(class_="form-control postar-descricao") }}
+                    {{ formDeProposta.descricao(class_="form-control postar-descricao gothic") }}
                     {% for error in formDeProposta.descricao.errors %}
-                    <span class="text-danger">{{ error }}</span>
+                    <span class="text-danger gothic-bold">{{ error }}</span>
                     {% endfor %}
                 </div>
                 <div class="mb-2" style="display: inline-block; width: 100%; padding-right: auto;">
-                    {{ formDeProposta.restricao_idade.label(class_="form-label restricao-idade-label") }}
-                    {{ formDeProposta.restricao_idade(class_="form-control postar-restricao-idade") }}
+                    {{ formDeProposta.restricao_idade.label(class_="form-label restricao-idade-label gothic-bold") }}
+                    {{ formDeProposta.restricao_idade(class_="form-control postar-restricao-idade gothic") }}
                     {% for error in formDeProposta.restricao_idade.errors %}
-                    <span class="text-danger">{{ error }}</span>
+                    <span class="text-danger gothic-bold">{{ error }}</span>
                     {% endfor %}
                 </div>
                 <div class="mb-2 form-check" style="width: 100%; margin-left: auto; margin-right: auto;">
                     <input name="privado" class="form-check-input" type="checkbox" id="privado">
-                    <label class="form-check-label" for="privado" style="width: 100%; text-align: start;">
+                    <label class="form-check-label gothic-bold" for="privado" style="width: 100%; text-align: start;">
                         É Privado?
                     </label>
                 </div>
@@ -58,13 +58,13 @@ Feed
                     <div class="form-check col-md-4">
                         <input name="categorias" class="form-check-input" type="checkbox" value="{{ valor }}"
                             id="{{ valor }}">
-                        <label class="form-check-label" for="{{ valor }}">
+                        <label class="form-check-label gothic-bold" for="{{ valor }}">
                             {{ categoria }}
                         </label>
                     </div>
                     {% endfor %}
                 </div>
-                <button type="submit" class="btn btn-primary" style="display: block; margin-left: auto;">Postar</button>
+                <button type="submit" class="btn btn-info gothic-bold" style="display: block; margin-left: auto;">Postar</button>
             </form>
         </div>
     </div>
