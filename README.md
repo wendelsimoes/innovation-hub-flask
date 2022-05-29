@@ -8,4 +8,5 @@
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Execute "Set-ExecutionPolicy RemoteSigned"
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. Execute "yes"
 ### 6. Execute "pip install -r requirements.txt"
-### 7. Execute "py .\run.py"
+### 7. Na pasta primeira do projeto use o comando "$env:FLASK_APP = "application/views.py""
+### 8. Execute "flask run"
