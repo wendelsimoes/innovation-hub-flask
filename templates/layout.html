@@ -11,6 +11,8 @@
   <!-- JQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
     integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+  <!-- Meu css -->
+  <link rel="stylesheet" href="/static/styles.css">
   <!-- Codificação -->
   <meta charset="UTF-8" />
   <!-- Responsividade -->
@@ -59,6 +61,7 @@
     </div>
   </nav>
 
+  {% if not session["user_id"] %}
   <!-- Modal do Registro -->
   <div class="modal fade" id="registro_modal" tabindex="-1" aria-labelledby="registro_modal_label" aria-hidden="true">
     <div class="modal-dialog">
@@ -167,6 +170,7 @@
       </div>
     </div>
   </div>
+  {% endif %}
 
   <main class="container-fluid py-5 text-center">
     {% block main %}{% endblock %}

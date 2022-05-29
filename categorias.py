@@ -1,26 +1,3 @@
-categorias = [
-    "Arte e Cultura",
-    "Música e Entretenimento",
-    "Automoveis e Veiculos",
-    "Informatica e Eletrônica",
-    "Educação",
-    "Vida",
-    "Família",
-    "Negócios e Empreendedorismo",
-    "Culinária e Gastronomia",
-    "Saúde e Bem Estar",
-    "Esporte",
-    "Viagem e Turismo",
-    "Economia e Finanças",
-    "Política e Mundo",
-    "Ciência e Tecnologia",
-    "Trabalho e Carreira",
-    "Psicologia e Sociedade",
-    "Meio Ambiente"
-]
-
-"""
-TEST
 categorias = {
     "Arte e Cultura": 0,
     "Música e Entretenimento": 1,
@@ -41,4 +18,3 @@ categorias = {
     "Psicologia e Sociedade": 16,
     "Meio Ambiente": 17
 }
-"""

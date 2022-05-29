@@ -94,7 +94,3 @@ class FormDeProposta(FlaskForm):
     restricaoIdade = IntegerField("Restrição de Idade", validators=[
         InputRequired("Este campo é necessário")
     ])
-
-    privado = BooleanField("É Privado?")
-
-    categorias = BooleanField("Categorias", false_values=categorias)

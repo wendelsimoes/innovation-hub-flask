@@ -2,7 +2,10 @@ from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from forms import FormDeRegistro, FormDeLogin, FormDeProposta
-from flask_login import LoginManager, login_required
+from flask_login import LoginManager, login_required, login_user, UserMixin, logout_user
+from helpers import User
+from ast import literal_eval
+from categorias import categorias
 
 
 # Configurar aplicação
@@ -19,9 +22,12 @@ Session(app)
 # Configurar login geral para bloquar acesso de alguma páginas
 login_manager = LoginManager()
 login_manager.init_app(app)
+
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    return User(literal_eval(user_id)["id"])
+
+
 @login_manager.unauthorized_handler
 def unauthorized():
     # Mostrar uma página de erro
@@ -44,7 +50,7 @@ def index():
 @login_required
 def feed():
     formDeProposta = FormDeProposta()
-    return render_template("feed.html", formDeProposta=formDeProposta)
+    return render_template("feed.html", formDeProposta=formDeProposta, categorias=categorias)
 
 
 # Registrar
@@ -78,13 +84,16 @@ def login():
     session["nome"] = user["nome"]
     session["apelido"] = user["apelido"]
 
+    userLogin = User(user["id"])
+    login_user(userLogin)
+
     # Redirect user to home page
     return redirect("/")
-
 
 @app.route("/sair")
 def logout():
     # Deslogar qualquer usuário que tenha logado anteriormente
     session.clear()
+    logout_user()
 
     return redirect("/")
