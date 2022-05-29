@@ -1,5 +1,10 @@
 .postar-restricao-idade {
+    width: 20% !important;
+}
+
+.restricao-idade-label, .tipo-proposta-label {
     width: 100% !important;
+    text-align: start !important;
 }
 
 .postar-descricao {
@@ -7,13 +12,19 @@
 }
 
 .postar-titulo {
-    width: 400px !important;
+    width: 100% !important;
 }
 
-@media only screen and (max-width: 600px) {
-    .item-feed {
-      width: 95% !important;
-    }
+.postar-titulo-label {
+    visibility: hidden !important;
+}
+
+.div-postar-tipo {
+    width: 30% !important;
+}
+
+.div-postar-titulo {
+    width: 70% !important;
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -21,25 +32,46 @@
     .item-feed {
         width: 95% !important;
     }
+
+    .tipo-titulo {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .postar-titulo-label {
+        height: 0px !important;
+    }
+
+    .div-postar-tipo {
+        width: 100% !important;
+    }
+    
+    .div-postar-titulo {
+        width: 100% !important;
+    }
+
+    .postar-titulo {
+        margin-top: -20px !important;
+    }
 }
 
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
+/* Medium devices (landscape tablets, 600px and up) */
+@media only screen and (min-width: 600px) {
     .item-feed {
-        width: 85% !important;
+        width: 90% !important;
     }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
     .item-feed {
-        width: 75% !important;
+        width: 85% !important;
     }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
     .item-feed {
-        width: 70% !important;
+        width: 80% !important;
     }
 }

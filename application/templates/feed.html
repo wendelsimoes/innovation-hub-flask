@@ -5,54 +5,95 @@ Feed
 {% endblock %}
 
 {% block main %}
-<div class="container mt-3 m-auto px-auto" style="display: flex; flex-direction: column;">
-    <div class="card mx-auto item-feed">
+<div class="container m-auto px-auto" style="display: flex; flex-direction: column;">
+    <button id="toggle-item-feed-postar" type="button" class="btn btn-primary">Postar nova Proposta</button>
+
+    <div class="card mx-auto item-feed item-feed-postar">
         <div class="card-body">
             <form method="post" action="/postar" novalidate>
                 {{ formDeProposta.csrf_token }}
-                <div class="mb-2" style="display: inline-block; margin-left: auto; margin-right: auto;">
-                {{ formDeProposta.titulo.label(class_="form-label") }}
-                {{ formDeProposta.titulo(class_="form-control postar-titulo") }}
-                {% for error in formDeProposta.titulo.errors %}
-                <span class="text-danger">{{ error }}</span>
-                {% endfor %}
+                <div class="row tipo-titulo">
+                    <div class="mb-2 div-postar-tipo" style="display: inline-block;">
+                        <label class="form-label tipo-proposta-label" for="tipo_proposta">Criar um(a)</label>
+                        <select class="form-select" name="tipo_proposta" id="tipo_proposta">
+                            {% for tipo, valor in tipo_proposta.items() %}
+                            {% if valor == 0 %}
+                            <option selected value="{{ valor }}">{{ tipo }}</option>
+                            {% else %}
+                            <option value="{{ valor }}">{{ tipo }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-2 div-postar-titulo" style="display: inline-block;">
+                        {{ formDeProposta.titulo.label(class_="form-label postar-titulo-label") }}
+                        {{ formDeProposta.titulo(class_="form-control postar-titulo") }}
+                        {% for error in formDeProposta.titulo.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="mb-2">
-                {{ formDeProposta.descricao.label(class_="form-label") }}
-                {{ formDeProposta.descricao(class_="form-control postar-descricao") }}
-                {% for error in formDeProposta.descricao.errors %}
-                <span class="text-danger">{{ error }}</span>
-                {% endfor %}
+                    {{ formDeProposta.descricao(class_="form-control postar-descricao") }}
+                    {% for error in formDeProposta.descricao.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
                 </div>
-                <div class="mb-2" style="display: inline-block; margin-left: auto; margin-right: auto;">
-                {{ formDeProposta.restricaoIdade.label(class_="form-label") }}
-                {{ formDeProposta.restricaoIdade(class_="form-control postar-restricao-idade") }}
-                {% for error in formDeProposta.restricaoIdade.errors %}
-                <span class="text-danger">{{ error }}</span>
-                {% endfor %}
+                <div class="mb-2" style="display: inline-block; width: 100%; padding-right: auto;">
+                    {{ formDeProposta.restricaoIdade.label(class_="form-label restricao-idade-label") }}
+                    {{ formDeProposta.restricaoIdade(class_="form-control postar-restricao-idade") }}
+                    {% for error in formDeProposta.restricaoIdade.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
                 </div>
-                <div class="mb-2 form-check" style="width: 20%; margin-left: auto; margin-right: auto;">
-                    <input name="privado" class="form-check-input" type="checkbox"
-                    id="privado">
-                    <label class="form-check-label" for="privado">
+                <div class="mb-2 form-check" style="width: 100%; margin-left: auto; margin-right: auto;">
+                    <input name="privado" class="form-check-input" type="checkbox" id="privado">
+                    <label class="form-check-label" for="privado" style="width: 100%; text-align: start;">
                         É Privado?
                     </label>
                 </div>
                 <br>
                 <div class="mb-3 row mx-2">
-                {% for categoria, valor in categorias.items() %}
-                <div class="form-check col-md-4">
-                    <input name="categorias" class="form-check-input" type="checkbox" value="{{ valor }}"
-                    id="{{ valor }}">
-                    <label class="form-check-label" for="{{ valor }}">
-                        {{ categoria }}
-                    </label>
+                    {% for categoria, valor in categorias.items() %}
+                    <div class="form-check col-md-4">
+                        <input name="categorias" class="form-check-input" type="checkbox" value="{{ valor }}"
+                            id="{{ valor }}">
+                        <label class="form-check-label" for="{{ valor }}">
+                            {{ categoria }}
+                        </label>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-                </div>
-                <button type="submit" class="btn btn-primary">Postar</button>
+                <button type="submit" class="btn btn-primary" style="display: block; margin-left: auto;">Postar</button>
             </form>
-          </div>
+        </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function formatar_baseado_em_largura() {
+        if ($(window).width() < 600) {
+            $('#toggle-item-feed-postar').css("visibility", "visible")
+            $('.item-feed-postar').css("visibility", "hidden")
+        } else {
+            $('#toggle-item-feed-postar').css("visibility", "hidden")
+            $('.item-feed-postar').css("visibility", "visible")
+        }
+    }
+
+    $(document).ready(function () {
+        formatar_baseado_em_largura();
+    });
+
+    $(window).resize(function () {
+        formatar_baseado_em_largura();
+    });
+
+    $(document).ready(function () {
+        $('#toggle-item-feed-postar').on("click", function () {
+            $('#toggle-item-feed-postar').css("visibility", "hidden")
+            $('.item-feed-postar').css("visibility", "visible")
+        });
+    });
+</script>
 {% endblock %}

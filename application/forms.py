@@ -83,12 +83,10 @@ class FormDeLogin(FlaskForm):
 class FormDeProposta(FlaskForm):
     titulo = StringField("Título", validators=[
         InputRequired("Este campo é necessário"), 
-        Length(min=3, max=200, message="Campo deve conter entre 3 e 200 caracteres")])
+        Length(min=3, max=200, message="Campo deve conter entre 3 e 200 caracteres")], render_kw={"placeholder": "Título"})
 
     descricao = TextAreaField("Descrição", validators=[
         InputRequired("Este campo é necessário"), 
-        Length(min=50, max=1000, message="Campo deve conter entre 50 e 1000 caracteres")])
+        Length(min=50, max=1000, message="Campo deve conter entre 50 e 1000 caracteres")], render_kw={"placeholder": "Descrição"})
 
-    restricaoIdade = IntegerField("Restrição de Idade", validators=[
-        InputRequired("Este campo é necessário")
-    ])
+    restricaoIdade = IntegerField("Restrição de Idade")

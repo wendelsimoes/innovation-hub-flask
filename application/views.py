@@ -27,6 +27,13 @@ categorias = {
     "Meio Ambiente": 17
 }
 
+# Popular tipo de proposta
+tipo_proposta = {
+    "Projeto": 0,
+    "Ideia": 1,
+    "Problema": 2
+}
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -45,7 +52,7 @@ def index():
 @login_required
 def feed():
     formDeProposta = FormDeProposta()
-    return render_template("feed.html", formDeProposta=formDeProposta, categorias=categorias, user=current_user)
+    return render_template("feed.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user)
 
 
 # Registrar
