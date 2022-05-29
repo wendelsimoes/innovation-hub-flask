@@ -2,16 +2,17 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, DateField, EmailField, TextAreaField, IntegerField, BooleanField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from datetime import date
-from cs50 import SQL
-from categorias import categorias
+from application.categorias import categorias
+from application import db
+from werkzeug.security import check_password_hash
+from application.models import User
 
-# Configurar banco de dados
-db = SQL("sqlite:///innovation-hub.db")
 
 # Form de Registro
 class FormDeRegistro(FlaskForm):
     email = EmailField("Email", validators=[
-        InputRequired("Este campo é necessário")])
+        InputRequired("Este campo é necessário"), 
+        Length(min=3, max=200, message="Campo deve conter entre 3 e 200 caracteres")])
 
     nome = StringField("Nome", validators=[
         InputRequired("Este campo é necessário"), 
@@ -39,10 +40,9 @@ class FormDeRegistro(FlaskForm):
 
 
     def validate_apelido(self, apelido):
-        apelidoSeExistir = db.execute(
-            "SELECT apelido FROM users WHERE apelido = ?", apelido.data)
+        apelidoSeExistir = User.query.filter_by(apelido=apelido.data).first()
 
-        if len(apelidoSeExistir) > 0:
+        if apelidoSeExistir:
             raise ValidationError("Este apelido já está em uso")
 
 
@@ -62,10 +62,9 @@ class FormDeLogin(FlaskForm):
         Length(min=3, max=200, message="Campo deve conter entre 3 e 200 caracteres")])
 
     def validate_apelido(self, apelido):
-        apelidoSeExistir = db.execute(
-            "SELECT apelido FROM users WHERE apelido = ?", apelido.data)
+        apelidoSeExistir = User.query.filter_by(apelido=apelido.data).first()
 
-        if len(apelidoSeExistir) == 0:
+        if not apelidoSeExistir:
             raise ValidationError("Apelido não encontrado")
 
     def validate(self):
@@ -73,9 +72,9 @@ class FormDeLogin(FlaskForm):
         if not rv:
             return False
         
-        match = db.execute("SELECT apelido FROM users WHERE apelido = ? AND senha = ?", self.apelido.data, self.senha.data)
+        valida_login = User.query.filter_by(apelido=self.apelido.data).first()
 
-        if len(match) == 0:
+        if not check_password_hash(valida_login.senha_encriptada, self.senha.data):
             self.senha.errors.append("Senha invalida")
             return False
         return True
