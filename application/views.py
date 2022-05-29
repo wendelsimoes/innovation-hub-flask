@@ -1,9 +1,31 @@
 from flask import flash, redirect, render_template, request
 from flask_login import login_required, login_user, logout_user, login_manager, current_user
-from application.categorias import categorias
 from application import app, login_manager, db
 from application.forms import FormDeLogin, FormDeRegistro, FormDeProposta
 from application.models import User
+
+
+# Popular campos de categorias da proposta
+categorias = {
+    "Arte e Cultura": 0,
+    "Música e Entretenimento": 1,
+    "Automoveis e Veiculos": 2,
+    "Informatica e Eletrônica": 3,
+    "Educação": 4,
+    "Vida": 5,
+    "Família": 6,
+    "Negócios e Empreendedorismo": 7,
+    "Culinária e Gastronomia": 8,
+    "Saúde e Bem Estar": 9,
+    "Esporte": 10,
+    "Viagem e Turismo": 11,
+    "Economia e Finanças": 12,
+    "Política e Mundo": 13,
+    "Ciência e Tecnologia": 14,
+    "Trabalho e Carreira": 15,
+    "Psicologia e Sociedade": 16,
+    "Meio Ambiente": 17
+}
 
 
 @login_manager.user_loader
@@ -23,7 +45,7 @@ def index():
 @login_required
 def feed():
     formDeProposta = FormDeProposta()
-    return render_template("feed.html", formDeProposta=formDeProposta, categorias=categorias)
+    return render_template("feed.html", formDeProposta=formDeProposta, categorias=categorias, user=current_user)
 
 
 # Registrar

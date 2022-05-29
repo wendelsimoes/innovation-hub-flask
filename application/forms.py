@@ -2,7 +2,6 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, DateField, EmailField, TextAreaField, IntegerField, BooleanField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from datetime import date
-from application.categorias import categorias
 from application import db
 from werkzeug.security import check_password_hash
 from application.models import User
