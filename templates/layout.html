@@ -43,10 +43,17 @@
           </li>
         </ul>
         <div class="ml-auto">
+          {% if not session["user_id"] %}
           <button class="btn btn-warning mr-3" type="button" data-bs-toggle="modal" data-bs-target="#registro_modal">
             Cadastrar
           </button>
-          <button class="btn btn-info" type="submit">Entrar</button>
+          <button class="btn btn-info" type="button" data-bs-toggle="modal" data-bs-target="#login_modal">Entrar</button>
+          {% else %}
+          <h5 class="text-light" style="display: inline-block; margin-right: 3px;">Bem vindo&nbsp;{{ session["nome"] }}</h5>
+          <a href="/sair" class="btn btn-danger mr-3" type="button">
+            Sair
+          </a>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -124,15 +131,60 @@
     </div>
   </div>
 
+  <!-- Modal do Login -->
+  <div class="modal fade" id="login_modal" tabindex="-1" aria-labelledby="login_modal_label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="login_modal_label">Entrar</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="post" action="/entrar" novalidate>
+            {{ formDeLogin.csrf_token }}
+            <div class="mb-2">
+              {{ formDeLogin.apelido.label(class_="form-label") }}
+              {{ formDeLogin.apelido(class_="form-control") }}
+              {% for error in formDeLogin.apelido.errors %}
+              <span class="text-danger">{{ error }}</span>
+              {% endfor %}
+            </div>
+            <div class="mb-2">
+              {{ formDeLogin.senha.label(class_="form-label") }}
+              {{ formDeLogin.senha(class_="form-control") }}
+              {% for error in formDeLogin.senha.errors %}
+              <span class="text-danger">{{ error }}</span>
+              {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary">Entrar</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <main class="container-fluid py-5 text-center">
     {% block main %}{% endblock %}
   </main>
 </body>
 
-{% if openRegisterModal %}
+{% if abrirModalDeRegistro %}
 <script type="text/javascript">
   $(document).ready(function($) {
     $('#registro_modal').modal('show');
+  });
+</script>
+{% endif %}
+
+{% if abrirModalDeLogin %}
+<script type="text/javascript">
+  $(document).ready(function($) {
+    $('#login_modal').modal('show');
   });
 </script>
 {% endif %}

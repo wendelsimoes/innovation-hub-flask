@@ -48,3 +48,33 @@ class FormDeRegistro(FlaskForm):
     def validate_nascimento(self, nascimento):
         if nascimento.data > date.today():
             raise ValidationError("Data de nascimento deve ser menor que data atual")
+
+
+# Form de login
+class FormDeLogin(FlaskForm):
+    apelido = StringField("Apelido", validators=[
+        InputRequired("Este campo é necessário"), 
+        Length(min=3, max=200, message="Campo deve conter entre 3 e 200 caracteres")])
+
+    senha = PasswordField("Senha", validators=[
+        InputRequired("Este campo é necessário"), 
+        Length(min=3, max=200, message="Campo deve conter entre 3 e 200 caracteres")])
+
+    def validate_apelido(self, apelido):
+        apelidoSeExistir = db.execute(
+            "SELECT apelido FROM users WHERE apelido = ?", apelido.data)
+
+        if len(apelidoSeExistir) == 0:
+            raise ValidationError("Apelido não encontrado")
+
+    def validate(self):
+        rv = FlaskForm.validate(self)
+        if not rv:
+            return False
+        
+        match = db.execute("SELECT apelido FROM users WHERE apelido = ? AND senha = ?", self.apelido.data, self.senha.data)
+
+        if len(match) == 0:
+            self.senha.errors.append("Senha invalida")
+            return False
+        return True
