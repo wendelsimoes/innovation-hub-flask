@@ -71,6 +71,19 @@ function enviar_comentario(id_proposta, id_modal_comentarios) {
     });
 }
 
+function likear_proposta(id_proposta, id_item_feed) {
+    $(function () {
+        $.post(
+            'likear_proposta',
+            {
+                id_proposta: id_proposta
+            },
+            function (response) {
+                icone = $(`#${id_item_feed} .botao-like-proposta`).toggleClass('bi-hand-thumbs-up-fill bi-hand-thumbs-up');
+            });
+    });
+}
+
 function formatar_baseado_em_largura() {
     if ($(window).width() < 600) {
         $('#toggle-item-feed-postar').css("display", "inline-block");

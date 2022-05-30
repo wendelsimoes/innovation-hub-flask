@@ -128,6 +128,27 @@ def feed():
     return render_template("postar.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user, todas_propostas_nao_privadas=todas_propostas_nao_privadas)
 
 
+# Dar like em proposta
+@app.route("/likear_proposta", methods=["POST"])
+@login_required
+def likear_proposta():
+    proposta_a_likear = Proposta.query.filter_by(id=request.form.get("id_proposta")).first()
+
+    if proposta_a_likear:
+        propostas_que_dei_like = current_user.propostas_que_dei_like
+
+        if proposta_a_likear in propostas_que_dei_like:
+            current_user.propostas_que_dei_like.remove(proposta_a_likear)
+            db.session.commit()
+            return Response(json.dumps({ "likeado": False }))
+        else:
+            current_user.propostas_que_dei_like.append(proposta_a_likear)
+            db.session.commit()
+            return Response(json.dumps({ "likeado": True }))
+    else:
+        return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
+
+
 # Comentar
 @app.route("/comentar", methods=["POST"])
 @login_required
