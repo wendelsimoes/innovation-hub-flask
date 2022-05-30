@@ -15,24 +15,24 @@ Feed
 
     <div class="card mx-auto mt-3 item-feed {{ classe_background }}">
         <div class="card-body">
-            <h5 class="card-title gothic-bold" style="text-align: start;">{{ proposta.titulo }}</h5>
-            {% if proposta.mes_criacao < 10 %} <h6 class="card-subtitle mb-2 text-muted gothic"
+            <h5 class="card-title lato-bold" style="text-align: start;">{{ proposta.titulo }}</h5>
+            {% if proposta.mes_criacao < 10 %} <h6 class="card-subtitle mb-2 text-muted lato-regular"
                 style="text-align: start;">{{ proposta.dia_criacao }}/0{{ proposta.mes_criacao }}/{{
                 proposta.ano_criacao }}</h6>
                 {% else %}
-                <h6 class="card-subtitle mb-2 text-muted gothic" style="text-align: start;">{{ proposta.dia_criacao
+                <h6 class="card-subtitle mb-2 text-muted lato-regular" style="text-align: start;">{{ proposta.dia_criacao
                     }}/{{ proposta.mes_criacao }}/{{ proposta.ano_criacao }}</h6>
                 {% endif %}
                 <div class="categorias-proposta">
                     {% for categoria in proposta.categorias %}
-                    <h6 class="card-subtitle mb-2 text-muted categorias-proposta-item gothic">{{ categoria.nome }}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted categorias-proposta-item lato-regular">{{ categoria.nome }}</h6>
                     {% endfor %}
                 </div>
                 <p class="card-text" style="text-align: justify;">{{ proposta.descricao }}</p>
                 <div class="comentar-participar-feed">
-                    <button type="button" class="card-link btn btn-info gothic-bold" data-bs-toggle="modal"
+                    <button type="button" class="card-link btn btn-info lato-bold" data-bs-toggle="modal"
                         data-bs-target="#{{ id_modal_comentarios }}">Comentar</button>
-                    <button type="button" href="#" class="card-link btn btn-primary gothic-bold">Solicitar para
+                    <button type="button" href="#" class="card-link btn btn-primary lato-bold">Solicitar para
                         participar</button>
                 </div>
         </div>
@@ -47,10 +47,10 @@ Feed
                 <div class="modal-body">
                     <form method="post" novalidate>
                         <div class="mb-2">
-                            <textarea class="form-control postar-comentario gothic" maxlength="1000" name="texto_comentario" placeholder="Comentário"></textarea>
-                            <span class="text-danger gothic-bold postar_comentario_span" style="margin-top: 6px; margin-bottom: 5px;"></span>
+                            <textarea class="form-control postar-comentario lato-regular" maxlength="1000" name="texto_comentario" placeholder="Comentário"></textarea>
+                            <span class="text-danger lato-bold postar_comentario_span" style="margin-top: 6px; margin-bottom: 5px;"></span>
                         </div>
-                        <button type="button" class="btn btn-info gothic-bold"
+                        <button type="button" class="btn btn-info lato-bold"
                             onclick="enviar_comentario('{{ proposta.id }}', '{{ id_modal_comentarios }}')"
                             style="display: block; width: fit-content;">Comentar</button>
                     </form>
@@ -58,14 +58,14 @@ Feed
                         {% for comentario in proposta.comentarios %}
                         <div class="card mx-auto mt-3">
                             <div class="card-body">
-                                <h6 class="card-title gothic-bold card_de_comentario_titulo">
+                                <h6 class="card-title lato-bold card_de_comentario_titulo">
                                     {{ comentario.titulo }}
                                 </h6>
                                 {% if comentario.mes_criacao < 10 %} 
-                                <p class="card-subtitle mb-2 text-muted gothic card_de_comentario_subtitulo">{{ comentario.dia_criacao }}/0{{ comentario.mes_criacao }}/{{
+                                <p class="card-subtitle mb-2 text-muted lato-regular card_de_comentario_subtitulo">{{ comentario.dia_criacao }}/0{{ comentario.mes_criacao }}/{{
                                     comentario.ano_criacao }}</p>
                                 {% else %}
-                                    <p class="card-subtitle mb-2 text-muted gothic card_de_comentario_subtitulo">{{
+                                    <p class="card-subtitle mb-2 text-muted lato-regular card_de_comentario_subtitulo">{{
                                         comentario.dia_criacao
                                         }}/{{ comentario.mes_criacao }}/{{ comentario.ano_criacao }}</p>
                                 {% endif %}
@@ -78,7 +78,7 @@ Feed
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary gothic-bold" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-secondary lato-bold" data-bs-dismiss="modal">
                         Fechar
                     </button>
                 </div>

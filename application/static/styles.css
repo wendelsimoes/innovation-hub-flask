@@ -1,11 +1,11 @@
 @font-face {
-    font-family: NanumGothic;
-    src: url(fonts/NanumGothic-Regular.ttf);
+    font-family: LatoRegular;
+    src: url(fonts/Lato-Regular.ttf);
 }
 
 @font-face {
-    font-family: NanumGothicBold;
-    src: url(fonts/NanumGothic-Bold.ttf);
+    font-family: LatoBold;
+    src: url(fonts/Lato-Bold.ttf);
 }
 
 body,
@@ -33,12 +33,12 @@ textarea:focus {
     box-shadow: none !important;
 }
 
-.gothic {
-    font-family: NanumGothic !important;
+.lato-regular {
+    font-family: LatoRegular !important;
 }
 
-.gothic-bold {
-    font-family: NanumGothicBold !important;
+.lato-bold {
+    font-family: LatoBold !important;
 }
 
 .postar-restricao-idade {
