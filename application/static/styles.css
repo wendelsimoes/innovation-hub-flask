@@ -53,6 +53,31 @@ body, html {
 .postar-membro-label {
     width: 100% !important; 
     text-align: start !important;
+    padding: 0 !important;
+}
+
+.adicionar-membro {
+    width: 400px !important;
+    display: inline-block !important;
+}
+
+.adicionar-membro-btn {
+    margin: 0 0 0 6px !important;
+}
+
+#lista_de_membros {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    flex-wrap: wrap;
+}
+
+.membros_lista {
+    display: inline !important;
+    padding: 0 6px !important;
+    background-color: #F2E973;
+    border-radius: 25px;
+    margin: 3px 6px;
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -89,6 +114,10 @@ body, html {
         -o-background-size: cover !important;
         background-size: cover !important;
         height: 100% !important;
+    }
+
+    .adicionar-membro-btn {
+        margin: 5px 0 0 0 !important;
     }
 }
 

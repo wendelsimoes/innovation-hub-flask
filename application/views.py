@@ -57,6 +57,7 @@ def feed():
     formDeProposta = FormDeProposta()
     return render_template("feed.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user)
 
+
 # Autocomplete de membro
 @app.route("/todos_usuarios", methods=["GET"])
 def todos_usuarios():
@@ -65,6 +66,20 @@ def todos_usuarios():
     for user in todos_usuarios:
         todos_usuarios_apelidos.append(user.apelido)
     return Response(json.dumps(todos_usuarios_apelidos), mimetype="application\json")
+
+
+# Checar se usuario existe
+@app.route("/checar_usuario", methods=["GET"])
+def checar_usuario():
+    apelido = request.args.get("apelido")
+    if apelido:
+        user = User.query.filter_by(apelido=apelido).first()
+        if user:
+            return Response(json.dumps({"status": 200, "mensagem": user.apelido}), mimetype="application\json")
+        else:
+            return Response(json.dumps({"status": 404, "mensagem": "Usuário não encontrado"}), mimetype="application\json")
+    else:
+        return Response(json.dumps({"status": 404, "mensagem": "Deve adicionar um apelido"}), mimetype="application\json")
 
 
 # Postar proposta
