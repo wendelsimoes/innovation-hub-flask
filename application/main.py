@@ -1,7 +1,7 @@
 from flask import flash, redirect, render_template, request, Response, url_for
 from flask_login import login_required, login_user, logout_user, login_manager, current_user
 from application import app, login_manager, db
-from application.forms import FormDeLogin, FormDeRegistro, FormDeProposta, FormDeComentario
+from application.forms import FormDeLogin, FormDeRegistro, FormDeProposta
 from application.models import User, Proposta, Categoria, Comentario
 from datetime import date
 from werkzeug.security import generate_password_hash
@@ -65,13 +65,16 @@ def todos_usuarios():
 def checar_usuario():
     apelido = request.args.get("apelido")
     if apelido:
+        if current_user.apelido == apelido:
+            return Response(json.dumps({"status": 400, "mensagem": "Você será adicionado automaticamente ao projeto"}), mimetype="application\json")
+
         user = User.query.filter_by(apelido=apelido).first()
         if user:
             return Response(json.dumps({"status": 200, "mensagem": user.apelido}), mimetype="application\json")
         else:
             return Response(json.dumps({"status": 404, "mensagem": "Usuário não encontrado"}), mimetype="application\json")
     else:
-        return Response(json.dumps({"status": 404, "mensagem": "Deve adicionar um apelido"}), mimetype="application\json")
+        return Response(json.dumps({"status": 404, "mensagem": "Deve inserir um apelido"}), mimetype="application\json")
 
 
 # Feed / Postar proposta
@@ -79,7 +82,6 @@ def checar_usuario():
 @login_required
 def feed():
     formDeProposta = FormDeProposta()
-    formDeComentario = FormDeComentario()
 
     # Se for POST
     if formDeProposta.validate_on_submit():
@@ -123,7 +125,7 @@ def feed():
 
     # Se for GET
     todas_propostas_nao_privadas = Proposta.query.filter_by(privado=False).all()
-    return render_template("postar.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user, todas_propostas_nao_privadas=todas_propostas_nao_privadas, formDeComentario=formDeComentario)
+    return render_template("postar.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user, todas_propostas_nao_privadas=todas_propostas_nao_privadas)
 
 
 # Comentar

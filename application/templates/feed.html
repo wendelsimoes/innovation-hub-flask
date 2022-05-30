@@ -46,7 +46,6 @@ Feed
                 </div>
                 <div class="modal-body">
                     <form method="post" novalidate>
-                        {{ formDeComentario.csrf_token }}
                         <div class="mb-2">
                             <textarea class="form-control postar-comentario gothic" maxlength="1000" name="texto_comentario" placeholder="Comentário"></textarea>
                             <span class="text-danger gothic-bold postar_comentario_span" style="margin-top: 6px; margin-bottom: 5px;"></span>
@@ -88,64 +87,6 @@ Feed
     </div>
 
     {% endfor %}
-
-    <script type="text/javascript">
-        function enviar_comentario(id_proposta, id_modal_comentarios) {
-            id_proposta = id_proposta;
-            texto_comentario = $(`#${id_modal_comentarios} .postar-comentario`).val();
-
-            $(function () {
-                $.post(
-                    '{{ url_for("comentar") }}',
-                    {
-                        'texto_comentario': texto_comentario,
-                        'id_proposta': id_proposta
-                    },
-                    function (response) {
-                        if (response["status"] == 400) {
-                            $(`#${id_modal_comentarios} .postar_comentario_span`).text(response["mensagem"]);
-                            return
-                        }
-
-                        $(`#${id_modal_comentarios} .postar_comentario_span`).text("");
-                        $(`#${id_modal_comentarios} .postar-comentario`).val("")
-
-                        comentarios = $(`#${id_modal_comentarios} .comentarios_da_proposta`);
-                        comentarios.empty();
-                        response["info"].forEach(comentario => {
-                            var card_de_comentario = $("<div>", { id: "comentario" + comentario["id"], "class": "card mx-auto mt-3" });
-
-                            var card_de_comentario_body = $("<div>", { id: "comentario_corpo_" + comentario["id"], "class": "card-body" });
-
-                            var card_de_comentario_titulo = $("<h6>", { id: "comentario_titulo_" + comentario["id"], "class": "card-title gothic-bold card_de_comentario_titulo" });
-
-                            var card_de_comentario_subtitulo = $("<p>", { id: "comentario_subtitulo_" + comentario["id"], "class": "card-subtitle mb-2 text-muted gothic card_de_comentario_subtitulo" });
-
-                            if (comentario["mes_criacao"] < 10) {
-                                card_de_comentario_subtitulo.append(`${comentario["dia_criacao"]}/0${comentario["mes_criacao"]}/${comentario["ano_criacao"]}`)
-                            } else {
-                                card_de_comentario_subtitulo.append(`${comentario["dia_criacao"]}/${comentario["mes_criacao"]}/${comentario["ano_criacao"]}`)
-                            }
-
-                            var card_de_comentario_text = $("<p>", { id: "comentario_text_" + comentario["id"], "class": "card-text card_de_comentario_text" });
-
-                            card_de_comentario_text.append(comentario["texto_comentario"]);
-
-                            card_de_comentario_titulo.append(comentario["dono_do_comentario"]);
-
-                            card_de_comentario_body.append(card_de_comentario_titulo);
-
-                            card_de_comentario_body.append(card_de_comentario_subtitulo);
-
-                            card_de_comentario_body.append(card_de_comentario_text);
-
-                            card_de_comentario.append(card_de_comentario_body);
-
-                            comentarios.append(card_de_comentario);
-                        });
-                    });
-            });
-        }
-    </script>
+    
 </div>
 {% endblock %}
