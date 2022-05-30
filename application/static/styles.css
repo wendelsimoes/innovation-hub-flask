@@ -50,6 +50,11 @@ body, html {
     width: 70% !important;
 }
 
+.postar-membro-label {
+    width: 100% !important; 
+    text-align: start !important;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
     .item-feed {

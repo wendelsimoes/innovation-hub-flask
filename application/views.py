@@ -1,10 +1,11 @@
-from flask import flash, redirect, render_template, request
+from flask import flash, redirect, render_template, request, Response, url_for
 from flask_login import login_required, login_user, logout_user, login_manager, current_user
 from application import app, login_manager, db
 from application.forms import FormDeLogin, FormDeRegistro, FormDeProposta
 from application.models import User, Proposta, Categoria
 from datetime import date
 from werkzeug.security import generate_password_hash
+import json
 
 
 # Popular campos de categorias da proposta
@@ -55,6 +56,15 @@ def index():
 def feed():
     formDeProposta = FormDeProposta()
     return render_template("feed.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user)
+
+# Autocomplete de membro
+@app.route("/todos_usuarios", methods=["GET"])
+def todos_usuarios():
+    todos_usuarios = User.query.all()
+    todos_usuarios_apelidos = []
+    for user in todos_usuarios:
+        todos_usuarios_apelidos.append(user.apelido)
+    return Response(json.dumps(todos_usuarios_apelidos), mimetype="application\json")
 
 
 # Postar proposta

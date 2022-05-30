@@ -34,6 +34,13 @@ Feed
                     </div>
                 </div>
                 <div class="mb-2">
+                    {{ formDeProposta.membro.label(class_="form-label gothic-bold postar-membro-label") }}
+                    {{ formDeProposta.membro(class_="form-control gothic") }}
+                    {% for error in formDeProposta.membro.errors %}
+                    <span class="text-danger gothic-bold">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="mb-2">
                     {{ formDeProposta.descricao(class_="form-control postar-descricao gothic") }}
                     {% for error in formDeProposta.descricao.errors %}
                     <span class="text-danger gothic-bold">{{ error }}</span>
@@ -102,6 +109,19 @@ Feed
             $('#toggle-item-feed-postar').css("visibility", "hidden");
             $('#toggle-item-feed-postar').css("height", "0px");
             $('.item-feed-postar').css("visibility", "visible");
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(function() {
+        $.ajax({
+            url: '{{ url_for("todos_usuarios") }}'
+        }).done(function (data) {
+            $('#apelido_autocomplete').autocomplete({
+                source: data,
+                minLenght: 2
+            })
         });
     });
 </script>
