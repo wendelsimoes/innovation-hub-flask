@@ -3,6 +3,8 @@ from flask_login import login_required, login_user, logout_user, login_manager, 
 from application import app, login_manager, db
 from application.forms import FormDeLogin, FormDeRegistro, FormDeProposta
 from application.models import User, Proposta, Categoria
+from datetime import date
+from werkzeug.security import generate_password_hash
 
 
 # Popular campos de categorias da proposta
@@ -73,12 +75,12 @@ def postar():
 
     privado = True if request.form.get("privado") == "on" else False
 
-    nova_proposta = Proposta(titulo=formDeProposta.titulo.data, descricao=formDeProposta.descricao.data, restricao_idade=formDeProposta.restricao_idade.data, privado=privado)
+    today = date.today()
+    nova_proposta = Proposta(titulo=formDeProposta.titulo.data, descricao=formDeProposta.descricao.data, restricao_idade=formDeProposta.restricao_idade.data, arquivado=False, dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year, votos=0, privado=privado, gerente_de_projeto=current_user)
     db.session.add(nova_proposta)
     db.session.commit()
 
     # Lidar com lista de categorias e escolha de tipo de proposta
-    print(request.form.getlist("categorias"))
     for categoria, valor in categorias.items():
         if str(valor) in request.form.getlist("categorias"):
             nova_categoria = Categoria(nome=categoria, valor=valor, proposta=nova_proposta)
@@ -96,7 +98,7 @@ def registrar():
     if not formDeRegistro.validate_on_submit():
         return render_template("index.html", formDeRegistro=formDeRegistro, formDeLogin=FormDeLogin(), abrirModalDeRegistro=True, abrirModalDeLogin=False)
 
-    novo_usuario = User(formDeRegistro.email.data, formDeRegistro.nome.data, formDeRegistro.sobrenome.data, formDeRegistro.nascimento.data.day, formDeRegistro.nascimento.data.month, formDeRegistro.nascimento.data.year, formDeRegistro.apelido.data, formDeRegistro.senha.data)
+    novo_usuario = User(email=formDeRegistro.email.data, nome=formDeRegistro.nome.data, sobrenome=formDeRegistro.sobrenome.data, dia_nascimento=formDeRegistro.nascimento.data.day, mes_nascimento=formDeRegistro.nascimento.data.month, ano_nascimento=formDeRegistro.nascimento.data.year, apelido=formDeRegistro.apelido.data, senha_encriptada=generate_password_hash(formDeRegistro.senha.data))
 
     db.session.add(novo_usuario)
 

@@ -1,7 +1,7 @@
 from application import db
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 from flask_login import UserMixin
-from datetime import date
+
 
 UserProposta = db.Table('UserProposta',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
@@ -23,16 +23,6 @@ class User(db.Model, UserMixin):
     propostas_que_estou = db.relationship("Proposta", secondary=UserProposta, backref="membros")
     propostas_que_sou_gerente = db.relationship("Proposta", backref="gerente_de_projeto")
 
-    def __init__(self, email, nome, sobrenome, dia_nascimento, mes_nascimento, ano_nascimento, apelido, senha):
-        self.email = email
-        self.nome = nome
-        self.sobrenome = sobrenome
-        self.dia_nascimento = dia_nascimento
-        self.mes_nascimento = mes_nascimento
-        self.ano_nascimento = ano_nascimento
-        self.apelido = apelido
-        self.senha_encriptada = generate_password_hash(senha)
-
     def verificar_senha_encriptada(self, senha):
         return check_password_hash(self.senha_encriptada, senha)
 
@@ -52,21 +42,6 @@ class Proposta(db.Model):
     privado = db.Column("privado", db.Boolean())
     gerente_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     categorias = db.relationship("Categoria", backref="proposta")
-
-    def __init__(self, titulo, descricao, restricao_idade, privado):
-        self.titulo = titulo
-        self.descricao = descricao
-        self.restricao_idade = restricao_idade
-        self.privado = privado
-
-        today = date.today()
-
-        self.dia_criacao = today.day
-        self.mes_criacao = today.month
-        self.ano_criacao = today.year
-
-        self.arquivado = False
-        self.votos = 0
 
 
 class Categoria(db.Model):
