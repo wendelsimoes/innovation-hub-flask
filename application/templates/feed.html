@@ -107,13 +107,13 @@ Feed
 <script type="text/javascript">
     function formatar_baseado_em_largura() {
         if ($(window).width() < 600) {
-            $('#toggle-item-feed-postar').css("visibility", "visible");
+            $('#toggle-item-feed-postar').css("display", "inline-block");
             $('#toggle-item-feed-postar').css("height", "38px");
-            $('.item-feed-postar').css("visibility", "hidden");
+            $('.item-feed-postar').css("display", "none");
         } else {
-            $('#toggle-item-feed-postar').css("visibility", "hidden");
+            $('#toggle-item-feed-postar').css("display", "none");
             $('#toggle-item-feed-postar').css("height", "0px");
-            $('.item-feed-postar').css("visibility", "visible");
+            $('.item-feed-postar').css("display", "flex");
         }
     }
 
@@ -127,9 +127,8 @@ Feed
 
     $(document).ready(function () {
         $('#toggle-item-feed-postar').on("click", function () {
-            $('#toggle-item-feed-postar').css("visibility", "hidden");
-            $('#toggle-item-feed-postar').css("height", "0px");
-            $('.item-feed-postar').css("visibility", "visible");
+            $('#toggle-item-feed-postar').css("display", "none");
+            $('.item-feed-postar').css("display", "flex");
         });
     });
 </script>
