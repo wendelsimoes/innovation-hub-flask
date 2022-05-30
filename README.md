@@ -10,3 +10,7 @@
 ### 6. Execute "pip install -r requirements.txt"
 ### 7. Na pasta primeira do projeto use o comando "$env:FLASK_APP = "application/views.py""
 ### 8. Execute "flask run"
+### 9. Se não tiver um innovation-hub-flask.db na pasta application e der erro:
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Na pasta primeira do projeto use o comando "py"
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Execute "from application import db"
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. Execute "db.create_all()"

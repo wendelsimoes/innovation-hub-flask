@@ -21,6 +21,7 @@ class User(db.Model, UserMixin):
     apelido = db.Column(db.String(200), nullable=False, unique=True)
     senha_encriptada = db.Column(db.String(), nullable=False)
     propostas_que_estou = db.relationship("Proposta", secondary=UserProposta, backref="membros")
+    propostas_que_sou_gerente = db.relationship("Proposta", backref="gerente_de_projeto")
 
     def __init__(self, email, nome, sobrenome, dia_nascimento, mes_nascimento, ano_nascimento, apelido, senha):
         self.email = email
@@ -49,13 +50,14 @@ class Proposta(db.Model):
     ano_criacao = db.Column(db.Integer, nullable=False)
     votos = db.Column(db.Integer)
     privado = db.Column("privado", db.Boolean())
+    gerente_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    categorias = db.relationship("Categoria", backref="proposta")
 
-    def __init__(self, titulo, descricao, restricao_idade, privado, gerente_de_projeto):
+    def __init__(self, titulo, descricao, restricao_idade, privado):
         self.titulo = titulo
         self.descricao = descricao
         self.restricao_idade = restricao_idade
         self.privado = privado
-        self.gerente_de_projeto = gerente_de_projeto
 
         today = date.today()
 
@@ -65,3 +67,12 @@ class Proposta(db.Model):
 
         self.arquivado = False
         self.votos = 0
+
+
+class Categoria(db.Model):
+    __tablename__ = "categorias"
+
+    id = db.Column("id", db.Integer, primary_key=True, autoincrement=True)
+    nome = db.Column("nome", db.String(200), nullable=False)
+    valor = db.Column("valor", db.Integer, nullable=False)
+    proposta_id = db.Column(db.Integer, db.ForeignKey("propostas.id"))

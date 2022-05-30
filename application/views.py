@@ -2,7 +2,7 @@ from flask import flash, redirect, render_template, request
 from flask_login import login_required, login_user, logout_user, login_manager, current_user
 from application import app, login_manager, db
 from application.forms import FormDeLogin, FormDeRegistro, FormDeProposta
-from application.models import User, Proposta
+from application.models import User, Proposta, Categoria
 
 
 # Popular campos de categorias da proposta
@@ -67,13 +67,24 @@ def postar():
     if not int(request.form.get("tipo_proposta")) in tipo_proposta.values():
         return render_template("erro.html", codigo=500, mensagem="ERRO NO SERVER - TENTE NOVAMENTE")
 
+    for categoria_valor in request.form.getlist("categorias"):
+        if not int(categoria_valor) in categorias.values():
+            return render_template("erro.html", codigo=500, mensagem="ERRO NO SERVER - TENTE NOVAMENTE")
+
     privado = True if request.form.get("privado") == "on" else False
 
-    nova_proposta = Proposta(formDeProposta.titulo.data, formDeProposta.descricao.data, formDeProposta.restricao_idade.data, privado, current_user)
-
+    nova_proposta = Proposta(titulo=formDeProposta.titulo.data, descricao=formDeProposta.descricao.data, restricao_idade=formDeProposta.restricao_idade.data, privado=privado)
     db.session.add(nova_proposta)
     db.session.commit()
 
+    # Lidar com lista de categorias e escolha de tipo de proposta
+    print(request.form.getlist("categorias"))
+    for categoria, valor in categorias.items():
+        if str(valor) in request.form.getlist("categorias"):
+            nova_categoria = Categoria(nome=categoria, valor=valor, proposta=nova_proposta)
+            db.session.add(nova_categoria)
+
+    db.session.commit()
     return redirect("/feed")
 
 
