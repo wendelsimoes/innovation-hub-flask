@@ -40,6 +40,7 @@ class Proposta(db.Model):
     ano_criacao = db.Column(db.Integer, nullable=False)
     votos = db.Column(db.Integer)
     privado = db.Column("privado", db.Boolean())
+    tipo_proposta = db.Column(db.String(200), nullable=False)
     gerente_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     categorias = db.relationship("Categoria", backref="proposta")
 

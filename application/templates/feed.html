@@ -85,7 +85,8 @@ Feed
     </div>
 
     {% for proposta in todas_propostas_nao_privadas %}
-    <div class="card mx-auto mt-3 item-feed">
+    {% set classe_background = "bg-" + proposta.tipo_proposta %}
+    <div class="card mx-auto mt-3 item-feed {{ classe_background }}">
         <div class="card-body">
             <h5 class="card-title gothic-bold" style="text-align: start;">{{ proposta.titulo }}</h5>
             <div class="categorias-proposta">

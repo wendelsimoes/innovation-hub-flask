@@ -101,8 +101,14 @@ def postar():
 
     privado = True if request.form.get("privado") == "on" else False
 
+    tipo_proposta_selecionado = int(request.form.get("tipo_proposta"))
+
+    for tipo_proposta_string, valor in tipo_proposta.items():
+        if tipo_proposta_selecionado == valor:
+            tipo_proposta_selecionado = tipo_proposta_string
+
     today = date.today()
-    nova_proposta = Proposta(titulo=formDeProposta.titulo.data, descricao=formDeProposta.descricao.data, restricao_idade=formDeProposta.restricao_idade.data, arquivado=False, dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year, votos=0, privado=privado, gerente_de_projeto=current_user)
+    nova_proposta = Proposta(titulo=formDeProposta.titulo.data, descricao=formDeProposta.descricao.data, restricao_idade=formDeProposta.restricao_idade.data, arquivado=False, dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year, votos=0, privado=privado, tipo_proposta=tipo_proposta_selecionado, gerente_de_projeto=current_user)
     db.session.add(nova_proposta)
     db.session.commit()
 

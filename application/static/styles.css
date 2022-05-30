@@ -108,6 +108,18 @@ html {
     visibility: hidden !important;
 }
 
+.bg-Projeto {
+    background-color: #73d6f2;
+}
+
+.bg-Ideia {
+    background-color: #f2e973;
+}
+
+.bg-Problema {
+    background-color: #f27373;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
     .item-feed {
