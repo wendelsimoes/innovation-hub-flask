@@ -161,6 +161,8 @@ Feed
                         if (membros.includes(response["mensagem"])) {
                             $('#adicionar_membro_span').text("Usuário já adicionado");
                         } else {
+                            $('#adicionar_membro_span').text("");
+
                             membros.push(response["mensagem"]);
 
                             aleatorio = (Math.floor(Math.random() * 3)) + 1

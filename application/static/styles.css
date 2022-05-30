@@ -65,7 +65,7 @@ body, html {
     margin: 0 0 0 6px !important;
 }
 
-#lista_de_membros {
+#lista_de_membros, #adicionar_membro_span {
     display: flex;
     flex-direction: row;
     justify-content: start;
