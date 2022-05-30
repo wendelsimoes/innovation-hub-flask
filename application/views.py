@@ -98,6 +98,10 @@ def postar():
         if not int(categoria_valor) in categorias.values():
             return render_template("erro.html", codigo=500, mensagem="ERRO NO SERVER - TENTE NOVAMENTE")
 
+    membros = request.form.getlist("membros")
+    if len(membros) > 0:
+        print(membros)
+
     privado = True if request.form.get("privado") == "on" else False
 
     today = date.today()
