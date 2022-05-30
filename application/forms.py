@@ -91,4 +91,4 @@ class FormDeProposta(FlaskForm):
 
     restricao_idade = IntegerField("Restrição de Idade", validators=[validators.Optional()])
 
-    membro = StringField("Membros:", id="apelido_autocomplete", render_kw={"placeholder": "Pesquisar apelido"})
+    membro = StringField("Membros", id="apelido_autocomplete", render_kw={"placeholder": "Pesquisar apelido"})

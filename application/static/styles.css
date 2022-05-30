@@ -72,12 +72,23 @@ body, html {
     flex-wrap: wrap;
 }
 
-.membros_lista {
+.membros_lista, .membros_lista_amarelo, .membros_lista_azul, .membros_lista_bege {
     display: inline !important;
     padding: 0 6px !important;
-    background-color: #F2E973;
     border-radius: 25px;
     margin: 3px 6px;
+}
+
+.membros_lista_amarelo, .membros_lista {
+    background-color: #F2E973;
+}
+
+.membros_lista_azul {
+    background-color: #95e1f0;
+}
+
+.membros_lista_bege {
+    background-color: #FAD5AB;
 }
 
 /* Extra small devices (phones, 600px and down) */
