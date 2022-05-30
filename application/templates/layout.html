@@ -27,8 +27,8 @@
   <!-- Navbar do Bootstrap -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-secondary gothic-bold">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">
-        <img src="./static/images/innovation-hub-logo.png" alt="logo" width="30" height="30"
+      <a class="navbar-brand" href="{{ url_for("index") }}">
+        <img src="../static/images/innovation-hub-logo.png" alt="logo" width="30" height="30"
           class="d-inline-block align-text-top" />
         Innovation Hub
       </a>
@@ -39,10 +39,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Início</a>
+            <a class="nav-link active" aria-current="page" href="{{ url_for("index") }}">Início</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/feed">Feed</a>
+            <a class="nav-link" href="{{ url_for("feed") }}">Feed</a>
           </li>
         </ul>
         <div class="ml-auto">
@@ -73,7 +73,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form method="post" action="/registrar" novalidate>
+          <form method="post" action="{{ url_for("registrar") }}" novalidate>
             {{ formDeRegistro.csrf_token }}
             <div class="mb-2">
               {{ formDeRegistro.email.label(class_="form-label gothic-bold") }}
@@ -145,7 +145,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form method="post" action="/entrar" novalidate>
+          <form method="post" action="{{ url_for("login") }}" novalidate>
             {{ formDeLogin.csrf_token }}
             <div class="mb-2">
               {{ formDeLogin.apelido.label(class_="form-label gothic-bold") }}

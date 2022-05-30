@@ -79,6 +79,10 @@ html {
 .categorias-proposta-item {
     display: inline !important;
     margin: 3px 4px !important;
+    background-color: hsl(205,46%,92%) !important;
+    color: hsl(205,47%,42%) !important;
+    padding: 0.2em 0.3em !important;
+    border-radius: 3px !important;
 }
 
 .membros_lista,
