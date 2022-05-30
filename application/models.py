@@ -20,7 +20,7 @@ class User(db.Model, UserMixin):
     ano_nascimento = db.Column(db.Integer, nullable=False)
     apelido = db.Column(db.String(200), nullable=False, unique=True)
     senha_encriptada = db.Column(db.String(), nullable=False)
-    propostas_que_estou = db.relationship("Proposta", secondary=UserProposta, backref="membros")
+    propostas_que_estou = db.relationship("Proposta", secondary=UserProposta, backref="membro")
     propostas_que_sou_gerente = db.relationship("Proposta", backref="gerente_de_projeto")
 
     def verificar_senha_encriptada(self, senha):

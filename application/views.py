@@ -98,10 +98,6 @@ def postar():
         if not int(categoria_valor) in categorias.values():
             return render_template("erro.html", codigo=500, mensagem="ERRO NO SERVER - TENTE NOVAMENTE")
 
-    membros = request.form.getlist("membros")
-    if len(membros) > 0:
-        print(membros)
-
     privado = True if request.form.get("privado") == "on" else False
 
     today = date.today()
@@ -114,6 +110,15 @@ def postar():
         if str(valor) in request.form.getlist("categorias"):
             nova_categoria = Categoria(nome=categoria, valor=valor, proposta=nova_proposta)
             db.session.add(nova_categoria)
+
+    # Lidar com os membros da proposta
+    membros = request.form.getlist("membros")
+    if len(membros) > 0:
+        for membro in membros:
+            user = User.query.filter_by(apelido=membro).first()
+            if user:
+                user.propostas_que_estou.append(nova_proposta)
+    db.session.commit()
 
     db.session.commit()
     return redirect("/feed")
