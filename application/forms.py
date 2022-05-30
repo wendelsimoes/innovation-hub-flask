@@ -89,6 +89,6 @@ class FormDeProposta(FlaskForm):
         InputRequired("Este campo é necessário"), 
         Length(min=50, max=1000, message="Campo deve conter entre 50 e 1000 caracteres")], render_kw={"placeholder": "Descrição"})
 
-    restricao_idade = IntegerField("Restrição de Idade", validators=[validators.Optional()])
+    restricao_idade = IntegerField("Restrição de idade", validators=[validators.Optional()])
 
     membro = StringField("Membros", id="apelido_autocomplete", render_kw={"placeholder": "Pesquisar apelido"})

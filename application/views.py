@@ -55,7 +55,8 @@ def index():
 @login_required
 def feed():
     formDeProposta = FormDeProposta()
-    return render_template("feed.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user)
+    todas_propostas_nao_privadas = Proposta.query.filter_by(privado=False).all()
+    return render_template("feed.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user, todas_propostas_nao_privadas=todas_propostas_nao_privadas)
 
 
 # Autocomplete de membro

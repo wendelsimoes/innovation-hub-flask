@@ -84,11 +84,23 @@ Feed
         </div>
     </div>
 
-    <div class="card mx-auto item-feed">
+    {% for proposta in todas_propostas_nao_privadas %}
+    <div class="card mx-auto mt-3 item-feed">
         <div class="card-body">
-            <!-- TODO -->
+            <h5 class="card-title gothic-bold" style="text-align: start;">{{ proposta.titulo }}</h5>
+            <div class="categorias-proposta">
+                {% for categoria in proposta.categorias %}
+                <h6 class="card-subtitle mb-2 text-muted categorias-proposta-item gothic">{{ categoria.nome }}</h6>
+                {% endfor %}
+            </div>
+            <p class="card-text" style="text-align: justify;">{{ proposta.descricao }}</p>
+            <div class="comentar-participar-feed">
+                <a href="#" class="card-link btn btn-info gothic-bold">Comentar</a>
+                <a href="#" class="card-link btn btn-primary gothic-bold">Solicitar para participar</a>
+            </div>
         </div>
     </div>
+    {% endfor %}
 </div>
 
 <script type="text/javascript">
