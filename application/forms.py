@@ -92,3 +92,10 @@ class FormDeProposta(FlaskForm):
     restricao_idade = IntegerField("Restrição de idade", validators=[validators.Optional()])
 
     membro = StringField("Membros", id="apelido_autocomplete", render_kw={"placeholder": "Pesquisar apelido"})
+
+
+# Form de comentario
+class FormDeComentario(FlaskForm):
+    texto_comentario = TextAreaField("Comentário", validators=[
+        InputRequired("Este campo é necessário"), 
+        Length(max=1000, message="Campo não deve conter mais de 1000 caracteres")], render_kw={"placeholder": "Comentário"})

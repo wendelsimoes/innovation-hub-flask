@@ -13,6 +13,26 @@ html {
     height: 100% !important;
 }
 
+button:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+a:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 .gothic {
     font-family: NanumGothic !important;
 }
@@ -31,7 +51,7 @@ html {
     text-align: start !important;
 }
 
-.postar-descricao {
+.postar-descricao, .postar-comentario {
     height: 8em !important;
 }
 
@@ -69,7 +89,8 @@ html {
 #lista_de_membros,
 #adicionar_membro_span,
 .categorias-proposta,
-.comentar-participar-feed {
+.comentar-participar-feed,
+.postar_comentario_span {
     display: flex !important;
     flex-direction: row !important;
     justify-content: start !important;
@@ -91,8 +112,8 @@ html {
 .membros_lista_bege {
     display: inline !important;
     padding: 0 6px !important;
-    border-radius: 25px;
-    margin: 3px 6px;
+    border-radius: 25px !important;
+    margin: 3px 6px !important;
 }
 
 .membros_lista_amarelo,
@@ -113,15 +134,31 @@ html {
 }
 
 .bg-Projeto {
-    background-color: #73d6f2;
+    background-color: #73d6f2 !important;
 }
 
 .bg-Ideia {
-    background-color: #f2e973;
+    background-color: #f2e973 !important;
 }
 
 .bg-Problema {
-    background-color: #f27373;
+    background-color: #f27373 !important;
+}
+
+.card_de_comentario_titulo {
+    text-align: start !important;
+}
+
+#comentarios_da_proposta {
+    width: 100% !important;
+}
+
+.card_de_comentario_subtitulo {
+    text-align: start !important;
+}
+
+.card_de_comentario_text {
+    text-align: justify !important;
 }
 
 /* Extra small devices (phones, 600px and down) */

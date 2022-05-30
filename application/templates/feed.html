@@ -11,26 +11,141 @@ Feed
 
     {% for proposta in todas_propostas_nao_privadas %}
     {% set classe_background = "bg-" + proposta.tipo_proposta %}
+    {% set id_modal_comentarios = "modal_comentarios_" + proposta.id | string %}
+
     <div class="card mx-auto mt-3 item-feed {{ classe_background }}">
         <div class="card-body">
             <h5 class="card-title gothic-bold" style="text-align: start;">{{ proposta.titulo }}</h5>
-            {% if proposta.mes_criacao < 10 %}
-            <h6 class="card-subtitle mb-2 text-muted gothic" style="text-align: start;">{{ proposta.dia_criacao }}/0{{ proposta.mes_criacao }}/{{ proposta.ano_criacao }}</h6>
-            {% else %}
-            <h6 class="card-subtitle mb-2 text-muted gothic" style="text-align: start;">{{ proposta.dia_criacao }}/{{ proposta.mes_criacao }}/{{ proposta.ano_criacao }}</h6>
-            {% endif %}
-            <div class="categorias-proposta">
-                {% for categoria in proposta.categorias %}
-                <h6 class="card-subtitle mb-2 text-muted categorias-proposta-item gothic">{{ categoria.nome }}</h6>
-                {% endfor %}
-            </div>
-            <p class="card-text" style="text-align: justify;">{{ proposta.descricao }}</p>
-            <div class="comentar-participar-feed">
-                <a href="#" class="card-link btn btn-info gothic-bold">Comentar</a>
-                <a href="#" class="card-link btn btn-primary gothic-bold">Solicitar para participar</a>
+            {% if proposta.mes_criacao < 10 %} <h6 class="card-subtitle mb-2 text-muted gothic"
+                style="text-align: start;">{{ proposta.dia_criacao }}/0{{ proposta.mes_criacao }}/{{
+                proposta.ano_criacao }}</h6>
+                {% else %}
+                <h6 class="card-subtitle mb-2 text-muted gothic" style="text-align: start;">{{ proposta.dia_criacao
+                    }}/{{ proposta.mes_criacao }}/{{ proposta.ano_criacao }}</h6>
+                {% endif %}
+                <div class="categorias-proposta">
+                    {% for categoria in proposta.categorias %}
+                    <h6 class="card-subtitle mb-2 text-muted categorias-proposta-item gothic">{{ categoria.nome }}</h6>
+                    {% endfor %}
+                </div>
+                <p class="card-text" style="text-align: justify;">{{ proposta.descricao }}</p>
+                <div class="comentar-participar-feed">
+                    <button type="button" class="card-link btn btn-info gothic-bold" data-bs-toggle="modal"
+                        data-bs-target="#{{ id_modal_comentarios }}">Comentar</button>
+                    <button type="button" href="#" class="card-link btn btn-primary gothic-bold">Solicitar para
+                        participar</button>
+                </div>
+        </div>
+    </div>
+
+    <div class="modal fade modal-lg" id="{{ id_modal_comentarios }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" novalidate>
+                        {{ formDeComentario.csrf_token }}
+                        <div class="mb-2">
+                            <textarea class="form-control postar-comentario gothic" maxlength="1000" name="texto_comentario" placeholder="Comentário"></textarea>
+                            <span class="text-danger gothic-bold postar_comentario_span" style="margin-top: 6px; margin-bottom: 5px;"></span>
+                        </div>
+                        <button type="button" class="btn btn-info gothic-bold"
+                            onclick="enviar_comentario('{{ proposta.id }}', '{{ id_modal_comentarios }}')"
+                            style="display: block; width: fit-content;">Comentar</button>
+                    </form>
+                    <div class="mx-auto mt-3 comentarios_da_proposta">
+                        {% for comentario in proposta.comentarios %}
+                        <div class="card mx-auto mt-3">
+                            <div class="card-body">
+                                <h6 class="card-title gothic-bold card_de_comentario_titulo">
+                                    {{ comentario.titulo }}
+                                </h6>
+                                {% if comentario.mes_criacao < 10 %} 
+                                <p class="card-subtitle mb-2 text-muted gothic card_de_comentario_subtitulo">{{ comentario.dia_criacao }}/0{{ comentario.mes_criacao }}/{{
+                                    comentario.ano_criacao }}</p>
+                                {% else %}
+                                    <p class="card-subtitle mb-2 text-muted gothic card_de_comentario_subtitulo">{{
+                                        comentario.dia_criacao
+                                        }}/{{ comentario.mes_criacao }}/{{ comentario.ano_criacao }}</p>
+                                {% endif %}
+                                <p class="card-text card_de_comentario_text">
+                                    {{ comentario.texto_comentario }}
+                                </p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary gothic-bold" data-bs-dismiss="modal">
+                        Fechar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
+
     {% endfor %}
+
+    <script type="text/javascript">
+        function enviar_comentario(id_proposta, id_modal_comentarios) {
+            id_proposta = id_proposta;
+            texto_comentario = $(`#${id_modal_comentarios} .postar-comentario`).val();
+
+            $(function () {
+                $.post(
+                    '{{ url_for("comentar") }}',
+                    {
+                        'texto_comentario': texto_comentario,
+                        'id_proposta': id_proposta
+                    },
+                    function (response) {
+                        if (response["status"] == 400) {
+                            $(`#${id_modal_comentarios} .postar_comentario_span`).text(response["mensagem"]);
+                            return
+                        }
+
+                        $(`#${id_modal_comentarios} .postar_comentario_span`).text("");
+                        $(`#${id_modal_comentarios} .postar-comentario`).val("")
+
+                        comentarios = $(`#${id_modal_comentarios} .comentarios_da_proposta`);
+                        comentarios.empty();
+                        response["info"].forEach(comentario => {
+                            var card_de_comentario = $("<div>", { id: "comentario" + comentario["id"], "class": "card mx-auto mt-3" });
+
+                            var card_de_comentario_body = $("<div>", { id: "comentario_corpo_" + comentario["id"], "class": "card-body" });
+
+                            var card_de_comentario_titulo = $("<h6>", { id: "comentario_titulo_" + comentario["id"], "class": "card-title gothic-bold card_de_comentario_titulo" });
+
+                            var card_de_comentario_subtitulo = $("<p>", { id: "comentario_subtitulo_" + comentario["id"], "class": "card-subtitle mb-2 text-muted gothic card_de_comentario_subtitulo" });
+
+                            if (comentario["mes_criacao"] < 10) {
+                                card_de_comentario_subtitulo.append(`${comentario["dia_criacao"]}/0${comentario["mes_criacao"]}/${comentario["ano_criacao"]}`)
+                            } else {
+                                card_de_comentario_subtitulo.append(`${comentario["dia_criacao"]}/${comentario["mes_criacao"]}/${comentario["ano_criacao"]}`)
+                            }
+
+                            var card_de_comentario_text = $("<p>", { id: "comentario_text_" + comentario["id"], "class": "card-text card_de_comentario_text" });
+
+                            card_de_comentario_text.append(comentario["texto_comentario"]);
+
+                            card_de_comentario_titulo.append(comentario["dono_do_comentario"]);
+
+                            card_de_comentario_body.append(card_de_comentario_titulo);
+
+                            card_de_comentario_body.append(card_de_comentario_subtitulo);
+
+                            card_de_comentario_body.append(card_de_comentario_text);
+
+                            card_de_comentario.append(card_de_comentario_body);
+
+                            comentarios.append(card_de_comentario);
+                        });
+                    });
+            });
+        }
+    </script>
 </div>
 {% endblock %}

@@ -1,8 +1,8 @@
 from flask import flash, redirect, render_template, request, Response, url_for
 from flask_login import login_required, login_user, logout_user, login_manager, current_user
 from application import app, login_manager, db
-from application.forms import FormDeLogin, FormDeRegistro, FormDeProposta
-from application.models import User, Proposta, Categoria
+from application.forms import FormDeLogin, FormDeRegistro, FormDeProposta, FormDeComentario
+from application.models import User, Proposta, Categoria, Comentario
 from datetime import date
 from werkzeug.security import generate_password_hash
 import json
@@ -79,15 +79,16 @@ def checar_usuario():
 @login_required
 def feed():
     formDeProposta = FormDeProposta()
+    formDeComentario = FormDeComentario()
 
     # Se for POST
     if formDeProposta.validate_on_submit():
         if not int(request.form.get("tipo_proposta")) in tipo_proposta.values():
-            return render_template("erro.html", codigo=500, mensagem="ERRO NO SERVER - TENTE NOVAMENTE")
+            return render_template("erro.html", codigo=500, mensagem="ERRO NO SERVER - TIPO DE PROPOSTA NÃO ENCONTRADA")
 
         for categoria_valor in request.form.getlist("categorias"):
             if not int(categoria_valor) in categorias.values():
-                return render_template("erro.html", codigo=500, mensagem="ERRO NO SERVER - TENTE NOVAMENTE")
+                return render_template("erro.html", codigo=500, mensagem="ERRO NO SERVER - CATEGORIA NÃO ENCONTRADA")
                 
         privado = True if request.form.get("privado") == "on" else False
         tipo_proposta_selecionado = int(request.form.get("tipo_proposta"))
@@ -122,7 +123,44 @@ def feed():
 
     # Se for GET
     todas_propostas_nao_privadas = Proposta.query.filter_by(privado=False).all()
-    return render_template("postar.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user, todas_propostas_nao_privadas=todas_propostas_nao_privadas)
+    return render_template("postar.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user, todas_propostas_nao_privadas=todas_propostas_nao_privadas, formDeComentario=formDeComentario)
+
+
+# Comentar
+@app.route("/comentar", methods=["POST"])
+@login_required
+def comentar():
+    proposta_a_comentar = Proposta.query.filter_by(id=request.form.get("id_proposta")).first()
+
+    if proposta_a_comentar:
+        if not request.form.get("texto_comentario"):
+            return Response(json.dumps({"status": 400, "mensagem": "Este campo é necessário"}), mimetype="application\json")
+
+        if len(request.form.get("texto_comentario")) > 1000:
+            return Response(json.dumps({"status": 400, "mensagem": "Campo deve conter no máximo 1000 caracteres"}), mimetype="application\json")
+
+        today = date.today()
+        novo_comentario = Comentario(texto_comentario=request.form.get("texto_comentario"), dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year, dono_do_comentario=current_user.apelido, user=current_user, proposta=proposta_a_comentar)
+
+        db.session.commit()
+        todos_comentarios_da_proposta = proposta_a_comentar.comentarios
+
+        todos_comentarios_da_proposta_dict = []
+
+        for comentario in todos_comentarios_da_proposta:
+            todos_comentarios_da_proposta_dict.append({
+                "id": comentario.id,
+                "texto_comentario": comentario.texto_comentario,
+                "dia_criacao": comentario.dia_criacao,
+                "mes_criacao": comentario.mes_criacao,
+                "ano_criacao": comentario.ano_criacao,
+                "dono_do_comentario": comentario.dono_do_comentario
+            })
+
+        return Response(json.dumps({"status": 200, "info": todos_comentarios_da_proposta_dict}), mimetype="application\json")
+    else:
+        return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
+
 
 
 # Registrar
