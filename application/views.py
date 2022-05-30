@@ -112,12 +112,15 @@ def postar():
             db.session.add(nova_categoria)
 
     # Lidar com os membros da proposta
+    current_user.propostas_que_estou.append(nova_proposta)
+    
     membros = request.form.getlist("membros")
     if len(membros) > 0:
         for membro in membros:
-            user = User.query.filter_by(apelido=membro).first()
-            if user:
-                user.propostas_que_estou.append(nova_proposta)
+            if not membro == current_user.apelido:
+                user = User.query.filter_by(apelido=membro).first()
+                if user:
+                    user.propostas_que_estou.append(nova_proposta)
     db.session.commit()
 
     db.session.commit()

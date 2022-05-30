@@ -137,9 +137,16 @@ Feed
 <script type="text/javascript">
     $(document).ready(function () {
         var membros = [];
+        var apelido_do_usuario = '{{ user.apelido }}'
 
         $('#adicionar_membro_btn').on("click", function () {
             membro = $('#apelido_autocomplete').val();
+
+            if (membro == apelido_do_usuario) {
+                $('#adicionar_membro_span').text("Você será adicionado automaticamente ao projeto");
+                $('#apelido_autocomplete').val("");
+                return
+            }
 
             jQuery.ajax({
                 url: '{{ url_for("checar_usuario") }}',
