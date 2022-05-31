@@ -100,7 +100,7 @@ textarea:focus {
     flex-wrap: wrap !important;
 }
 
-.comentar-participar-feed {
+.comentar-participar-likear-feed {
     display: flex !important;
     flex-direction: row !important;
     justify-content: end !important;
@@ -229,13 +229,13 @@ textarea:focus {
         margin: 5px 0 0 0 !important;
     }
 
-    .comentar-participar-feed a {
+    .comentar-participar-likear-feed a {
         display: block !important;
         width: 100% !important;
         margin: 5px 0 0 0 !important;
     }
 
-    .comentar-participar-feed {
+    .comentar-participar-likear-feed {
         display: flex !important;
         flex-direction: column-reverse !important;
         justify-content: end !important;

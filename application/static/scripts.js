@@ -9,6 +9,21 @@ $(document).ready(function () {
             icone_do_like.classList.add('bi-hand-thumbs-up-fill');
         }
     })
+
+    $('.anchor-like-proposta').on("click", function () {
+        icone_do_like = $(this).children('i')[0];
+        contador_do_like = $(this).children('h3')[0];
+
+        likes = Number.parseInt(contador_do_like.innerText);
+
+        if (icone_do_like.classList.contains('bi-hand-thumbs-up-fill')) {
+            likes -= 1;
+        } else {
+            likes += 1;
+        }
+
+        contador_do_like.innerText = likes;
+    })
 });
 
 function carregar_comentarios(comentarios, id_modal_comentarios) {

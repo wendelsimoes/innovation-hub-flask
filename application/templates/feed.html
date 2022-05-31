@@ -32,18 +32,15 @@ Feed
                     {% endfor %}
                 </div>
                 <p class="card-text lato-regular" style="text-align: justify;">{{ proposta.descricao }}</p>
-                <div class="comentar-participar-feed">
-                    {% if proposta in user.propostas_que_dei_like %}
-                    <a class="anchor-like-proposta"
-                        onclick="likear_proposta('{{ proposta.id }}', '{{ id_item_feed }}')">
+                <div class="comentar-participar-likear-feed">
+                    <a class="anchor-like-proposta" onclick="likear_proposta('{{ proposta.id }}', '{{ id_item_feed }}')" style="text-decoration: none;">
+                        {% if proposta in user.propostas_que_dei_like %}
                         <i class="bi bi-hand-thumbs-up-fill botao-like-proposta"></i>
-                    </a>
-                    {% else %}
-                    <a class="anchor-like-proposta"
-                        onclick="likear_proposta('{{ proposta.id }}', '{{ id_item_feed }}')">
+                        {% else %}
                         <i class="bi bi-hand-thumbs-up botao-like-proposta"></i>
+                        {% endif %}
+                        <h3 class="lato-regular like-count" style="display: inline-block;">{{ proposta.likes | length }}</h3>
                     </a>
-                    {% endif %}
                     <button type="button" class="card-link btn btn-info lato-bold" data-bs-toggle="modal"
                         data-bs-target="#{{ id_modal_comentarios }}">Comentar</button>
                     <button type="button" href="#"

@@ -33,8 +33,8 @@ class User(db.Model, UserMixin):
     propostas_que_estou = db.relationship("Proposta", secondary=UserProposta, backref="membro")
     propostas_que_sou_gerente = db.relationship("Proposta", backref="gerente_de_projeto")
     meus_comentarios = db.relationship("Comentario", backref="user")
-    propostas_que_dei_like = db.relationship("Proposta", secondary=Like_da_Proposta, backref="like")
-    comentarios_que_dei_like = db.relationship("Comentario", secondary=Like_do_Comentario, backref="like")
+    propostas_que_dei_like = db.relationship("Proposta", secondary=Like_da_Proposta, backref="likes")
+    comentarios_que_dei_like = db.relationship("Comentario", secondary=Like_do_Comentario, backref="likes")
 
     def verificar_senha_encriptada(self, senha):
         return check_password_hash(self.senha_encriptada, senha)
