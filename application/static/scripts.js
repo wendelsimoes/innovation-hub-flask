@@ -306,3 +306,17 @@ $(document).ready(function () {
         })
     });
 });
+
+function exibir_notificacoes() {
+    mostrar = "dropdown-menu notification-ui_dd show";
+    esconder = "dropdown-menu notification-ui_dd hide";
+
+    notifications = document.querySelector('.notification-ui_dd');
+    console.log(notifications);
+
+    if (notifications.className == mostrar) {
+        notifications.className = esconder;
+    } else {
+        notifications.className = mostrar;
+    }
+}
