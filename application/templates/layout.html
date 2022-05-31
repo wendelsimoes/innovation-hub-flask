@@ -73,57 +73,57 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title lato-bold" id="registro_modal_label">Registrar</h5>
+          <h5 class="modal-title lato-bold tamanho-padrao" id="registro_modal_label">Registrar</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form method="post" action="{{ url_for("registrar") }}" novalidate>
             {{ formDeRegistro.csrf_token }}
             <div class="mb-2">
-              {{ formDeRegistro.email.label(class_="form-label lato-bold") }}
-              {{ formDeRegistro.email(class_="form-control lato-regular") }}
+              {{ formDeRegistro.email.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeRegistro.email(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeRegistro.email.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-2">
-              {{ formDeRegistro.nome.label(class_="form-label lato-bold") }}
-              {{ formDeRegistro.nome(class_="form-control lato-regular") }}
+              {{ formDeRegistro.nome.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeRegistro.nome(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeRegistro.nome.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-2">
-              {{ formDeRegistro.sobrenome.label(class_="form-label lato-bold") }}
-              {{ formDeRegistro.sobrenome(class_="form-control lato-regular") }}
+              {{ formDeRegistro.sobrenome.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeRegistro.sobrenome(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeRegistro.sobrenome.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-2">
-              {{ formDeRegistro.nascimento.label(class_="form-label lato-bold") }}
-              {{ formDeRegistro.nascimento(class_="form-control lato-regular") }}
+              {{ formDeRegistro.nascimento.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeRegistro.nascimento(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeRegistro.nascimento.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-2">
-              {{ formDeRegistro.apelido.label(class_="form-label lato-bold") }}
-              {{ formDeRegistro.apelido(class_="form-control lato-regular") }}
+              {{ formDeRegistro.apelido.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeRegistro.apelido(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeRegistro.apelido.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-2">
-              {{ formDeRegistro.senha.label(class_="form-label lato-bold") }}
-              {{ formDeRegistro.senha(class_="form-control lato-regular") }}
+              {{ formDeRegistro.senha.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeRegistro.senha(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeRegistro.senha.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-2">
-              {{ formDeRegistro.confirmar_senha.label(class_="form-label lato-bold") }}
-              {{ formDeRegistro.confirmar_senha(class_="form-control lato-regular") }}
+              {{ formDeRegistro.confirmar_senha.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeRegistro.confirmar_senha(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeRegistro.confirmar_senha.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
@@ -145,29 +145,29 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title lato-bold" id="login_modal_label">Entrar</h5>
+          <h5 class="modal-title lato-bold tamanho-padrao" id="login_modal_label">Entrar</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form method="post" action="{{ url_for("login") }}" novalidate>
             {{ formDeLogin.csrf_token }}
             <div class="mb-2">
-              {{ formDeLogin.apelido.label(class_="form-label lato-bold") }}
-              {{ formDeLogin.apelido(class_="form-control lato-regular") }}
+              {{ formDeLogin.apelido.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeLogin.apelido(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeLogin.apelido.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-2">
-              {{ formDeLogin.senha.label(class_="form-label lato-bold") }}
-              {{ formDeLogin.senha(class_="form-control lato-regular") }}
+              {{ formDeLogin.senha.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeLogin.senha(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeLogin.senha.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-2 form-check" style="width: 50%; margin-right: auto;">
               <input name="lembrar_de_mim" class="form-check-input" type="checkbox" id="lembrar_de_mim">
-              <label class="form-check-label lato-bold" for="lembrar_de_mim">
+              <label class="form-check-label lato-bold tamanho-padrao" for="lembrar_de_mim">
                 Lembrar de Mim?
               </label>
             </div>
