@@ -4,3 +4,4 @@ Flask-Session
 flask_wtf
 flask-login
 Flask-SQLAlchemy
+cloudinary

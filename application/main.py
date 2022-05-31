@@ -9,6 +9,8 @@ import json
 from werkzeug.utils import secure_filename
 import base64
 import os
+import cloudinary
+import cloudinary.uploader
 
 
 # Popular campos de categorias da proposta
@@ -40,6 +42,11 @@ tipo_proposta = {
     "Problema": 2
 }
 
+cloudinary.config( 
+  cloud_name = "dpvpgl0el", 
+  api_key = "293558758171612", 
+  api_secret = "CIhjIg0vTjEIVo_PJ-LRD8aTiuw" 
+)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -236,7 +243,7 @@ def participar():
         gerente_da_proposta = User.query.filter_by(id=proposta_que_quero_entrar.gerente_id).first()
 
         today = date.today()
-        notificacao = Notificacoes_Pedir_para_Participar(quem_pediu_para_entrar=current_user.apelido, titulo_da_proposta=proposta_que_quero_entrar.titulo, gerente_da_proposta=gerente_da_proposta, proposta_id=proposta_que_quero_entrar.id, dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year)
+        notificacao = Notificacoes_Pedir_para_Participar(quem_pediu_para_entrar=current_user.apelido, quem_pediu_para_entrar_foto=current_user.foto_perfil, titulo_da_proposta=proposta_que_quero_entrar.titulo, gerente_da_proposta=gerente_da_proposta, proposta_id=proposta_que_quero_entrar.id, dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year)
 
         gerente_da_proposta.notificacoes_pedir_para_participar.append(notificacao)
 
@@ -289,15 +296,18 @@ def registrar():
     if not formDeRegistro.validate_on_submit():
         return render_template("index.html", formDeRegistro=formDeRegistro, formDeLogin=FormDeLogin(), abrirModalDeRegistro=True, abrirModalDeLogin=False, user=current_user)
 
-    if formDeRegistro.foto_perfil:
+
+    novo_usuario = User(email=formDeRegistro.email.data, nome=formDeRegistro.nome.data, sobrenome=formDeRegistro.sobrenome.data, dia_nascimento=formDeRegistro.nascimento.data.day, mes_nascimento=formDeRegistro.nascimento.data.month, ano_nascimento=formDeRegistro.nascimento.data.year, apelido=formDeRegistro.apelido.data, senha_encriptada=generate_password_hash(formDeRegistro.senha.data), foto_perfil="/static/images/foto_padrao.png")
+    
+    if formDeRegistro.foto_perfil.data:
         print("reached")
         foto_perfil = formDeRegistro.foto_perfil.data
         nome_da_foto = secure_filename(foto_perfil.filename)
 
-        print(base64.b64encode(foto_perfil.read()))
-        print(nome_da_foto)
+        # imagem_em_bytes = base64.b64encode(foto_perfil.read())
 
-    novo_usuario = User(email=formDeRegistro.email.data, nome=formDeRegistro.nome.data, sobrenome=formDeRegistro.sobrenome.data, dia_nascimento=formDeRegistro.nascimento.data.day, mes_nascimento=formDeRegistro.nascimento.data.month, ano_nascimento=formDeRegistro.nascimento.data.year, apelido=formDeRegistro.apelido.data, senha_encriptada=generate_password_hash(formDeRegistro.senha.data))
+        url = cloudinary.uploader.upload(foto_perfil, public_id = f"nome_da_foto_{novo_usuario.apelido}")
+        novo_usuario.foto_perfil = url['url']
 
     db.session.add(novo_usuario)
 
