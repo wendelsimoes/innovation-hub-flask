@@ -34,11 +34,11 @@ textarea:focus {
 }
 
 .lato-regular {
-    font-family: LatoRegular !important;
+    font-family: LatoRegular, sans-serif !important;
 }
 
 .lato-bold {
-    font-family: LatoBold !important;
+    font-family: LatoBold, sans-serif !important;
 }
 
 .postar-restricao-idade {
