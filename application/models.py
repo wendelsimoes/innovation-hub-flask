@@ -8,9 +8,14 @@ UserProposta = db.Table('UserProposta',
     db.Column('proposta_id', db.Integer, db.ForeignKey('propostas.id'))
 )
 
-Like = db.Table('Like',
+Like_da_Proposta = db.Table('Like_da_Proposta',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
     db.Column('proposta_id', db.Integer, db.ForeignKey('propostas.id'))
+)
+
+Like_do_Comentario = db.Table('Like_do_Comentario',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('comentario_id', db.Integer, db.ForeignKey('comentarios.id'))
 )
 
 class User(db.Model, UserMixin):
@@ -28,7 +33,8 @@ class User(db.Model, UserMixin):
     propostas_que_estou = db.relationship("Proposta", secondary=UserProposta, backref="membro")
     propostas_que_sou_gerente = db.relationship("Proposta", backref="gerente_de_projeto")
     meus_comentarios = db.relationship("Comentario", backref="user")
-    propostas_que_dei_like = db.relationship("Proposta", secondary=Like, backref="like")
+    propostas_que_dei_like = db.relationship("Proposta", secondary=Like_da_Proposta, backref="like")
+    comentarios_que_dei_like = db.relationship("Comentario", secondary=Like_do_Comentario, backref="like")
 
     def verificar_senha_encriptada(self, senha):
         return check_password_hash(self.senha_encriptada, senha)

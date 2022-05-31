@@ -21,28 +21,33 @@ Feed
                 style="text-align: start;">{{ proposta.dia_criacao }}/0{{ proposta.mes_criacao }}/{{
                 proposta.ano_criacao }}</h6>
                 {% else %}
-                <h6 class="card-subtitle mb-2 text-muted lato-regular" style="text-align: start;">{{ proposta.dia_criacao
+                <h6 class="card-subtitle mb-2 text-muted lato-regular" style="text-align: start;">{{
+                    proposta.dia_criacao
                     }}/{{ proposta.mes_criacao }}/{{ proposta.ano_criacao }}</h6>
                 {% endif %}
                 <div class="categorias-proposta">
                     {% for categoria in proposta.categorias %}
-                    <h6 class="card-subtitle mb-2 text-muted categorias-proposta-item lato-regular">{{ categoria.nome }}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted categorias-proposta-item lato-regular">{{ categoria.nome }}
+                    </h6>
                     {% endfor %}
                 </div>
                 <p class="card-text lato-regular" style="text-align: justify;">{{ proposta.descricao }}</p>
                 <div class="comentar-participar-feed">
                     {% if proposta in user.propostas_que_dei_like %}
-                    <a class="anchor-like-proposta" onclick="likear_proposta('{{ proposta.id }}', '{{ id_item_feed }}')">
+                    <a class="anchor-like-proposta"
+                        onclick="likear_proposta('{{ proposta.id }}', '{{ id_item_feed }}')">
                         <i class="bi bi-hand-thumbs-up-fill botao-like-proposta"></i>
                     </a>
                     {% else %}
-                    <a class="anchor-like-proposta" onclick="likear_proposta('{{ proposta.id }}', '{{ id_item_feed }}')">
+                    <a class="anchor-like-proposta"
+                        onclick="likear_proposta('{{ proposta.id }}', '{{ id_item_feed }}')">
                         <i class="bi bi-hand-thumbs-up botao-like-proposta"></i>
                     </a>
                     {% endif %}
                     <button type="button" class="card-link btn btn-info lato-bold" data-bs-toggle="modal"
                         data-bs-target="#{{ id_modal_comentarios }}">Comentar</button>
-                    <button type="button" href="#" class="card-link btn btn-primary lato-bold solicitar_participar_butao">Solicitar para
+                    <button type="button" href="#"
+                        class="card-link btn btn-primary lato-bold solicitar_participar_butao">Solicitar para
                         participar</button>
                 </div>
         </div>
@@ -57,8 +62,10 @@ Feed
                 <div class="modal-body">
                     <form method="post" novalidate>
                         <div class="mb-2">
-                            <textarea class="form-control postar-comentario lato-regular" maxlength="1000" name="texto_comentario" placeholder="Comentário"></textarea>
-                            <span class="text-danger lato-bold postar_comentario_span" style="margin-top: 6px; margin-bottom: 5px;"></span>
+                            <textarea class="form-control postar-comentario lato-regular" maxlength="1000"
+                                name="texto_comentario" placeholder="Comentário"></textarea>
+                            <span class="text-danger lato-bold postar_comentario_span"
+                                style="margin-top: 6px; margin-bottom: 5px;"></span>
                         </div>
                         <button type="button" class="btn btn-info lato-bold"
                             onclick="enviar_comentario('{{ proposta.id }}', '{{ id_modal_comentarios }}')"
@@ -66,22 +73,38 @@ Feed
                     </form>
                     <div class="mx-auto mt-3 comentarios_da_proposta">
                         {% for comentario in proposta.comentarios %}
-                        <div class="card mx-auto mt-3">
+                        {% set id_card_comentario = "id_card_comentario_" + comentario.id | string %}
+                        <div class="card mx-auto mt-3 card_do_comentario" id="{{ id_card_comentario }}">
                             <div class="card-body">
                                 <h6 class="card-title lato-bold card_de_comentario_titulo">
                                     {{ comentario.titulo }}
                                 </h6>
-                                {% if comentario.mes_criacao < 10 %} 
-                                <p class="card-subtitle mb-2 text-muted lato-regular card_de_comentario_subtitulo">{{ comentario.dia_criacao }}/0{{ comentario.mes_criacao }}/{{
+                                {% if comentario.mes_criacao < 10 %} <p
+                                    class="card-subtitle mb-2 text-muted lato-regular card_de_comentario_subtitulo">{{
+                                    comentario.dia_criacao }}/0{{ comentario.mes_criacao }}/{{
                                     comentario.ano_criacao }}</p>
-                                {% else %}
-                                    <p class="card-subtitle mb-2 text-muted lato-regular card_de_comentario_subtitulo">{{
+                                    {% else %}
+                                    <p class="card-subtitle mb-2 text-muted lato-regular card_de_comentario_subtitulo">
+                                        {{
                                         comentario.dia_criacao
                                         }}/{{ comentario.mes_criacao }}/{{ comentario.ano_criacao }}</p>
-                                {% endif %}
-                                <p class="card-text card_de_comentario_text">
-                                    {{ comentario.texto_comentario }}
-                                </p>
+                                    {% endif %}
+                                    <p class="card-text card_de_comentario_text">
+                                        {{ comentario.texto_comentario }}
+                                    </p>
+                                    <div class="div-do-like">
+                                        {% if comentario in user.comentarios_que_dei_like %}
+                                        <a class="anchor-like-comentario"
+                                            onclick="likear_comentario('{{ comentario.id }}', '{{ id_card_comentario }}')">
+                                            <i class="bi bi-hand-thumbs-up-fill botao-like-comentario"></i>
+                                        </a>
+                                        {% else %}
+                                        <a class="anchor-like-comentario"
+                                            onclick="likear_comentario('{{ comentario.id }}', '{{ id_card_comentario }}')">
+                                            <i class="bi bi-hand-thumbs-up botao-like-comentario"></i>
+                                        </a>
+                                        {% endif %}
+                                    </div>
                             </div>
                         </div>
                         {% endfor %}
@@ -97,6 +120,6 @@ Feed
     </div>
 
     {% endfor %}
-    
+
 </div>
 {% endblock %}

@@ -1,3 +1,84 @@
+$(document).ready(function () {
+    $('.anchor-like-comentario').on("click", function () {
+        icone_do_like = $(this).children('i')[0];
+        if (icone_do_like.classList.contains('bi-hand-thumbs-up-fill')) {
+            icone_do_like.classList.remove('bi-hand-thumbs-up-fill');
+            icone_do_like.classList.add('bi-hand-thumbs-up');
+        } else {
+            icone_do_like.classList.remove('bi-hand-thumbs-up');
+            icone_do_like.classList.add('bi-hand-thumbs-up-fill');
+        }
+    })
+});
+
+function carregar_comentarios(comentarios, id_modal_comentarios) {
+    div_comentarios = $(`#${id_modal_comentarios} .comentarios_da_proposta`);
+    div_comentarios.empty();
+    comentarios.forEach((comentario) => {
+        var card_de_comentario = $("<div>", {
+            id: "comentario" + comentario["id"],
+            class: "card mx-auto mt-3",
+        });
+
+        var card_de_comentario_body = $("<div>", {
+            id: "comentario_corpo_" + comentario["id"],
+            class: "card-body",
+        });
+
+        var card_de_comentario_titulo = $("<h6>", {
+            id: "comentario_titulo_" + comentario["id"],
+            class: "card-title gothic-bold card_de_comentario_titulo",
+        });
+
+        var card_de_comentario_subtitulo = $("<p>", {
+            id: "comentario_subtitulo_" + comentario["id"],
+            class:
+                "card-subtitle mb-2 text-muted gothic card_de_comentario_subtitulo",
+        });
+
+        if (comentario["mes_criacao"] < 10) {
+            card_de_comentario_subtitulo.append(
+                `${comentario["dia_criacao"]}/0${comentario["mes_criacao"]}/${comentario["ano_criacao"]}`
+            );
+        } else {
+            card_de_comentario_subtitulo.append(
+                `${comentario["dia_criacao"]}/${comentario["mes_criacao"]}/${comentario["ano_criacao"]}`
+            );
+        }
+
+        var card_de_comentario_text = $("<p>", {
+            id: "comentario_text_" + comentario["id"],
+            class: "card-text card_de_comentario_text",
+        });
+
+        card_de_comentario_text.append(comentario["texto_comentario"]);
+        card_de_comentario_titulo.append(comentario["dono_do_comentario"]);
+        card_de_comentario_body.append(card_de_comentario_titulo);
+        card_de_comentario_body.append(card_de_comentario_subtitulo);
+        card_de_comentario_body.append(card_de_comentario_text);
+        card_de_comentario.append(card_de_comentario_body);
+        div_comentarios.append(card_de_comentario);
+
+        var div_do_like = $("<div>", { class: "div-do-like" });
+
+        var botao_do_like = $("<a>", { class: "anchor-like-comentario" });
+
+
+        var classe_do_link = comentario["likeado"] ? "bi bi-hand-thumbs-up-fill botao-like-comentario" : "bi bi-hand-thumbs-up botao-like-comentario";
+
+        var icone_do_like = $("<i>", { class: classe_do_link });
+
+        botao_do_like.on("click", function () {
+            likear_comentario(comentario["id"]);
+            icone_do_like.toggleClass('bi-hand-thumbs-up-fill bi-hand-thumbs-up');
+        });
+
+        botao_do_like.append(icone_do_like);
+        div_do_like.append(botao_do_like);
+        card_de_comentario_body.append(div_do_like);
+    });
+}
+
 function enviar_comentario(id_proposta, id_modal_comentarios) {
     texto_comentario = $(`#${id_modal_comentarios} .postar-comentario`).val();
 
@@ -19,55 +100,21 @@ function enviar_comentario(id_proposta, id_modal_comentarios) {
                 $(`#${id_modal_comentarios} .postar_comentario_span`).text("");
                 $(`#${id_modal_comentarios} .postar-comentario`).val("");
 
-                comentarios = $(`#${id_modal_comentarios} .comentarios_da_proposta`);
-                comentarios.empty();
-                response["info"].forEach((comentario) => {
-                    var card_de_comentario = $("<div>", {
-                        id: "comentario" + comentario["id"],
-                        class: "card mx-auto mt-3",
-                    });
-
-                    var card_de_comentario_body = $("<div>", {
-                        id: "comentario_corpo_" + comentario["id"],
-                        class: "card-body",
-                    });
-
-                    var card_de_comentario_titulo = $("<h6>", {
-                        id: "comentario_titulo_" + comentario["id"],
-                        class: "card-title gothic-bold card_de_comentario_titulo",
-                    });
-
-                    var card_de_comentario_subtitulo = $("<p>", {
-                        id: "comentario_subtitulo_" + comentario["id"],
-                        class:
-                            "card-subtitle mb-2 text-muted gothic card_de_comentario_subtitulo",
-                    });
-
-                    if (comentario["mes_criacao"] < 10) {
-                        card_de_comentario_subtitulo.append(
-                            `${comentario["dia_criacao"]}/0${comentario["mes_criacao"]}/${comentario["ano_criacao"]}`
-                        );
-                    } else {
-                        card_de_comentario_subtitulo.append(
-                            `${comentario["dia_criacao"]}/${comentario["mes_criacao"]}/${comentario["ano_criacao"]}`
-                        );
-                    }
-
-                    var card_de_comentario_text = $("<p>", {
-                        id: "comentario_text_" + comentario["id"],
-                        class: "card-text card_de_comentario_text",
-                    });
-
-                    card_de_comentario_text.append(comentario["texto_comentario"]);
-                    card_de_comentario_titulo.append(comentario["dono_do_comentario"]);
-                    card_de_comentario_body.append(card_de_comentario_titulo);
-                    card_de_comentario_body.append(card_de_comentario_subtitulo);
-                    card_de_comentario_body.append(card_de_comentario_text);
-                    card_de_comentario.append(card_de_comentario_body);
-                    comentarios.append(card_de_comentario);
-                });
+                carregar_comentarios(response, id_modal_comentarios);
             }
         );
+    });
+}
+
+function likear_comentario(id_comentario) {
+    $(function () {
+        $.post(
+            'likear_comentario',
+            {
+                id_comentario: id_comentario
+            },
+            function (response) {
+            });
     });
 }
 
@@ -139,7 +186,7 @@ $(document).ready(function () {
                     $('#adicionar_membro_span').text(response["mensagem"]);
                     return
                 }
-                
+
                 // Limpar campo de membro
                 $('#apelido_autocomplete').val("")
 
@@ -148,7 +195,7 @@ $(document).ready(function () {
                     $('#adicionar_membro_span').text("Usuário já adicionado");
                     return
                 }
-                
+
                 // limpar mensagem de erro
                 $('#adicionar_membro_span').text("");
 

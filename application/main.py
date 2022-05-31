@@ -129,6 +129,27 @@ def feed():
 
 
 # Dar like em proposta
+@app.route("/likear_comentario", methods=["POST"])
+@login_required
+def likear_comentario():
+    comentario_a_likear = Comentario.query.filter_by(id=request.form.get("id_comentario")).first()
+
+    if comentario_a_likear:
+        comentarios_que_dei_like = current_user.comentarios_que_dei_like
+
+        if comentario_a_likear in comentarios_que_dei_like:
+            current_user.comentarios_que_dei_like.remove(comentario_a_likear)
+            db.session.commit()
+            return Response(json.dumps({ "likeado": False }))
+        else:
+            current_user.comentarios_que_dei_like.append(comentario_a_likear)
+            db.session.commit()
+            return Response(json.dumps({ "likeado": True }))
+    else:
+        return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - COMENTARIO NÃO ENCONTRADO")
+
+
+# Dar like em proposta
 @app.route("/likear_proposta", methods=["POST"])
 @login_required
 def likear_proposta():
@@ -166,24 +187,44 @@ def comentar():
         novo_comentario = Comentario(texto_comentario=request.form.get("texto_comentario"), dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year, dono_do_comentario=current_user.apelido, user=current_user, proposta=proposta_a_comentar)
 
         db.session.commit()
-        todos_comentarios_da_proposta = proposta_a_comentar.comentarios
 
-        todos_comentarios_da_proposta_dict = []
-
-        for comentario in todos_comentarios_da_proposta:
-            todos_comentarios_da_proposta_dict.append({
-                "id": comentario.id,
-                "texto_comentario": comentario.texto_comentario,
-                "dia_criacao": comentario.dia_criacao,
-                "mes_criacao": comentario.mes_criacao,
-                "ano_criacao": comentario.ano_criacao,
-                "dono_do_comentario": comentario.dono_do_comentario
-            })
-
-        return Response(json.dumps({"status": 200, "info": todos_comentarios_da_proposta_dict}), mimetype="application\json")
+        return redirect(url_for("carregar_comentarios", id_proposta=request.form.get("id_proposta")))
     else:
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
 
+
+# Carregar comentarios
+@app.route("/carregar_comentarios", methods=["GET"])
+def carregar_comentarios():
+    id_proposta = request.args.get("id_proposta")
+
+    if id_proposta:
+        comentarios_da_proposta = Comentario.query.filter_by(proposta_id=id_proposta).all()
+        comentarios_que_dei_like = current_user.comentarios_que_dei_like
+        
+        if len(comentarios_da_proposta) > 0:
+            todos_comentarios_da_proposta_array = []
+
+            for comentario in comentarios_da_proposta:
+                likeado = False
+                if comentario in comentarios_que_dei_like:
+                    likeado = True
+
+                todos_comentarios_da_proposta_array.append({
+                        "id": comentario.id,
+                        "texto_comentario": comentario.texto_comentario,
+                        "dia_criacao": comentario.dia_criacao,
+                        "mes_criacao": comentario.mes_criacao,
+                        "ano_criacao": comentario.ano_criacao,
+                        "dono_do_comentario": comentario.dono_do_comentario,
+                        "likeado": likeado
+                    })
+
+            return Response(json.dumps(todos_comentarios_da_proposta_array), mimetype="application\json")
+        else:
+            return Response(json.dumps({"status": 200, "info": "Niguém fez um comentário ainda, que tal ser o primeiro?"}), mimetype="application\json")
+    else:
+        return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
 
 
 # Registrar

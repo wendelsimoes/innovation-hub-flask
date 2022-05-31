@@ -171,13 +171,22 @@ textarea:focus {
     text-align: justify !important;
 }
 
-.botao-like-proposta, .anchor-like-proposta {
+.botao-like-proposta, .anchor-like-proposta, .botao-like-comentario, .anchor-like-comentario {
     margin-right: auto !important;
     font-size: 2rem !important;
 }
 
 .anchor-like-proposta:hover {
     cursor: pointer !important;
+}
+
+.anchor-like-comentario:hover {
+    cursor: pointer !important;
+}
+
+.div-do-like {
+    display: block !important;
+    text-align: start !important;
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -237,7 +246,7 @@ textarea:focus {
         margin: 0 0 5px 0px !important;
     }
 
-    .anchor-like-proposta {
+    .anchor-like-proposta, .anchor-like-comentario {
         text-align: left !important;
     }
 }
