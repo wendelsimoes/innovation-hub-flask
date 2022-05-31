@@ -182,11 +182,11 @@ def favoritar():
         if proposta_a_favoritar in propostas_favoritas:
             current_user.propostas_favoritas.remove(proposta_a_favoritar)
             db.session.commit()
-            return Response(json.dumps({ "favoritado": False }))
+            return Response(json.dumps({"status": 200, "mensagem": "Proposta removida dos favoritos"}))
         else:
             current_user.propostas_favoritas.append(proposta_a_favoritar)
             db.session.commit()
-            return Response(json.dumps({ "favoritado": True }))
+            return Response(json.dumps({"status": 200, "mensagem": "Proposta adicionada aos favoritos"}))
     else:
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
 

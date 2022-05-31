@@ -163,6 +163,12 @@ function favoritar_proposta(id_proposta) {
                 id_proposta: id_proposta
             },
             function (response) {
+                document.querySelector(".toast .toast-body").textContent=JSON.parse(response)["mensagem"];
+
+                let liveToast = $('.toast');
+                let toast = new bootstrap.Toast(liveToast);
+                
+                toast.show();
             });
     });
 }
@@ -188,7 +194,34 @@ function pedir_para_participar(id_proposta) {
                 id_proposta: id_proposta
             },
             function (response) {
-                console.log(response);
+                let codigo = JSON.parse(response)["status"];
+
+                toast_ = document.querySelector(".toast");
+
+                if (codigo == 400) {
+                    for (i = 0; i < toast_.classList.lenght; i++) {
+                        if (toast_.classList[i] == 'bg-success') {
+                            toast_.classList.remove('bg-success');
+                        }
+                    }
+                    toast_.classList.add('bg-danger');
+                }
+
+                if (codigo == 200) {
+                    for (i = 0; i < toast_.classList.lenght; i++) {
+                        if (toast_.classList[i] == 'bg-danger') {
+                            toast_.classList.remove('bg-danger');
+                        }
+                    }
+                    toast_.classList.add('bg-success');
+                }
+
+                document.querySelector(".toast .toast-body").textContent=JSON.parse(response)["mensagem"];
+
+                let liveToast = $('.toast');
+                let toast = new bootstrap.Toast(liveToast);
+                
+                toast.show();
             });
     });
 }
