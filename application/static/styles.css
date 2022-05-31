@@ -8,10 +8,6 @@
     src: url(fonts/Lato-Bold.ttf);
 }
 
-.font-large {
-    font-size: large !important;
-}
-
 body,
 html {
     height: 100% !important;
@@ -187,6 +183,14 @@ textarea:focus {
 .div-do-like {
     display: block !important;
     text-align: start !important;
+}
+
+.descricao-do-card, .tamanho-padrao {
+    font-size: 1.2rem !important;
+}
+
+button {
+    font-size: 1.1rem !important;
 }
 
 /* Extra small devices (phones, 600px and down) */

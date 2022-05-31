@@ -16,30 +16,32 @@ Feed
 
     <div id="{{ id_item_feed }}" class="card mx-auto mt-3 item-feed {{ classe_background }}">
         <div class="card-body">
-            <h5 class="card-title lato-bold" style="text-align: start;">{{ proposta.titulo }}</h5>
-            {% if proposta.mes_criacao < 10 %} <h6 class="card-subtitle mb-2 text-muted lato-regular"
+            <h5 class="card-title lato-bold fs-5" style="text-align: start;">{{ proposta.titulo }}</h5>
+            {% if proposta.mes_criacao < 10 %} <h6 class="card-subtitle mb-2 text-muted lato-regular fs-6"
                 style="text-align: start;">{{ proposta.dia_criacao }}/0{{ proposta.mes_criacao }}/{{
                 proposta.ano_criacao }}</h6>
                 {% else %}
-                <h6 class="card-subtitle mb-2 text-muted lato-regular" style="text-align: start;">{{
+                <h6 class="card-subtitle mb-2 text-muted lato-regular fs-6" style="text-align: start;">{{
                     proposta.dia_criacao
                     }}/{{ proposta.mes_criacao }}/{{ proposta.ano_criacao }}</h6>
                 {% endif %}
                 <div class="categorias-proposta">
                     {% for categoria in proposta.categorias %}
-                    <h6 class="card-subtitle mb-2 text-muted categorias-proposta-item lato-regular">{{ categoria.nome }}
+                    <h6 class="card-subtitle mb-2 text-muted categorias-proposta-item">{{ categoria.nome }}
                     </h6>
                     {% endfor %}
                 </div>
-                <p class="card-text lato-regular" style="text-align: justify;">{{ proposta.descricao }}</p>
+                <p class="card-text lato-regular descricao-do-card" style="text-align: justify;">{{ proposta.descricao }}</p>
                 <div class="comentar-participar-likear-feed">
-                    <a class="anchor-like-proposta" onclick="likear_proposta('{{ proposta.id }}', '{{ id_item_feed }}')" style="text-decoration: none;">
+                    <a class="anchor-like-proposta" onclick="likear_proposta('{{ proposta.id }}', '{{ id_item_feed }}')"
+                        style="text-decoration: none;">
                         {% if proposta in user.propostas_que_dei_like %}
                         <i class="bi bi-hand-thumbs-up-fill botao-like-proposta"></i>
                         {% else %}
                         <i class="bi bi-hand-thumbs-up botao-like-proposta"></i>
                         {% endif %}
-                        <h3 class="lato-regular like-count" style="display: inline-block;">{{ proposta.likes | length }}</h3>
+                        <h3 class="lato-regular like-count fs-5" style="display: inline-block;">{{ proposta.likes | length }}
+                        </h3>
                     </a>
                     <button type="button" class="card-link btn btn-info lato-bold" data-bs-toggle="modal"
                         data-bs-target="#{{ id_modal_comentarios }}">Comentar</button>
@@ -59,12 +61,12 @@ Feed
                 <div class="modal-body">
                     <form method="post" novalidate>
                         <div class="mb-2">
-                            <textarea class="form-control postar-comentario lato-regular" maxlength="1000"
+                            <textarea class="form-control postar-comentario lato-regular fs-5" maxlength="1000"
                                 name="texto_comentario" placeholder="Comentário"></textarea>
-                            <span class="text-danger lato-bold postar_comentario_span"
+                            <span class="text-danger lato-bold postar_comentario_span fs-5"
                                 style="margin-top: 6px; margin-bottom: 5px;"></span>
                         </div>
-                        <button type="button" class="btn btn-info lato-bold"
+                        <button type="button" class="btn btn-info lato-bold fs-5"
                             onclick="enviar_comentario('{{ proposta.id }}', '{{ id_modal_comentarios }}')"
                             style="display: block; width: fit-content;">Comentar</button>
                     </form>
@@ -73,34 +75,33 @@ Feed
                         {% set id_card_comentario = "id_card_comentario_" + comentario.id | string %}
                         <div class="card mx-auto mt-3 card_do_comentario" id="{{ id_card_comentario }}">
                             <div class="card-body">
-                                <h6 class="card-title lato-bold card_de_comentario_titulo">
-                                    {{ comentario.titulo }}
+                                <h6 class="card-title lato-bold card_de_comentario_titulo fs-5">
+                                    {{ comentario.dono_do_comentario }}
                                 </h6>
                                 {% if comentario.mes_criacao < 10 %} <p
-                                    class="card-subtitle mb-2 text-muted lato-regular card_de_comentario_subtitulo">{{
+                                    class="card-subtitle mb-2 text-muted lato-regular card_de_comentario_subtitulo fs-6">{{
                                     comentario.dia_criacao }}/0{{ comentario.mes_criacao }}/{{
                                     comentario.ano_criacao }}</p>
                                     {% else %}
-                                    <p class="card-subtitle mb-2 text-muted lato-regular card_de_comentario_subtitulo">
+                                    <p class="card-subtitle mb-2 text-muted lato-regular card_de_comentario_subtitulo fs-6">
                                         {{
                                         comentario.dia_criacao
                                         }}/{{ comentario.mes_criacao }}/{{ comentario.ano_criacao }}</p>
                                     {% endif %}
-                                    <p class="card-text card_de_comentario_text">
+                                    <p class="card-text card_de_comentario_text lato-regular descricao-do-card">
                                         {{ comentario.texto_comentario }}
                                     </p>
                                     <div class="div-do-like">
-                                        {% if comentario in user.comentarios_que_dei_like %}
                                         <a class="anchor-like-comentario"
-                                            onclick="likear_comentario('{{ comentario.id }}', '{{ id_card_comentario }}')">
+                                            onclick="likear_comentario('{{ comentario.id }}', '{{ id_card_comentario }}')" style="text-decoration: none;">
+                                            {% if comentario in user.comentarios_que_dei_like %}
                                             <i class="bi bi-hand-thumbs-up-fill botao-like-comentario"></i>
-                                        </a>
-                                        {% else %}
-                                        <a class="anchor-like-comentario"
-                                            onclick="likear_comentario('{{ comentario.id }}', '{{ id_card_comentario }}')">
+                                            {% else %}
                                             <i class="bi bi-hand-thumbs-up botao-like-comentario"></i>
+                                            {% endif %}
+                                            <h3 class="lato-regular like-count fs-5" style="display: inline-block;">{{ comentario.likes | length }}
+                                            </h3>
                                         </a>
-                                        {% endif %}
                                     </div>
                             </div>
                         </div>

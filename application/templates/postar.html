@@ -9,9 +9,9 @@
             {{ formDeProposta.csrf_token }}
             <div class="row tipo-titulo">
                 <div class="mb-2 div-postar-tipo" style="display: inline-block;">
-                    <label class="form-label tipo-proposta-label lato-bold" for="tipo_proposta">Criar
+                    <label class="form-label tipo-proposta-label lato-bold tamanho-padrao" for="tipo_proposta">Criar
                         um(a)</label>
-                    <select class="form-select lato-regular" name="tipo_proposta" id="tipo_proposta">
+                    <select class="form-select lato-regular tamanho-padrao" name="tipo_proposta" id="tipo_proposta">
                         {% for tipo, valor in tipo_proposta.items() %}
                         {% if valor == 0 %}
                         <option selected value="{{ valor }}">{{ tipo }}</option>
@@ -23,15 +23,15 @@
                 </div>
                 <div class="mb-2 div-postar-titulo" style="display: inline-block;">
                     {{ formDeProposta.titulo.label(class_="form-label postar-titulo-label") }}
-                    {{ formDeProposta.titulo(class_="form-control postar-titulo lato-regular") }}
+                    {{ formDeProposta.titulo(class_="form-control postar-titulo lato-regular tamanho-padrao") }}
                     {% for error in formDeProposta.titulo.errors %}
                     <span class="text-danger lato-bold">{{ error }}</span>
                     {% endfor %}
                 </div>
             </div>
             <div class="mb-2 row" style="width: 100%; margin-left: auto; margin-right: auto;">
-                {{ formDeProposta.membro.label(class_="form-label lato-bold postar-membro-label") }}
-                {{ formDeProposta.membro(class_="form-control lato-regular adicionar-membro") }}
+                {{ formDeProposta.membro.label(class_="form-label lato-bold postar-membro-label tamanho-padrao") }}
+                {{ formDeProposta.membro(class_="form-control lato-regular adicionar-membro tamanho-padrao") }}
                 <button id="adicionar_membro_btn" type="button" class="btn btn-info lato-bold adicionar-membro-btn"
                     style="display: inline-block; width: fit-content; margin-left: 6px;">Adicionar</button>
                 <span class="text-danger lato-bold" id="adicionar_membro_span" style="margin-top: 6px;"></span>
@@ -42,21 +42,21 @@
                 </div>
             </div>
             <div class="mb-2">
-                {{ formDeProposta.descricao(class_="form-control postar-descricao lato-regular") }}
+                {{ formDeProposta.descricao(class_="form-control postar-descricao lato-regular tamanho-padrao") }}
                 {% for error in formDeProposta.descricao.errors %}
                 <span class="text-danger lato-bold">{{ error }}</span>
                 {% endfor %}
             </div>
             <div class="mb-2" style="display: inline-block; width: 100%;">
-                {{ formDeProposta.restricao_idade.label(class_="form-label restricao-idade-label lato-bold") }}
-                {{ formDeProposta.restricao_idade(class_="form-control postar-restricao-idade lato-regular") }}
+                {{ formDeProposta.restricao_idade.label(class_="form-label restricao-idade-label lato-bold tamanho-padrao") }}
+                {{ formDeProposta.restricao_idade(class_="form-control postar-restricao-idade lato-regular tamanho-padrao") }}
                 {% for error in formDeProposta.restricao_idade.errors %}
                 <span class="text-danger lato-bold">{{ error }}</span>
                 {% endfor %}
             </div>
             <div class="mb-2 form-check" style="width: 100%; margin-left: auto; margin-right: auto;">
                 <input name="privado" class="form-check-input" type="checkbox" id="privado">
-                <label class="form-check-label lato-bold" for="privado" style="width: 100%; text-align: start;">
+                <label class="form-check-label lato-bold tamanho-padrao" for="privado" style="width: 100%; text-align: start;">
                     É privado?
                 </label>
             </div>
@@ -66,7 +66,7 @@
                 <div class="form-check col-md-4">
                     <input name="categorias" class="form-check-input" type="checkbox" value="{{ valor }}"
                         id="{{ valor }}">
-                    <label class="form-check-label lato-bold" for="{{ valor }}" style="width: 100%; text-align: start;">
+                    <label class="form-check-label lato-regular" for="{{ valor }}" style="width: 100%; text-align: start;">
                         {{ categoria }}
                     </label>
                 </div>

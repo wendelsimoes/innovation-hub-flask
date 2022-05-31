@@ -1,13 +1,21 @@
 $(document).ready(function () {
     $('.anchor-like-comentario').on("click", function () {
         icone_do_like = $(this).children('i')[0];
+        contador_do_like = $(this).children('h3')[0];
+
+        likes = Number.parseInt(contador_do_like.innerText);
+
         if (icone_do_like.classList.contains('bi-hand-thumbs-up-fill')) {
             icone_do_like.classList.remove('bi-hand-thumbs-up-fill');
             icone_do_like.classList.add('bi-hand-thumbs-up');
+            likes -= 1;
         } else {
             icone_do_like.classList.remove('bi-hand-thumbs-up');
             icone_do_like.classList.add('bi-hand-thumbs-up-fill');
+            likes += 1;
         }
+
+        contador_do_like.innerText = likes;
     })
 
     $('.anchor-like-proposta').on("click", function () {
