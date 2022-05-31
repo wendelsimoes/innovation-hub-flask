@@ -128,7 +128,7 @@ def feed():
     return render_template("postar.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user, todas_propostas_nao_privadas=todas_propostas_nao_privadas)
 
 
-# Dar like em proposta
+# Dar like em comentario
 @app.route("/likear_comentario", methods=["POST"])
 @login_required
 def likear_comentario():
@@ -166,6 +166,27 @@ def likear_proposta():
             current_user.propostas_que_dei_like.append(proposta_a_likear)
             db.session.commit()
             return Response(json.dumps({ "likeado": True }))
+    else:
+        return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
+
+
+# Favoritar proposta
+@app.route("/favoritar", methods=["POST"])
+@login_required
+def favoritar():
+    proposta_a_favoritar = Proposta.query.filter_by(id=request.form.get("id_proposta")).first()
+
+    if proposta_a_favoritar:
+        propostas_favoritas = current_user.propostas_favoritas
+
+        if proposta_a_favoritar in propostas_favoritas:
+            current_user.propostas_favoritas.remove(proposta_a_favoritar)
+            db.session.commit()
+            return Response(json.dumps({ "favoritado": False }))
+        else:
+            current_user.propostas_favoritas.append(proposta_a_favoritar)
+            db.session.commit()
+            return Response(json.dumps({ "favoritado": True }))
     else:
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
 

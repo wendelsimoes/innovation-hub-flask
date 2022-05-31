@@ -18,6 +18,11 @@ Like_do_Comentario = db.Table('Like_do_Comentario',
     db.Column('comentario_id', db.Integer, db.ForeignKey('comentarios.id'))
 )
 
+Proposta_Favorita = db.Table('Proposta_Favorita',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('proposta_id', db.Integer, db.ForeignKey('propostas.id'))
+)
+
 class User(db.Model, UserMixin):
     __tablename__ = "users"
 
@@ -35,6 +40,7 @@ class User(db.Model, UserMixin):
     meus_comentarios = db.relationship("Comentario", backref="user")
     propostas_que_dei_like = db.relationship("Proposta", secondary=Like_da_Proposta, backref="likes")
     comentarios_que_dei_like = db.relationship("Comentario", secondary=Like_do_Comentario, backref="likes")
+    propostas_favoritas = db.relationship("Proposta", secondary=Proposta_Favorita, backref="favoritador")
 
     def verificar_senha_encriptada(self, senha):
         return check_password_hash(self.senha_encriptada, senha)

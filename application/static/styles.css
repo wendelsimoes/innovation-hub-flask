@@ -167,7 +167,7 @@ textarea:focus {
     text-align: justify !important;
 }
 
-.botao-like-proposta, .anchor-like-proposta, .botao-like-comentario, .anchor-like-comentario {
+.botao-like-proposta, .anchor-like-proposta, .botao-like-comentario, .anchor-like-comentario, .botao-favoritar-proposta {
     margin-right: auto !important;
     font-size: 2rem !important;
 }
@@ -180,16 +180,20 @@ textarea:focus {
     cursor: pointer !important;
 }
 
+.anchor-favoritar-proposta:hover {
+    cursor: pointer !important;
+}
+
 .div-do-like {
     display: block !important;
     text-align: start !important;
 }
 
-.descricao-do-card, .tamanho-padrao {
+.tamanho-padrao {
     font-size: 1.2rem !important;
 }
 
-button {
+button, .descricao-do-card {
     font-size: 1.1rem !important;
 }
 
@@ -250,7 +254,7 @@ button {
         margin: 0 0 5px 0px !important;
     }
 
-    .anchor-like-proposta, .anchor-like-comentario {
+    .anchor-like-proposta, .anchor-like-comentario, anchor-favoritar-proposta {
         text-align: left !important;
     }
 }

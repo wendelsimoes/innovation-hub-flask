@@ -1,4 +1,16 @@
 $(document).ready(function () {
+    $('.anchor-favoritar-proposta').on("click", function () {
+        icone_do_favorito = $(this).children('i')[0];
+
+        if (icone_do_favorito.classList.contains('bi-star-fill')) {
+            icone_do_favorito.classList.remove('bi-star-fill');
+            icone_do_favorito.classList.add('bi-star');
+        } else {
+            icone_do_favorito.classList.remove('bi-star');
+            icone_do_favorito.classList.add('bi-star-fill');
+        }
+    })
+
     $('.anchor-like-comentario').on("click", function () {
         icone_do_like = $(this).children('i')[0];
         contador_do_like = $(this).children('h3')[0];
@@ -102,6 +114,8 @@ function carregar_comentarios(comentarios, id_modal_comentarios) {
     });
 }
 
+
+
 function enviar_comentario(id_proposta, id_modal_comentarios) {
     texto_comentario = $(`#${id_modal_comentarios} .postar-comentario`).val();
 
@@ -135,6 +149,18 @@ function likear_comentario(id_comentario) {
             'likear_comentario',
             {
                 id_comentario: id_comentario
+            },
+            function (response) {
+            });
+    });
+}
+
+function favoritar_proposta(id_proposta) {
+    $(function () {
+        $.post(
+            'favoritar',
+            {
+                id_proposta: id_proposta
             },
             function (response) {
             });
