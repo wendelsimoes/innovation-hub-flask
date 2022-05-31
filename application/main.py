@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash
 import json
 from werkzeug.utils import secure_filename
 import base64
+import os
 
 
 # Popular campos de categorias da proposta
@@ -288,10 +289,13 @@ def registrar():
     if not formDeRegistro.validate_on_submit():
         return render_template("index.html", formDeRegistro=formDeRegistro, formDeLogin=FormDeLogin(), abrirModalDeRegistro=True, abrirModalDeLogin=False, user=current_user)
 
-    foto_perfil = request.form.get("foto_perfil")
-    if foto_perfil:
-        imagem_em_base64_string = base64.b64encode(foto_perfil)
-        print(imagem_em_base64_string)
+    if formDeRegistro.foto_perfil:
+        print("reached")
+        foto_perfil = formDeRegistro.foto_perfil.data
+        nome_da_foto = secure_filename(foto_perfil.filename)
+
+        print(base64.b64encode(foto_perfil.read()))
+        print(nome_da_foto)
 
     novo_usuario = User(email=formDeRegistro.email.data, nome=formDeRegistro.nome.data, sobrenome=formDeRegistro.sobrenome.data, dia_nascimento=formDeRegistro.nascimento.data.day, mes_nascimento=formDeRegistro.nascimento.data.month, ano_nascimento=formDeRegistro.nascimento.data.year, apelido=formDeRegistro.apelido.data, senha_encriptada=generate_password_hash(formDeRegistro.senha.data))
 

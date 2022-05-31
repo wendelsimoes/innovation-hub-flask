@@ -22,6 +22,8 @@ class FormDeRegistro(FlaskForm):
         InputRequired("Este campo é necessário"), 
         Length(min=3, max=200, message="Campo deve conter entre 3 e 200 caracteres")])
 
+    foto_perfil = FileField("Foto de Perfil", validators=[FileAllowed(['jpg', 'png'], message="Arquivo não suportado")])
+
     nascimento = DateField("Nascimento", validators=[
         InputRequired("Este campo é necessário")])
 
