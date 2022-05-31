@@ -149,6 +149,10 @@
               {% endfor %}
             </div>
             <div class="mb-2">
+              <label for="foto_perfil" class="form-label lato-regular tamanho-padrao">Foto de Perfil</label>
+              <input type="file" name="foto_perfil" class="form-control lato-regular tamanho-padrao">
+            </div>
+            <div class="mb-2">
               {{ formDeRegistro.nascimento.label(class_="form-label lato-regular tamanho-padrao") }}
               {{ formDeRegistro.nascimento(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeRegistro.nascimento.errors %}

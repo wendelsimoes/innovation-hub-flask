@@ -5,6 +5,7 @@ from datetime import date
 from application import db
 from werkzeug.security import check_password_hash
 from application.models import User
+from flask_wtf.file import FileField, FileAllowed
 
 
 # Form de Registro
