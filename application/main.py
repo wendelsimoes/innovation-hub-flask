@@ -125,6 +125,7 @@ def feed():
 
     # Se for GET
     todas_propostas_nao_privadas = Proposta.query.filter_by(privado=False).all()
+
     return render_template("postar.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user, todas_propostas_nao_privadas=todas_propostas_nao_privadas)
 
 
@@ -232,7 +233,7 @@ def participar():
         gerente_da_proposta = User.query.filter_by(id=proposta_que_quero_entrar.gerente_id).first()
 
 
-        notificacao = Notificacoes_Pedir_para_Participar(quem_pediu_para_entrar=current_user.apelido, gerente_da_proposta=gerente_da_proposta, proposta_id=proposta_que_quero_entrar.id)
+        notificacao = Notificacoes_Pedir_para_Participar(quem_pediu_para_entrar=current_user.apelido, titulo_da_proposta=proposta_que_quero_entrar.titulo, gerente_da_proposta=gerente_da_proposta, proposta_id=proposta_que_quero_entrar.id)
 
         gerente_da_proposta.notificacoes_pedir_para_participar.append(notificacao)
 

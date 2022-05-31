@@ -93,6 +93,7 @@ class Notificacoes_Pedir_para_Participar(db.Model):
 
     id = db.Column("id", db.Integer, primary_key=True, autoincrement=True)
     quem_pediu_para_entrar = db.Column(db.String(200), nullable=False)
+    titulo_da_proposta = db.Column(db.String(200), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     proposta_id = db.Column(db.Integer, db.ForeignKey("propostas.id"))
     
