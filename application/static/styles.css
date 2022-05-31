@@ -257,6 +257,11 @@ button, .descricao-do-card {
     .anchor-like-proposta, .anchor-like-comentario, anchor-favoritar-proposta {
         text-align: left !important;
     }
+
+    .lista-das-notificacoes {
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+    }
 }
 
 /* Medium devices (landscape tablets, 600px and up) */
@@ -322,7 +327,7 @@ button, .descricao-do-card {
     -webkit-box-shadow: 0 5px 20px -3px rgba(0, 0, 0, 0.16);
     box-shadow: 0 5px 20px -3px rgba(0, 0, 0, 0.16);
     border: 0;
-    max-width: 400px;
+    max-width: 700px;
 }
 
 @media (min-width: 900px) {
@@ -394,6 +399,13 @@ button, .descricao-do-card {
 .notification-list .notification-list_detail p {
     margin-bottom: 5px;
     line-height: 1.2;
+    text-align: justify !important;
+    margin-right: 10px !important;
+}
+
+.notification-list_detail {
+    margin-right: 2px !important;
+    padding-right: 2px !important;
 }
 
 .notification-list .notification-list_feature-img img {

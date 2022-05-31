@@ -232,8 +232,8 @@ def participar():
 
         gerente_da_proposta = User.query.filter_by(id=proposta_que_quero_entrar.gerente_id).first()
 
-
-        notificacao = Notificacoes_Pedir_para_Participar(quem_pediu_para_entrar=current_user.apelido, titulo_da_proposta=proposta_que_quero_entrar.titulo, gerente_da_proposta=gerente_da_proposta, proposta_id=proposta_que_quero_entrar.id)
+        today = date.today()
+        notificacao = Notificacoes_Pedir_para_Participar(quem_pediu_para_entrar=current_user.apelido, titulo_da_proposta=proposta_que_quero_entrar.titulo, gerente_da_proposta=gerente_da_proposta, proposta_id=proposta_que_quero_entrar.id, dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year)
 
         gerente_da_proposta.notificacoes_pedir_para_participar.append(notificacao)
 

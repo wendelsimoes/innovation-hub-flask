@@ -83,7 +83,7 @@ function carregar_comentarios(comentarios, id_modal_comentarios) {
 
         var card_de_comentario_text = $("<p>", {
             id: "comentario_text_" + comentario["id"],
-            class: "card-text card_de_comentario_text",
+            class: "card-text card_de_comentario_text tamanho-padrao",
         });
 
         card_de_comentario_text.append(comentario["texto_comentario"]);
