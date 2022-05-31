@@ -180,6 +180,19 @@ function likear_proposta(id_proposta, id_item_feed) {
     });
 }
 
+function pedir_para_participar(id_proposta) {
+    $(function () {
+        $.post(
+            'participar',
+            {
+                id_proposta: id_proposta
+            },
+            function (response) {
+                console.log(response);
+            });
+    });
+}
+
 function formatar_baseado_em_largura() {
     if ($(window).width() < 600) {
         $('#toggle-item-feed-postar').css("display", "inline-block");

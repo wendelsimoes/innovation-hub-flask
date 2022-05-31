@@ -29,7 +29,7 @@
 
 <body class="background">
   <!-- Navbar do Bootstrap -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-secondary lato-bold">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-secondary lato-regular">
     <div class="container-fluid">
       <a class="navbar-brand" href="{{ url_for("index") }}">
         <img src="../static/images/innovation-hub-logo.png" alt="logo" width="30" height="30"
@@ -73,66 +73,66 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title lato-bold tamanho-padrao" id="registro_modal_label">Registrar</h5>
+          <h5 class="modal-title lato-regular tamanho-padrao" id="registro_modal_label">Registrar</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form method="post" action="{{ url_for("registrar") }}" novalidate>
             {{ formDeRegistro.csrf_token }}
             <div class="mb-2">
-              {{ formDeRegistro.email.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeRegistro.email.label(class_="form-label lato-regular tamanho-padrao") }}
               {{ formDeRegistro.email(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeRegistro.email.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-2">
-              {{ formDeRegistro.nome.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeRegistro.nome.label(class_="form-label lato-regular tamanho-padrao") }}
               {{ formDeRegistro.nome(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeRegistro.nome.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-2">
-              {{ formDeRegistro.sobrenome.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeRegistro.sobrenome.label(class_="form-label lato-regular tamanho-padrao") }}
               {{ formDeRegistro.sobrenome(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeRegistro.sobrenome.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-2">
-              {{ formDeRegistro.nascimento.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeRegistro.nascimento.label(class_="form-label lato-regular tamanho-padrao") }}
               {{ formDeRegistro.nascimento(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeRegistro.nascimento.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-2">
-              {{ formDeRegistro.apelido.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeRegistro.apelido.label(class_="form-label lato-regular tamanho-padrao") }}
               {{ formDeRegistro.apelido(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeRegistro.apelido.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-2">
-              {{ formDeRegistro.senha.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeRegistro.senha.label(class_="form-label lato-regular tamanho-padrao") }}
               {{ formDeRegistro.senha(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeRegistro.senha.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-2">
-              {{ formDeRegistro.confirmar_senha.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeRegistro.confirmar_senha.label(class_="form-label lato-regular tamanho-padrao") }}
               {{ formDeRegistro.confirmar_senha(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeRegistro.confirmar_senha.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
-            <button type="submit" class="btn btn-info lato-bold">Cadastrar</button>
+            <button type="submit" class="btn btn-info lato-regular">Cadastrar</button>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary lato-bold" data-bs-dismiss="modal">
+          <button type="button" class="btn btn-secondary lato-regular" data-bs-dismiss="modal">
             Fechar
           </button>
         </div>
@@ -145,21 +145,21 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title lato-bold tamanho-padrao" id="login_modal_label">Entrar</h5>
+          <h5 class="modal-title lato-regular tamanho-padrao" id="login_modal_label">Entrar</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form method="post" action="{{ url_for("login") }}" novalidate>
             {{ formDeLogin.csrf_token }}
             <div class="mb-2">
-              {{ formDeLogin.apelido.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeLogin.apelido.label(class_="form-label lato-regular tamanho-padrao") }}
               {{ formDeLogin.apelido(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeLogin.apelido.errors %}
               <span class="text-danger">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-2">
-              {{ formDeLogin.senha.label(class_="form-label lato-bold tamanho-padrao") }}
+              {{ formDeLogin.senha.label(class_="form-label lato-regular tamanho-padrao") }}
               {{ formDeLogin.senha(class_="form-control lato-regular tamanho-padrao") }}
               {% for error in formDeLogin.senha.errors %}
               <span class="text-danger">{{ error }}</span>
@@ -167,15 +167,15 @@
             </div>
             <div class="mb-2 form-check" style="width: 50%; margin-right: auto;">
               <input name="lembrar_de_mim" class="form-check-input" type="checkbox" id="lembrar_de_mim">
-              <label class="form-check-label lato-bold tamanho-padrao" for="lembrar_de_mim">
+              <label class="form-check-label lato-regular tamanho-padrao" for="lembrar_de_mim">
                 Lembrar de Mim?
               </label>
             </div>
-            <button type="submit" class="btn btn-info lato-bold">Entrar</button>
+            <button type="submit" class="btn btn-info lato-regular">Entrar</button>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary lato-bold" data-bs-dismiss="modal">
+          <button type="button" class="btn btn-secondary lato-regular" data-bs-dismiss="modal">
             Fechar
           </button>
         </div>

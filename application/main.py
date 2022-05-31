@@ -2,7 +2,7 @@ from flask import flash, redirect, render_template, request, Response, url_for
 from flask_login import login_required, login_user, logout_user, login_manager, current_user
 from application import app, login_manager, db
 from application.forms import FormDeLogin, FormDeRegistro, FormDeProposta
-from application.models import User, Proposta, Categoria, Comentario
+from application.models import User, Proposta, Categoria, Comentario, Notificacoes_Pedir_para_Participar
 from datetime import date
 from werkzeug.security import generate_password_hash
 import json
@@ -210,6 +210,35 @@ def comentar():
         db.session.commit()
 
         return redirect(url_for("carregar_comentarios", id_proposta=request.form.get("id_proposta")))
+    else:
+        return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
+
+
+# Pedir para participar
+@app.route("/participar", methods=["POST"])
+@login_required
+def participar():
+    proposta_que_quero_entrar = Proposta.query.filter_by(id=request.form.get("id_proposta")).first()
+
+    if proposta_que_quero_entrar:
+        verificar_se_ja_pediu = Notificacoes_Pedir_para_Participar.query.filter_by(quem_pediu_para_entrar=current_user.apelido, proposta_id=proposta_que_quero_entrar.id).first()
+
+        if verificar_se_ja_pediu:
+            return Response(json.dumps({"status": 400, "mensagem": "Solicitação já foi previamente enviada"}))
+
+        if proposta_que_quero_entrar in current_user.propostas_que_estou:
+            return Response(json.dumps({"status": 400, "mensagem": "Você já participa desta proposta"}))
+
+        gerente_da_proposta = User.query.filter_by(id=proposta_que_quero_entrar.gerente_id).first()
+
+
+        notificacao = Notificacoes_Pedir_para_Participar(quem_pediu_para_entrar=current_user.apelido, gerente_da_proposta=gerente_da_proposta, proposta_id=proposta_que_quero_entrar.id)
+
+        gerente_da_proposta.notificacoes_pedir_para_participar.append(notificacao)
+
+        db.session.commit()
+
+        return Response(json.dumps({"status": 200, "mensagem": "Solicitação enviada com sucesso"}))
     else:
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
 

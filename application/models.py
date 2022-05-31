@@ -41,6 +41,7 @@ class User(db.Model, UserMixin):
     propostas_que_dei_like = db.relationship("Proposta", secondary=Like_da_Proposta, backref="likes")
     comentarios_que_dei_like = db.relationship("Comentario", secondary=Like_do_Comentario, backref="likes")
     propostas_favoritas = db.relationship("Proposta", secondary=Proposta_Favorita, backref="favoritador")
+    notificacoes_pedir_para_participar = db.relationship("Notificacoes_Pedir_para_Participar", backref="gerente_da_proposta")
 
     def verificar_senha_encriptada(self, senha):
         return check_password_hash(self.senha_encriptada, senha)
@@ -85,3 +86,13 @@ class Comentario(db.Model):
     dono_do_comentario = db.Column(db.String(200), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     proposta_id = db.Column(db.Integer, db.ForeignKey("propostas.id"))
+
+
+class Notificacoes_Pedir_para_Participar(db.Model):
+    __tablename__ = "notificacoes_pedir_para_participar"
+
+    id = db.Column("id", db.Integer, primary_key=True, autoincrement=True)
+    quem_pediu_para_entrar = db.Column(db.String(200), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    proposta_id = db.Column(db.Integer, db.ForeignKey("propostas.id"))
+    
