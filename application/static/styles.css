@@ -8,6 +8,10 @@
     src: url(fonts/Lato-Bold.ttf);
 }
 
+a {
+    text-decoration: none !important;
+}
+
 body,
 html {
     height: 100% !important;
@@ -181,7 +185,7 @@ textarea:focus {
 .botao-likear-proposta, .botao-likear-comentario {
     margin-right: auto !important;
     font-size: 1.5rem !important;
-    padding: 4px 8px !important;
+    padding: 4px 8px;
     background-color: transparent !important;
     outline: none !important;
     box-shadow: none !important;
