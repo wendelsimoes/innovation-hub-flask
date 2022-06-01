@@ -10,7 +10,11 @@
             {% set id_modal_comentarios = "modal_comentarios_" + proposta.id | string %}
             <div class="col-sm-12 col-lg-4">
                 <div class="card" style="height: 100%;">
-                    <div class="card-top lato-regular text-end pt-2" style="font-size: 1.5rem">
+                    <div class="card-top lato-regular text-end pt-2" style="font-size: 1.2rem">
+                        <a href="{{ url_for('deletar_proposta') }}?proposta_id={{ proposta.id }}" style="margin-right: 15px;">
+                            <i class="bi bi-trash"></i>
+                            &nbsp;Deletar
+                        </a>
                         <a href="{{ url_for('editar_proposta') }}?proposta_id={{ proposta.id }}" style="margin-right: 15px;">
                             <i class="bi bi-pencil-square"></i>
                             &nbsp;Editar

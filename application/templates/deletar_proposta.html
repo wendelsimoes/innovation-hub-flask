@@ -1,0 +1,23 @@
+{% extends "layout.html" %} 
+{% block title %} Deletar Proposta {% endblock %} 
+
+{% block main %}
+<div class="card mx-auto item-feed">
+    <div class="card-body">
+        <form method="post" action="{{ url_for("deletar_proposta") }}" novalidate>
+            <input type="hidden" name="proposta_id" value="{{ proposta_a_deletar.id }}">
+            <div class="row tipo-titulo">
+                <div class="mb-2 div-postar-tipo" style="display: inline-block;">
+                    <label class="form-label tipo-proposta-label lato-bold tamanho-padrao" for="tipo_proposta">Deletar proposta</label>
+                    <h5 class="lato-regular tamanho-padrao text-start">
+                        {{ proposta_a_deletar.titulo }}
+                    </h5>
+                </div>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-danger lato-bold"
+                style="display: block; margin-left: auto;">Deletar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

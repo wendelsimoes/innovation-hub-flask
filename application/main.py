@@ -370,6 +370,26 @@ def editar_proposta():
     return render_template("editar_proposta.html", proposta_a_editar=proposta_a_editar, formDeProposta=formDeProposta, user=current_user)
 
 
+@app.route("/deletar_proposta", methods=["GET", "POST"])
+@login_required
+def deletar_proposta():
+    # Se for post
+    if request.method == "POST":
+        proposta_id = request.form.get("proposta_id")
+        proposta_a_deletar = Proposta.query.filter_by(id=proposta_id)
+
+        if proposta_a_deletar.first().gerente_id == current_user.id:
+            proposta_a_deletar.delete()
+            db.session.commit()
+            return redirect(url_for("index"))
+        else:
+            render_template("erro.html", codigo=405, mensagem="NÃO AUTORIZADO - VOCÊ NÃO É GERENTE DESTA PROPOSTA")
+
+    proposta_id = request.args.get("proposta_id")
+    proposta_a_deletar = Proposta.query.filter_by(id=proposta_id).first()
+
+    return render_template("deletar_proposta.html", proposta_a_deletar=proposta_a_deletar, user=current_user)
+
 
 # Registrar
 @app.route("/registrar", methods=["POST"])
