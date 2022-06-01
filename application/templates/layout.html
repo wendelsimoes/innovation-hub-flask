@@ -78,7 +78,7 @@
                       <img src="{{ notificacao.quem_pediu_para_entrar_foto }}" alt="user">
                     </div>
                     <div class="notification-list_detail">
-                      <p><b>{{ notificacao.quem_pediu_para_entrar }}</b> solicitou para entrar na proposta <b>{{ notificacao.titulo_da_proposta }}</b></p>
+                      <p><b>{{ notificacao.quem_pediu_para_entrar }}</b> pediu para entrar em <b>{{ notificacao.titulo_da_proposta }}</b></p>
                       <!-- Implementar data -->
                       <p>
                         {% if notificacao.mes_criacao < 10 %}
@@ -91,12 +91,16 @@
                       </p>
                     </div>
                     <div class="notification-list_feature-img">
-                      <a href="#" class="btn btn-primary mr-3" type="button">
-                        Aprovar
-                      </a>
-                      <a href="#" class="btn btn-danger mr-3 mt-2" type="button">
-                        Negar
-                      </a>
+                      <form class="form_aprovar_participacao" method="post">
+                        <input class="input_quem_pediu" type="hidden" name="quem_pediu_para_entrar" value="{{ notificacao.quem_pediu_para_entrar }}">
+                        <input class="input_proposta_id" type="hidden" name="proposta_id" value="{{ notificacao.proposta_id }}">
+                        <button type="submit" class="btn btn-primary mr-3">Aprovar</button>
+                      </form>
+                      <form class="form_recusar_participacao" method="post">
+                        <input class="input_quem_pediu" type="hidden" name="quem_pediu_para_entrar" value="{{ notificacao.quem_pediu_para_entrar }}">
+                        <input class="input_proposta_id" type="hidden" name="proposta_id" value="{{ notificacao.proposta_id }}">
+                        <button type="submit" class="btn btn-danger mt-2 mr-3">Recusar</button>
+                      </form>
                     </div>
                   </div>
                   {% endfor %}
@@ -104,8 +108,6 @@
               </div>
             </li>
           </ul>
-          <h5 class="text-light fs-5" style="display: inline-block; margin-right: 3px;">Bem vindo&nbsp;{{ user.nome }}
-          </h5>
           <a href="/sair" class="btn btn-danger mr-3" type="button">
             Sair
           </a>

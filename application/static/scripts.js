@@ -1,4 +1,52 @@
 $(document).ready(function () {
+    $('.form_aprovar_participacao').submit(function (event) {
+        event.preventDefault();
+        input_quem_pediu = $(this).find('.input_quem_pediu')[0].value;
+        id_proposta = $(this).find('.input_proposta_id')[0].value;
+        notificacao = $(this).parents('.notification-list');
+
+        $(function () {
+            $.post(
+                'aprovar_participacao',
+                {
+                    quem_pediu_para_entrar: input_quem_pediu,
+                    proposta_id: id_proposta
+                },
+                function (response) {
+                    let codigo = JSON.parse(response)["codigo"];
+    
+                    if (codigo == 200) {
+                        notificacao.remove();
+                        let liveToast = $('.toast-sucesso');
+                        liveToast.find('.toast-body').text("Usuário adicionado a proposta");
+                        let toast = new bootstrap.Toast(liveToast);
+                        
+                        toast.show();
+                        return
+                    }
+                });
+        });
+    });
+
+    $('.form_recusar_participacao').submit(function (event) {
+        event.preventDefault();
+        input_quem_pediu = $(this).find('.input_quem_pediu')[0].value;
+        id_proposta = $(this).find('.input_proposta_id')[0].value;
+        notificacao = $(this).parents('.notification-list');
+
+        $(function () {
+            $.post(
+                'recusar_participacao',
+                {
+                    quem_pediu_para_entrar: input_quem_pediu,
+                    proposta_id: id_proposta
+                },
+                function (response) {
+                    notificacao.remove();
+                });
+        });
+    });
+
     $('.form_pedir_participar').submit(function (event) {
         event.preventDefault();
         id_proposta = $(this).children('input')[0].value;
@@ -348,7 +396,6 @@ function exibir_notificacoes() {
     esconder = "dropdown-menu notification-ui_dd hide";
 
     notifications = document.querySelector('.notification-ui_dd');
-    console.log(notifications);
 
     if (notifications.className == mostrar) {
         notifications.className = esconder;

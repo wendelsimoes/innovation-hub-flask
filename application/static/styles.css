@@ -225,107 +225,6 @@ button, .descricao-do-card {
     margin-right: auto !important;
 }
 
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
-    .item-feed {
-        width: 95% !important;
-    }
-
-    .tipo-titulo {
-        display: flex !important;
-        flex-direction: column !important;
-    }
-
-    .postar-titulo-label {
-        height: 0px !important;
-    }
-
-    .div-postar-tipo {
-        width: 100% !important;
-    }
-
-    .div-postar-titulo {
-        width: 100% !important;
-    }
-
-    .postar-titulo {
-        margin-top: -20px !important;
-    }
-
-    .background {
-        background: url(images/background-para-tela-mobile.png) no-repeat center center fixed !important;
-        -webkit-background-size: cover !important;
-        -moz-background-size: cover !important;
-        -o-background-size: cover !important;
-        background-size: cover !important;
-        height: 100% !important;
-    }
-
-    .adicionar-membro-btn {
-        margin: 5px 0 0 0 !important;
-    }
-
-    .comentar-participar-likear-feed a {
-        display: block !important;
-        width: 100% !important;
-        margin: 5px 0 0 0 !important;
-    }
-
-    .comentar-participar-likear-feed {
-        display: flex !important;
-        flex-direction: column-reverse !important;
-        justify-content: end !important;
-        flex-wrap: wrap !important;
-    }
-
-    .solicitar_participar_butao {
-        margin: 0 0 5px 0px !important;
-    }
-
-    .anchor-like-proposta, .anchor-like-comentario, botao-favoritar-proposta {
-        text-align: left !important;
-    }
-
-    .lista-das-notificacoes {
-        margin-left: 0 !important;
-        padding-left: 0 !important;
-    }
-
-    .botao-favoritar-proposta {
-        padding: 4px 8px !important;
-    }
-}
-
-/* Medium devices (landscape tablets, 600px and up) */
-@media only screen and (min-width: 600px) {
-    .item-feed {
-        width: 90% !important;
-    }
-
-    .background {
-        background: url(images/background-para-tela-grande.png) no-repeat center center fixed;
-        -webkit-background-size: cover !important;
-        -moz-background-size: cover !important;
-        -o-background-size: cover !important;
-        background-size: cover !important;
-        height: 100% !important;
-    }
-}
-
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-    .item-feed {
-        width: 85% !important;
-    }
-}
-
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
-    .item-feed {
-        width: 80% !important;
-    }
-}
-
 /* Peguei daqui: https://codepen.io/gosnippets/pen/qBNGLXp */
 .notification-ui a:after {
     display: none;
@@ -409,7 +308,15 @@ button, .descricao-do-card {
 }
 
 .notification-list--unread {
-    position: relative;
+    position: absolute;
+    right: 150px;
+    width: 400px;
+    background-color: #fff !important;
+    margin: 0 0px !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    padding-right: 25px !important;
+    padding-left: 25px !important;
 }
 
 .notification-list--unread:before {
@@ -445,4 +352,133 @@ button, .descricao-do-card {
     width: 48px;
     border-radius: 5px;
     margin-left: 20px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .item-feed {
+        width: 95% !important;
+    }
+
+    .tipo-titulo {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .postar-titulo-label {
+        height: 0px !important;
+    }
+
+    .div-postar-tipo {
+        width: 100% !important;
+    }
+
+    .div-postar-titulo {
+        width: 100% !important;
+    }
+
+    .postar-titulo {
+        margin-top: -20px !important;
+    }
+
+    .background {
+        background: url(images/background-para-tela-mobile.png) no-repeat center center fixed !important;
+        -webkit-background-size: cover !important;
+        -moz-background-size: cover !important;
+        -o-background-size: cover !important;
+        background-size: cover !important;
+        height: 100% !important;
+    }
+
+    .adicionar-membro-btn {
+        margin: 5px 0 0 0 !important;
+    }
+
+    .comentar-participar-likear-feed a {
+        display: block !important;
+        width: 100% !important;
+        margin: 5px 0 0 0 !important;
+    }
+
+    .comentar-participar-likear-feed {
+        display: flex !important;
+        flex-direction: column-reverse !important;
+        justify-content: end !important;
+        flex-wrap: wrap !important;
+    }
+
+    .solicitar_participar_butao {
+        margin: 0 0 5px 0px !important;
+    }
+
+    .anchor-like-proposta, .anchor-like-comentario, botao-favoritar-proposta {
+        text-align: left !important;
+    }
+
+    .lista-das-notificacoes {
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+    }
+
+    .botao-favoritar-proposta {
+        padding: 4px 8px !important;
+    }
+
+    .notification-list--unread {
+        position: relative;
+        right: 0;
+        width: 0;
+        width: fit-content !important;
+        margin: 0 0px !important;
+        padding-top: 15px !important;
+        padding-bottom: 15px !important;
+        padding-right: 10px !important;
+        padding-left: 10px !important;
+    }
+
+    .lista-das-notificacoes {
+        width: 100% !important;
+    }
+
+    .notification-list {
+        margin: 0 10px !important;
+    }
+    
+    .notification-list .notification-list_img img {
+        display: none !important;
+    }
+
+    .notification-list_detail {
+        width: 220px !important;
+    }
+}
+
+/* Medium devices (landscape tablets, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .item-feed {
+        width: 90% !important;
+    }
+
+    .background {
+        background: url(images/background-para-tela-grande.png) no-repeat center center fixed;
+        -webkit-background-size: cover !important;
+        -moz-background-size: cover !important;
+        -o-background-size: cover !important;
+        background-size: cover !important;
+        height: 100% !important;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .item-feed {
+        width: 85% !important;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .item-feed {
+        width: 80% !important;
+    }
 }
