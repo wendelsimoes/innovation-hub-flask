@@ -122,6 +122,10 @@ textarea:focus {
     flex-wrap: wrap !important;
 }
 
+.margem-direita {
+    margin-right: 15px !important;
+}
+
 .categorias-proposta-item {
     display: inline !important;
     margin: 3px 4px !important;

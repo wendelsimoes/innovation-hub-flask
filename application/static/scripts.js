@@ -350,6 +350,11 @@ $(function () {
 $(document).ready(function () {
     var membros = [];
 
+    inputs_invi = $('#div_invisivel_membros').children('input');
+    for (i = 0; i < inputs_invi.length; i++) {
+        membros.push(inputs_invi[i].defaultValue)
+    }
+
     $('#adicionar_membro_btn').on("click", function () {
         membro = $('#apelido_autocomplete').val();
 
@@ -382,11 +387,23 @@ $(document).ready(function () {
                 aleatorio = (Math.floor(Math.random() * 3)) + 1
 
                 classe_aleatoria = aleatorio == 1 ? "membros_lista_amarelo" : aleatorio == 2 ? "membros_lista_azul" : aleatorio == 3 ? "membros_lista_bege" : "membros_lista";
-
-                var $list = $("<li>", { "class": classe_aleatoria });
-                $list.append(response["mensagem"]);
-                $('#lista_de_membros').append($list);
-
+                
+                if ($('#lista_de_membros').children('div').length > 0) {
+                    var $list = $("<li>", { "class": classe_aleatoria });
+                    $list.append(response["mensagem"]);
+                    var $div_membro = $("<div>", { "class": "margem-direita" });
+                    var $anchor_remover_membro = $("<a>", { "class": "lato-bold x-remover-membro" });
+                    $anchor_remover_membro.append("X");
+                    $div_membro.append($list);
+                    $div_membro.append($anchor_remover_membro);
+                    $('#lista_de_membros').append($div_membro);
+                }
+                else {
+                    var $list = $("<li>", { "class": classe_aleatoria });
+                    $list.append(response["mensagem"]);
+                    $('#lista_de_membros').append($list);
+                }
+                
                 $('#div_invisivel_membros').text("");
                 membros.forEach(element => {
                     $('<input>').attr({
@@ -395,10 +412,15 @@ $(document).ready(function () {
                         value: element
                     }).appendTo('#div_invisivel_membros');
                 });
+                carregar_on_click_para_botao(membros);
             }
         })
     });
 
+    carregar_on_click_para_botao(membros);
+});
+
+function carregar_on_click_para_botao(membros) {
     $('.x-remover-membro').on("click", function () {
         membro = $(this).siblings('.membros_lista_azul').text();
 
@@ -411,7 +433,6 @@ $(document).ready(function () {
         inputs_invisiveis = $('#div_invisivel_membros').children('input');
 
         for (i=0; i < inputs_invisiveis.length; i++) {
-            console.log(inputs_invisiveis[i].defaultValue);
             if (inputs_invisiveis[i].defaultValue == membro) {
                 inputs_invisiveis[i].remove();
             }
@@ -420,7 +441,7 @@ $(document).ready(function () {
         $(this).siblings('.membros_lista_azul').css({"background-color": "red"});
         $(this).remove();
     });
-});
+}
 
 function exibir_notificacoes() {
     mostrar = "dropdown-menu notification-ui_dd show";

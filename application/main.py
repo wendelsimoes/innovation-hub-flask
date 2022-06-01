@@ -356,7 +356,13 @@ def editar_proposta():
                 user = User.query.filter_by(apelido=membro).first()
                 user.propostas_que_estou.remove(proposta_a_editar)
 
+        for membro in novos_membros_apelidos:
+            if not membro in antigos_membros_apelidos:
+                user = User.query.filter_by(apelido=membro).first()
+                user.propostas_que_estou.append(proposta_a_editar)
+
         db.session.commit()
+        return redirect(url_for("index"))
     
     proposta_id = request.args.get("proposta_id")
     proposta_a_editar = Proposta.query.filter_by(id=proposta_id).first()
