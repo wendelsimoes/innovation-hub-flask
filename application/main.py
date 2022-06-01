@@ -189,15 +189,19 @@ def favoritar():
 
     if proposta_a_favoritar:
         propostas_favoritas = current_user.propostas_favoritas
+        propostas_que_participo = current_user.propostas_que_estou
+
+        if proposta_a_favoritar in propostas_que_participo:
+            return Response(json.dumps({"status": 400, "mensagem": "Você não pode favoritar uma proposta que participe"}))
 
         if proposta_a_favoritar in propostas_favoritas:
             current_user.propostas_favoritas.remove(proposta_a_favoritar)
             db.session.commit()
-            return Response(json.dumps({"favoritado": False, "mensagem": "Favoritar"}))
+            return Response(json.dumps({"favoritado": False, "mensagem": "Favoritar", "status": 200}))
         else:
             current_user.propostas_favoritas.append(proposta_a_favoritar)
             db.session.commit()
-            return Response(json.dumps({"favoritado": True, "mensagem": "Remover dos favoritos"}))
+            return Response(json.dumps({"favoritado": True, "mensagem": "Remover dos favoritos", "status": 200}))
     else:
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
 

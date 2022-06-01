@@ -131,6 +131,15 @@ $(document).ready(function () {
                     id_proposta: id_proposta
                 },
                 function (response) {
+                    if (JSON.parse(response)["status"] == 400) {
+                        let liveToast = $('.toast-erro');
+                        liveToast.find('.toast-body').text(JSON.parse(response)["mensagem"]);
+                        let toast = new bootstrap.Toast(liveToast);
+                        
+                        toast.show();
+                        return
+                    }
+
                     novo_icone = null
                     if (JSON.parse(response)["favoritado"]) {
                         botao_do_favorito.text("");
