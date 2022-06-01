@@ -49,6 +49,21 @@ textarea:focus {
     width: 20% !important;
 }
 
+.x-remover-membro {
+    color: white !important;
+    background-color: red !important;
+    border-radius: 50% !important;
+    height: 24px !important;
+    width: 24px !important;
+    position: absolute !important;
+    margin-left: -15px !important;
+    margin-top: -10px !important;
+}
+
+.x-remover-membro:hover {
+    cursor: pointer;
+}
+
 .restricao-idade-label,
 .tipo-proposta-label {
     width: 100% !important;
@@ -133,7 +148,7 @@ textarea:focus {
 }
 
 .membros_lista_azul {
-    background-color: #95e1f0 !important;
+    background-color: #95e1f0;
 }
 
 .membros_lista_bege {

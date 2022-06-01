@@ -398,6 +398,28 @@ $(document).ready(function () {
             }
         })
     });
+
+    $('.x-remover-membro').on("click", function () {
+        membro = $(this).siblings('.membros_lista_azul').text();
+
+        for (i = 0; i < membros.length; i++) {
+            if (membros[i] == membro) {
+                membros.splice(i);
+            }
+        }
+
+        inputs_invisiveis = $('#div_invisivel_membros').children('input');
+
+        for (i=0; i < inputs_invisiveis.length; i++) {
+            console.log(inputs_invisiveis[i].defaultValue);
+            if (inputs_invisiveis[i].defaultValue == membro) {
+                inputs_invisiveis[i].remove();
+            }
+        }
+
+        $(this).siblings('.membros_lista_azul').css({"background-color": "red"});
+        $(this).remove();
+    });
 });
 
 function exibir_notificacoes() {

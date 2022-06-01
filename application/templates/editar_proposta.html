@@ -6,6 +6,7 @@
     <div class="card-body">
         <form method="post" action="{{ url_for("editar_proposta") }}" novalidate>
             {{ formDeProposta.csrf_token }}
+            <input type="hidden" name="proposta_id" value="{{ proposta_a_editar.id }}">
             <div class="mb-2">
                 {{ formDeProposta.titulo.label(class_="form-label postar-titulo-label lato-bold tamanho-padrao") }}
                 {{ formDeProposta.titulo(class_="form-control postar-titulo lato-regular tamanho-padrao", value_=proposta_a_editar.titulo) }}
@@ -22,7 +23,10 @@
                 <ul class="mt-3" id="lista_de_membros" style="list-style: none;">
                     {% for membro in proposta_a_editar.membro %}
                     {% if not membro.apelido == user.apelido  %}
-                    <li class="membros_lista_azul">{{ membro.apelido }}</li>
+                    <div style="margin-right: 15px;">
+                        <li class="membros_lista_azul">{{ membro.apelido }}</li>
+                        <a class="lato-bold x-remover-membro">X</a>
+                    </div>
                     {% endif %}
                     {% endfor %}
                 </ul>
@@ -42,7 +46,7 @@
             </div>
             <div class="mb-2" style="display: inline-block; width: 100%;">
                 {{ formDeProposta.restricao_idade.label(class_="form-label restricao-idade-label lato-bold tamanho-padrao") }}
-                {{ formDeProposta.restricao_idade(class_="form-control postar-restricao-idade lato-regular tamanho-padrao", value_=proposta_a_editar.restricao_idade | int) }}
+                <input class="form-control postar-restricao-idade lato-regular tamanho-padrao" id="restricao_idade" name="restricao_idade" type="number" value="{{ proposta_a_editar.restricao_idade }}">
                 {% for error in formDeProposta.restricao_idade.errors %}
                 <span class="text-danger lato-bold">{{ error }}</span>
                 {% endfor %}
@@ -59,7 +63,7 @@
             </div>
             <br>
             <button type="submit" class="btn btn-info lato-bold"
-                style="display: block; margin-left: auto;">Postar</button>
+                style="display: block; margin-left: auto;">Editar</button>
         </form>
     </div>
 </div>

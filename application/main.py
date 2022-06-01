@@ -335,9 +335,28 @@ def editar_proposta():
 
     # Se for post
     if formDeProposta.validate_on_submit():
-        proposta_id = request.forms.get("proposta_id")
+        proposta_id = request.form.get("proposta_id")
+        proposta_a_editar = Proposta.query.filter_by(id=proposta_id).first()
 
-        proposta_a_editar = Proposta.query.filter_by(id=proposta_id)
+        proposta_a_editar.titulo = request.form.get("titulo")
+        proposta_a_editar.descricao = request.form.get("descricao")
+        proposta_a_editar.restricao_idade = request.form.get("restricao_idade")
+        proposta_a_editar.privado = request.form.get("privado")
+
+        membros_antigos = proposta_a_editar.membro
+
+        antigos_membros_apelidos  = []
+        for membro in membros_antigos:
+            antigos_membros_apelidos.append(membro.apelido)
+
+        novos_membros_apelidos = request.form.getlist("membros")
+
+        for membro in antigos_membros_apelidos:
+            if not membro in novos_membros_apelidos:
+                user = User.query.filter_by(apelido=membro).first()
+                user.propostas_que_estou.remove(proposta_a_editar)
+
+        db.session.commit()
     
     proposta_id = request.args.get("proposta_id")
     proposta_a_editar = Proposta.query.filter_by(id=proposta_id).first()
