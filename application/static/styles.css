@@ -319,15 +319,6 @@ button, .descricao-do-card {
     padding-left: 25px !important;
 }
 
-.notification-list--unread:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -25px;
-    height: calc(100% + 1px);
-    border-left: 2px solid #29B6F6;
-}
-
 .notification-list .notification-list_img img {
     height: 48px;
     width: 48px;
