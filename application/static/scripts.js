@@ -140,22 +140,24 @@ $(document).ready(function () {
                         return
                     }
 
-                    novo_icone = null
+                    novo_icone = null;
+                    texto = null;
                     if (JSON.parse(response)["favoritado"]) {
                         botao_do_favorito.text("");
                         novo_icone = $("<i>", {
                             class:
                                 "bi-star-fill"
                         });
+                        texto = document.createTextNode(" " + "Remover dos favoritos" + " ");
                     } else {
                         botao_do_favorito.text("");
                         novo_icone = $("<i>", {
                             class:
                                 "bi-star"
                         });
+                        texto = document.createTextNode(" " + "Favoritar" + " ");
                     }
-
-                    texto = document.createTextNode(" " + JSON.parse(response)["mensagem"] + " ");
+                    
                     botao_do_favorito.append(novo_icone);
                     botao_do_favorito.append(texto);
                     
