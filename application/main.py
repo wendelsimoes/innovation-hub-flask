@@ -139,6 +139,15 @@ def feed():
     return render_template("postar.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user, todas_propostas_nao_privadas=todas_propostas_nao_privadas)
 
 
+# Feed / Postar proposta
+@app.route("/arquivadas", methods=["GET"])
+@login_required
+def arquivadas():
+    todas_propostas_arquivadas_e_nao_privadas = Proposta.query.filter_by(privado=False, arquivado=True).all()
+
+    return render_template("arquivadas.html", categorias=categorias, user=current_user, todas_propostas_arquivadas_e_nao_privadas=todas_propostas_arquivadas_e_nao_privadas)
+
+
 # Dar like em comentario
 @app.route("/likear_comentario", methods=["POST"])
 @login_required
