@@ -338,10 +338,19 @@ def editar_proposta():
         proposta_id = request.form.get("proposta_id")
         proposta_a_editar = Proposta.query.filter_by(id=proposta_id).first()
 
-        proposta_a_editar.titulo = request.form.get("titulo")
-        proposta_a_editar.descricao = request.form.get("descricao")
-        proposta_a_editar.restricao_idade = request.form.get("restricao_idade")
-        proposta_a_editar.privado = request.form.get("privado")
+        proposta_a_editar.titulo = formDeProposta.titulo.data
+        proposta_a_editar.descricao = formDeProposta.descricao.data
+        proposta_a_editar.restricao_idade = formDeProposta.restricao_idade.data
+
+        if request.form.get("privado") == "on":
+            proposta_a_editar.privado = True
+        else:
+            proposta_a_editar.privado = False
+
+        if request.form.get("arquivado") == "on":
+            proposta_a_editar.arquivado = True
+        else:
+            proposta_a_editar.arquivado = False
 
         membros_antigos = proposta_a_editar.membro
 
