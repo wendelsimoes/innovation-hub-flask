@@ -1,5 +1,4 @@
-{% extends "layout.html" %} {% block title %} Página Inicial {% endblock %} {%
-block main %} {% if user.is_authenticated %}
+{% extends "layout.html" %} {% block title %} Página Inicial {% endblock %} {% block main %} {% if user.is_authenticated %}
 <div class="container" style="display: flex; flex-direction: column">
     <div class="text-start lato-regular" style="font-size: 1.7rem">
         <i class="bi bi-person-workspace"></i>
@@ -12,7 +11,7 @@ block main %} {% if user.is_authenticated %}
             <div class="col-sm-12 col-lg-4">
                 <div class="card" style="height: 100%;">
                     <div class="card-top lato-regular text-end pt-2" style="font-size: 1.5rem">
-                        <a href="#" style="margin-right: 15px;">
+                        <a href="{{ url_for('editar_proposta') }}?proposta_id={{ proposta.id }}" style="margin-right: 15px;">
                             <i class="bi bi-pencil-square"></i>
                             &nbsp;Editar
                         </a>

@@ -329,6 +329,23 @@ def carregar_comentarios():
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
 
 
+@app.route("/editar_proposta", methods=["GET", "POST"])
+def editar_proposta():
+    formDeProposta = FormDeProposta()
+
+    # Se for post
+    if formDeProposta.validate_on_submit():
+        proposta_id = request.forms.get("proposta_id")
+
+        proposta_a_editar = Proposta.query.filter_by(id=proposta_id)
+    
+    proposta_id = request.args.get("proposta_id")
+    proposta_a_editar = Proposta.query.filter_by(id=proposta_id).first()
+
+    return render_template("editar_proposta.html", proposta_a_editar=proposta_a_editar, formDeProposta=formDeProposta, user=current_user)
+
+
+
 # Registrar
 @app.route("/registrar", methods=["POST"])
 def registrar():

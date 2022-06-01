@@ -1,0 +1,66 @@
+{% extends "layout.html" %} 
+{% block title %} Editar Proposta {% endblock %} 
+
+{% block main %}
+<div class="card mx-auto item-feed item-feed-postar">
+    <div class="card-body">
+        <form method="post" action="{{ url_for("editar_proposta") }}" novalidate>
+            {{ formDeProposta.csrf_token }}
+            <div class="mb-2">
+                {{ formDeProposta.titulo.label(class_="form-label postar-titulo-label lato-bold tamanho-padrao") }}
+                {{ formDeProposta.titulo(class_="form-control postar-titulo lato-regular tamanho-padrao", value_=proposta_a_editar.titulo) }}
+                {% for error in formDeProposta.titulo.errors %}
+                <span class="text-danger lato-bold">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-2 row" style="width: 100%; margin-left: auto; margin-right: auto;">
+                {{ formDeProposta.membro.label(class_="form-label lato-bold postar-membro-label tamanho-padrao") }}
+                {{ formDeProposta.membro(class_="form-control lato-regular adicionar-membro tamanho-padrao") }}
+                <button id="adicionar_membro_btn" type="button" class="btn btn-info lato-bold adicionar-membro-btn"
+                    style="display: inline-block; width: fit-content; margin-left: 6px;">Adicionar</button>
+                <span class="text-danger lato-bold" id="adicionar_membro_span" style="margin-top: 6px;"></span>
+                <ul class="mt-3" id="lista_de_membros" style="list-style: none;">
+                    {% for membro in proposta_a_editar.membro %}
+                    {% if not membro.apelido == user.apelido  %}
+                    <li class="membros_lista_azul">{{ membro.apelido }}</li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+                <div id="div_invisivel_membros">
+                    {% for membro in proposta_a_editar.membro %}
+                    {% if not membro.apelido == user.apelido  %}
+                    <input type="hidden" name="membros" value="{{ membro.apelido }}">
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="mb-2">
+                <textarea class="form-control postar-descricao lato-regular descricao-do-card" id="descricao" maxlength="1000" minlength="50" name="descricao" placeholder="Descrição" required="">{{ proposta_a_editar.descricao }}</textarea>
+                {% for error in formDeProposta.descricao.errors %}
+                <span class="text-danger lato-bold">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-2" style="display: inline-block; width: 100%;">
+                {{ formDeProposta.restricao_idade.label(class_="form-label restricao-idade-label lato-bold tamanho-padrao") }}
+                {{ formDeProposta.restricao_idade(class_="form-control postar-restricao-idade lato-regular tamanho-padrao", value_=proposta_a_editar.restricao_idade | int) }}
+                {% for error in formDeProposta.restricao_idade.errors %}
+                <span class="text-danger lato-bold">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-2 form-check" style="width: 100%; margin-left: auto; margin-right: auto;">
+                {% if proposta_a_editar.privado %}
+                <input checked name="privado" class="form-check-input" type="checkbox" id="privado">
+                {% else %}
+                <input name="privado" class="form-check-input" type="checkbox" id="privado">
+                {% endif %}
+                <label class="form-check-label lato-bold tamanho-padrao" for="privado" style="width: 100%; text-align: start;">
+                    Marcar como privado?
+                </label>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-info lato-bold"
+                style="display: block; margin-left: auto;">Postar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

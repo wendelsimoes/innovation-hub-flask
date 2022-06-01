@@ -383,7 +383,7 @@ $(document).ready(function () {
 
                 classe_aleatoria = aleatorio == 1 ? "membros_lista_amarelo" : aleatorio == 2 ? "membros_lista_azul" : aleatorio == 3 ? "membros_lista_bege" : "membros_lista";
 
-                var $list = $("<li>", { id: "foo", "class": classe_aleatoria });
+                var $list = $("<li>", { "class": classe_aleatoria });
                 $list.append(response["mensagem"]);
                 $('#lista_de_membros').append($list);
 
