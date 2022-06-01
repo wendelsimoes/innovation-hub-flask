@@ -60,11 +60,13 @@ Feed
                             {{ proposta.likes | length }}
                         </button>
                     </form>
-                    <button type="button" class="card-link btn btn-info lato-bold" data-bs-toggle="modal"
-                        data-bs-target="#{{ id_modal_comentarios }}">Comentar</button>
-                    <button type="button" class="card-link btn btn-primary lato-bold solicitar_participar_butao"
-                        onclick="pedir_para_participar('{{ proposta.id }}')">Solicitar para
-                        participar</button>
+                    <button type="button" class="card-link btn btn-info lato-bold " data-bs-toggle="modal"
+                        data-bs-target="#{{ id_modal_comentarios }}" style="margin-right: 5px;">Comentar</button>
+                    <form class="form_pedir_participar">
+                        <input type="hidden" value="{{ proposta.id }}">
+                        <button type="submit" class="card-link btn btn-primary lato-bold solicitar_participar_butao" style="height: 100%; width: 100%;">Solicitar para
+                            participar</button>
+                    </form>
                 </div>
         </div>
     </div>

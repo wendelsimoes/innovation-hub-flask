@@ -1,4 +1,38 @@
 $(document).ready(function () {
+    $('.form_pedir_participar').submit(function (event) {
+        event.preventDefault();
+        id_proposta = $(this).children('input')[0].value;
+
+        $(function () {
+            $.post(
+                'participar',
+                {
+                    id_proposta: id_proposta
+                },
+                function (response) {
+                    let codigo = JSON.parse(response)["status"];
+    
+                    if (codigo == 400) {
+                        let liveToast = $('.toast-erro');
+                        liveToast.find('.toast-body').text(JSON.parse(response)["mensagem"]);
+                        let toast = new bootstrap.Toast(liveToast);
+                        
+                        toast.show();
+                        return
+                    }
+    
+                    if (codigo == 200) {
+                        let liveToast = $('.toast-sucesso');
+                        liveToast.find('.toast-body').text(JSON.parse(response)["mensagem"]);
+                        let toast = new bootstrap.Toast(liveToast);
+                        
+                        toast.show();
+                        return
+                    }
+                });
+        });
+    });
+
     $('.form_likear_proposta').submit(function ( event ) {
         event.preventDefault();
         id_proposta = $(this).children('input')[0].value;
@@ -215,37 +249,6 @@ function carregar_comentarios(comentarios, modal_comentarios) {
 
         texto = document.createTextNode(" " + comentario["numeros_de_like"] + " ");
         botao_do_like.append(texto);
-    });
-}
-
-function pedir_para_participar(id_proposta) {
-    $(function () {
-        $.post(
-            'participar',
-            {
-                id_proposta: id_proposta
-            },
-            function (response) {
-                let codigo = JSON.parse(response)["status"];
-
-                if (codigo == 400) {
-                    let liveToast = $('.toast-erro');
-                    liveToast.find('.toast-body').text(JSON.parse(response)["mensagem"]);
-                    let toast = new bootstrap.Toast(liveToast);
-                    
-                    toast.show();
-                    return
-                }
-
-                if (codigo == 200) {
-                    let liveToast = $('.toast-sucesso');
-                    liveToast.find('.toast-body').text(JSON.parse(response)["mensagem"]);
-                    let toast = new bootstrap.Toast(liveToast);
-                    
-                    toast.show();
-                    return
-                }
-            });
     });
 }
 
