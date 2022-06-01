@@ -221,6 +221,10 @@ button, .descricao-do-card {
     font-size: 1.1rem !important;
 }
 
+.form_likear_comentario {
+    margin-right: auto !important;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
     .item-feed {

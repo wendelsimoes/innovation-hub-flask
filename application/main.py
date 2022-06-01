@@ -172,11 +172,11 @@ def likear_proposta():
         if proposta_a_likear in propostas_que_dei_like:
             current_user.propostas_que_dei_like.remove(proposta_a_likear)
             db.session.commit()
-            return Response(json.dumps({ "likeado": False }))
+            return Response(json.dumps({ "likeado": False, "numeros_de_like": len(proposta_a_likear.likes) }))
         else:
             current_user.propostas_que_dei_like.append(proposta_a_likear)
             db.session.commit()
-            return Response(json.dumps({ "likeado": True }))
+            return Response(json.dumps({ "likeado": True, "numeros_de_like": len(proposta_a_likear.likes) }))
     else:
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
 
@@ -193,11 +193,11 @@ def favoritar():
         if proposta_a_favoritar in propostas_favoritas:
             current_user.propostas_favoritas.remove(proposta_a_favoritar)
             db.session.commit()
-            return Response(json.dumps({"status": 200, "mensagem": "Proposta removida dos favoritos"}))
+            return Response(json.dumps({"favoritado": False, "mensagem": "Favoritar"}))
         else:
             current_user.propostas_favoritas.append(proposta_a_favoritar)
             db.session.commit()
-            return Response(json.dumps({"status": 200, "mensagem": "Proposta adicionada aos favoritos"}))
+            return Response(json.dumps({"favoritado": True, "mensagem": "Remover dos favoritos"}))
     else:
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
 
@@ -278,7 +278,8 @@ def carregar_comentarios():
                         "mes_criacao": comentario.mes_criacao,
                         "ano_criacao": comentario.ano_criacao,
                         "dono_do_comentario": comentario.dono_do_comentario,
-                        "likeado": likeado
+                        "likeado": likeado,
+                        "numeros_de_like": len(comentario.likes)
                     })
 
             return Response(json.dumps(todos_comentarios_da_proposta_array), mimetype="application\json")

@@ -76,15 +76,15 @@ Feed
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" novalidate>
+                    <form class="form_postar_comentario" novalidate>
                         <div class="mb-2">
+                            <input type="hidden" name="proposta_id" value="{{ proposta.id }}">
                             <textarea class="form-control postar-comentario lato-regular fs-5" maxlength="1000"
                                 name="texto_comentario" placeholder="Comentário"></textarea>
                             <span class="text-danger lato-bold postar_comentario_span fs-5"
                                 style="margin-top: 6px; margin-bottom: 5px;"></span>
                         </div>
-                        <button type="button" class="btn btn-info lato-bold fs-5"
-                            onclick="enviar_comentario('{{ proposta.id }}', '{{ id_modal_comentarios }}')"
+                        <button type="submit" class="botao-postar-comentario btn btn-info lato-bold fs-5"
                             style="display: block; width: fit-content;">Comentar</button>
                     </form>
                     <div class="mx-auto mt-3 comentarios_da_proposta">
@@ -111,7 +111,7 @@ Feed
                                         {{ comentario.texto_comentario }}
                                     </p>
                                     <div class="div-do-like">
-                                        <form class="form_likear_comentario" style="margin-right: auto;">
+                                        <form class="form_likear_comentario">
                                             <input type="hidden" name="comentario_id" value="{{ comentario.id }}">
                                             <button class="botao-likear-comentario btn" type="submit">
                                                 {% if comentario in user.comentarios_que_dei_like %}

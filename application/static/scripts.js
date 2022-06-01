@@ -2,36 +2,13 @@ $(document).ready(function () {
     $('.form_likear_proposta').submit(function ( event ) {
         event.preventDefault();
         id_proposta = $(this).children('input')[0].value;
-        icone_do_like = $(this).children('button').children('i')[0];
+        botao_do_like = $(this).children('button');
 
         $(function () {
             $.post(
                 'likear_proposta',
                 {
                     id_proposta: id_proposta
-                },
-                function (response) {
-                    if (icone_do_like.classList.contains('bi-hand-thumbs-up-fill')) {
-                        icone_do_like.classList.remove('bi-hand-thumbs-up-fill');
-                        icone_do_like.classList.add('bi-hand-thumbs-up');
-                    } else {
-                        icone_do_like.classList.remove('bi-hand-thumbs-up');
-                        icone_do_like.classList.add('bi-hand-thumbs-up-fill');
-                    }
-                });
-        });
-    });
-
-    $('.form_likear_comentario').submit(function ( event ) {
-        event.preventDefault();
-        id_comentario = $(this).children('input')[0].value;
-        botao_do_like = $(this).children('button');
-
-        $(function () {
-            $.post(
-                'likear_comentario',
-                {
-                    id_comentario: id_comentario
                 },
                 function (response) {
                     if (JSON.parse(response)["likeado"]) {
@@ -55,9 +32,15 @@ $(document).ready(function () {
         });
     });
 
+    $('.form_likear_comentario').submit(function ( event ) {
+        event.preventDefault();
+        likear_comentario(this);
+    });
+
     $('.form_favoritar').submit(function( event ) {
         event.preventDefault();
         id_proposta = $(this).children('input')[0].value;
+        botao_do_favorito = $(this).children('button');
 
         $(function () {
             $.post(
@@ -66,6 +49,25 @@ $(document).ready(function () {
                     id_proposta: id_proposta
                 },
                 function (response) {
+                    novo_icone = null
+                    if (JSON.parse(response)["favoritado"]) {
+                        botao_do_favorito.text("");
+                        novo_icone = $("<i>", {
+                            class:
+                                "bi-star-fill"
+                        });
+                    } else {
+                        botao_do_favorito.text("");
+                        novo_icone = $("<i>", {
+                            class:
+                                "bi-star"
+                        });
+                    }
+
+                    texto = document.createTextNode(" " + JSON.parse(response)["mensagem"] + " ");
+                    botao_do_favorito.append(novo_icone);
+                    botao_do_favorito.append(texto);
+                    
                     let liveToast = $('.toast-padrao');
                     liveToast.find('.toast-body').text(JSON.parse(response)["mensagem"]);
                     let toast = new bootstrap.Toast(liveToast);
@@ -75,33 +77,73 @@ $(document).ready(function () {
         });
     });
 
-    $('.botao-favoritar-proposta').on("click", function () {
-        icone_do_favorito = $(this).children('i')[0];
+    $('.form_postar_comentario').submit(function ( event ) {
+        event.preventDefault();
+        comentario = $(this).children('div').children('textarea')[0].value;
+        proposta_id = $(this).children('div').children('input')[0].value;
+        comentar_span = $(this).children('div').children('span');
+        comentar_area = $(this).children('div').children('textarea');
+        modal_comentarios = $(this).parents('.modal');
+    
+        $(function () {
+            $.post(
+                'comentar',
+                {
+                    texto_comentario: comentario,
+                    id_proposta: proposta_id
+                },
+                function (response) {
+                    if (response["status"] == 400) {
+                        comentar_span.text(
+                            response["mensagem"]
+                        );
+                        return;
+                    }
+    
+                    comentar_span.text("");
+                    comentar_area.val("");
 
-        if (icone_do_favorito.classList.contains('bi-star-fill')) {
-            $(this).text("");
-            var novo_icone = $("<i>", {
-                class:
-                    "bi-star"
-            });
-            texto = document.createTextNode(" Favoritar ");
-            $(this).append(novo_icone);
-            $(this).append(texto);
-        } else {
-            $(this).text("");
-            var novo_icone = $("<i>", {
-                class:
-                    "bi-star-fill"
-            });
-            texto = document.createTextNode(" Remover favorito ");
-            $(this).append(novo_icone);
-            $(this).append(texto);
-        }
-    })
+                    carregar_comentarios(response, modal_comentarios);
+                });
+        });
+    });
 });
 
-function carregar_comentarios(comentarios, id_modal_comentarios) {
-    div_comentarios = $(`#${id_modal_comentarios} .comentarios_da_proposta`);
+function likear_comentario(trigger) {
+    id_comentario = $(trigger).children('input')[0].value;
+        botao_do_like = $(trigger).children('button');
+
+        $(function () {
+            $.post(
+                'likear_comentario',
+                {
+                    id_comentario: id_comentario
+                },
+                function (response) {
+                    novo_icone = null
+                    if (JSON.parse(response)["likeado"]) {
+                        botao_do_like.text("");
+                        novo_icone = $("<i>", {
+                            class:
+                                "bi-hand-thumbs-up-fill botao-like-comentario"
+                        });
+                    } else {
+                        botao_do_like.text("");
+                        novo_icone = $("<i>", {
+                            class:
+                                "bi-hand-thumbs-up botao-like-comentario"
+                        });
+                    }
+
+                    texto = document.createTextNode(" " + JSON.parse(response)["numeros_de_like"] + " ");
+                    botao_do_like.append(novo_icone);
+                    botao_do_like.append(texto);
+                });
+        });
+}
+
+function carregar_comentarios(comentarios, modal_comentarios) {
+    div_comentarios = modal_comentarios.find('.comentarios_da_proposta');
     div_comentarios.empty();
     comentarios.forEach((comentario) => {
         var card_de_comentario = $("<div>", {
@@ -150,50 +192,29 @@ function carregar_comentarios(comentarios, id_modal_comentarios) {
 
         var div_do_like = $("<div>", { class: "div-do-like" });
 
-        var botao_do_like = $("<a>", { class: "anchor-like-comentario" });
+        var form_do_like = $("<form>", { class: "form_likear_comentario" });
 
+        var input_do_comentario_id = $("<input>", { type: "hidden", value: comentario["id"] });
 
-        var classe_do_link = comentario["likeado"] ? "bi bi-hand-thumbs-up-fill botao-like-comentario" : "bi bi-hand-thumbs-up botao-like-comentario";
+        var botao_do_like = $("<button>", { class: "botao-likear-comentario btn" });
 
-        var icone_do_like = $("<i>", { class: classe_do_link });
+        var classe_do_icone = comentario["likeado"] ? "bi bi-hand-thumbs-up-fill botao-like-comentario" : "bi bi-hand-thumbs-up botao-like-comentario";
 
-        botao_do_like.on("click", function () {
-            likear_comentario(comentario["id"]);
-            icone_do_like.toggleClass('bi-hand-thumbs-up-fill bi-hand-thumbs-up');
+        var icone_do_like = $("<i>", { class: classe_do_icone });
+
+        form_do_like.submit(function ( event ) {
+            event.preventDefault();
+            likear_comentario(this);
         });
-
+        
         botao_do_like.append(icone_do_like);
-        div_do_like.append(botao_do_like);
+        form_do_like.append(input_do_comentario_id);
+        form_do_like.append(botao_do_like);
+        div_do_like.append(form_do_like);
         card_de_comentario_body.append(div_do_like);
-    });
-}
 
-
-
-function enviar_comentario(id_proposta, id_modal_comentarios) {
-    texto_comentario = $(`#${id_modal_comentarios} .postar-comentario`).val();
-
-    $(function () {
-        $.post(
-            'comentar',
-            {
-                texto_comentario: texto_comentario,
-                id_proposta: id_proposta,
-            },
-            function (response) {
-                if (response["status"] == 400) {
-                    $(`#${id_modal_comentarios} .postar_comentario_span`).text(
-                        response["mensagem"]
-                    );
-                    return;
-                }
-
-                $(`#${id_modal_comentarios} .postar_comentario_span`).text("");
-                $(`#${id_modal_comentarios} .postar-comentario`).val("");
-
-                carregar_comentarios(response, id_modal_comentarios);
-            }
-        );
+        texto = document.createTextNode(" " + comentario["numeros_de_like"] + " ");
+        botao_do_like.append(texto);
     });
 }
 
