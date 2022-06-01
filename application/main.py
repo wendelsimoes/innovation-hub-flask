@@ -151,11 +151,11 @@ def likear_comentario():
         if comentario_a_likear in comentarios_que_dei_like:
             current_user.comentarios_que_dei_like.remove(comentario_a_likear)
             db.session.commit()
-            return Response(json.dumps({ "likeado": False }))
+            return Response(json.dumps({ "likeado": False, "numeros_de_like": len(comentario_a_likear.likes) }))
         else:
             current_user.comentarios_que_dei_like.append(comentario_a_likear)
             db.session.commit()
-            return Response(json.dumps({ "likeado": True }))
+            return Response(json.dumps({ "likeado": True, "numeros_de_like": len(comentario_a_likear.likes) }))
     else:
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - COMENTARIO NÃO ENCONTRADO")
 

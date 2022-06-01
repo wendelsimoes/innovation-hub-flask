@@ -167,9 +167,37 @@ textarea:focus {
     text-align: justify !important;
 }
 
-.botao-like-proposta, .anchor-like-proposta, .botao-like-comentario, .anchor-like-comentario, .botao-favoritar-proposta {
+.botao-like-proposta, .botao-like-comentario, .anchor-like-comentario {
     margin-right: auto !important;
     font-size: 2rem !important;
+}
+
+.botao-favoritar-proposta {
+    margin-right: auto !important;
+    font-size: 1.2rem !important;
+    padding: 4px 8px !important;
+}
+
+.botao-likear-proposta, .botao-likear-comentario {
+    margin-right: auto !important;
+    font-size: 1.5rem !important;
+    padding: 4px 8px !important;
+    background-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.botao-likear-proposta:hover {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.botao-likear-comentario:hover {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
 .anchor-like-proposta:hover {
@@ -177,10 +205,6 @@ textarea:focus {
 }
 
 .anchor-like-comentario:hover {
-    cursor: pointer !important;
-}
-
-.anchor-favoritar-proposta:hover {
     cursor: pointer !important;
 }
 
@@ -254,13 +278,17 @@ button, .descricao-do-card {
         margin: 0 0 5px 0px !important;
     }
 
-    .anchor-like-proposta, .anchor-like-comentario, anchor-favoritar-proposta {
+    .anchor-like-proposta, .anchor-like-comentario, botao-favoritar-proposta {
         text-align: left !important;
     }
 
     .lista-das-notificacoes {
         margin-left: 0 !important;
         padding-left: 0 !important;
+    }
+
+    .botao-favoritar-proposta {
+        padding: 4px 8px !important;
     }
 }
 

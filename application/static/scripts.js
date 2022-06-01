@@ -1,48 +1,102 @@
 $(document).ready(function () {
-    $('.anchor-favoritar-proposta').on("click", function () {
+    $('.form_likear_proposta').submit(function ( event ) {
+        event.preventDefault();
+        id_proposta = $(this).children('input')[0].value;
+        icone_do_like = $(this).children('button').children('i')[0];
+
+        $(function () {
+            $.post(
+                'likear_proposta',
+                {
+                    id_proposta: id_proposta
+                },
+                function (response) {
+                    if (icone_do_like.classList.contains('bi-hand-thumbs-up-fill')) {
+                        icone_do_like.classList.remove('bi-hand-thumbs-up-fill');
+                        icone_do_like.classList.add('bi-hand-thumbs-up');
+                    } else {
+                        icone_do_like.classList.remove('bi-hand-thumbs-up');
+                        icone_do_like.classList.add('bi-hand-thumbs-up-fill');
+                    }
+                });
+        });
+    });
+
+    $('.form_likear_comentario').submit(function ( event ) {
+        event.preventDefault();
+        id_comentario = $(this).children('input')[0].value;
+        botao_do_like = $(this).children('button');
+
+        $(function () {
+            $.post(
+                'likear_comentario',
+                {
+                    id_comentario: id_comentario
+                },
+                function (response) {
+                    if (JSON.parse(response)["likeado"]) {
+                        botao_do_like.text("");
+                        var novo_icone = $("<i>", {
+                            class:
+                                "bi-hand-thumbs-up-fill botao-like-comentario"
+                        });
+                    } else {
+                        botao_do_like.text("");
+                        var novo_icone = $("<i>", {
+                            class:
+                                "bi-hand-thumbs-up botao-like-comentario"
+                        });
+                    }
+
+                    texto = document.createTextNode(" " + JSON.parse(response)["numeros_de_like"] + " ");
+                    botao_do_like.append(novo_icone);
+                    botao_do_like.append(texto);
+                });
+        });
+    });
+
+    $('.form_favoritar').submit(function( event ) {
+        event.preventDefault();
+        id_proposta = $(this).children('input')[0].value;
+
+        $(function () {
+            $.post(
+                'favoritar',
+                {
+                    id_proposta: id_proposta
+                },
+                function (response) {
+                    let liveToast = $('.toast-padrao');
+                    liveToast.find('.toast-body').text(JSON.parse(response)["mensagem"]);
+                    let toast = new bootstrap.Toast(liveToast);
+                    
+                    toast.show();
+                });
+        });
+    });
+
+    $('.botao-favoritar-proposta').on("click", function () {
         icone_do_favorito = $(this).children('i')[0];
 
         if (icone_do_favorito.classList.contains('bi-star-fill')) {
-            icone_do_favorito.classList.remove('bi-star-fill');
-            icone_do_favorito.classList.add('bi-star');
+            $(this).text("");
+            var novo_icone = $("<i>", {
+                class:
+                    "bi-star"
+            });
+            texto = document.createTextNode(" Favoritar ");
+            $(this).append(novo_icone);
+            $(this).append(texto);
         } else {
-            icone_do_favorito.classList.remove('bi-star');
-            icone_do_favorito.classList.add('bi-star-fill');
+            $(this).text("");
+            var novo_icone = $("<i>", {
+                class:
+                    "bi-star-fill"
+            });
+            texto = document.createTextNode(" Remover favorito ");
+            $(this).append(novo_icone);
+            $(this).append(texto);
         }
-    })
-
-    $('.anchor-like-comentario').on("click", function () {
-        icone_do_like = $(this).children('i')[0];
-        contador_do_like = $(this).children('h3')[0];
-
-        likes = Number.parseInt(contador_do_like.innerText);
-
-        if (icone_do_like.classList.contains('bi-hand-thumbs-up-fill')) {
-            icone_do_like.classList.remove('bi-hand-thumbs-up-fill');
-            icone_do_like.classList.add('bi-hand-thumbs-up');
-            likes -= 1;
-        } else {
-            icone_do_like.classList.remove('bi-hand-thumbs-up');
-            icone_do_like.classList.add('bi-hand-thumbs-up-fill');
-            likes += 1;
-        }
-
-        contador_do_like.innerText = likes;
-    })
-
-    $('.anchor-like-proposta').on("click", function () {
-        icone_do_like = $(this).children('i')[0];
-        contador_do_like = $(this).children('h3')[0];
-
-        likes = Number.parseInt(contador_do_like.innerText);
-
-        if (icone_do_like.classList.contains('bi-hand-thumbs-up-fill')) {
-            likes -= 1;
-        } else {
-            likes += 1;
-        }
-
-        contador_do_like.innerText = likes;
     })
 });
 
@@ -140,48 +194,6 @@ function enviar_comentario(id_proposta, id_modal_comentarios) {
                 carregar_comentarios(response, id_modal_comentarios);
             }
         );
-    });
-}
-
-function likear_comentario(id_comentario) {
-    $(function () {
-        $.post(
-            'likear_comentario',
-            {
-                id_comentario: id_comentario
-            },
-            function (response) {
-            });
-    });
-}
-
-function favoritar_proposta(id_proposta) {
-    $(function () {
-        $.post(
-            'favoritar',
-            {
-                id_proposta: id_proposta
-            },
-            function (response) {
-                let liveToast = $('.toast-padrao');
-                liveToast.find('.toast-body').text(JSON.parse(response)["mensagem"]);
-                let toast = new bootstrap.Toast(liveToast);
-                
-                toast.show();
-            });
-    });
-}
-
-function likear_proposta(id_proposta, id_item_feed) {
-    $(function () {
-        $.post(
-            'likear_proposta',
-            {
-                id_proposta: id_proposta
-            },
-            function (response) {
-                icone = $(`#${id_item_feed} .botao-like-proposta`).toggleClass('bi-hand-thumbs-up-fill bi-hand-thumbs-up');
-            });
     });
 }
 

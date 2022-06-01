@@ -15,15 +15,20 @@ Feed
     {% set id_item_feed = "id_item_feed_" + proposta.id | string %}
 
     <div id="{{ id_item_feed }}" class="card mx-auto mt-3 item-feed {{ classe_background }}">
-        <div class="card-top botao-favoritar-proposta"
+        <div class="card-top"
             style="text-align: start; padding: 16px 0 0 16px; margin-bottom: -10px;">
-            <a class="anchor-favoritar-proposta" onclick="favoritar_proposta('{{ proposta.id }}')">
-                {% if proposta in user.propostas_favoritas %}
-                <i class="bi bi-star-fill"></i>
-                {% else %}
-                <i class="bi bi-star"></i>
-                {% endif %}
-            </a>
+            <form class="form_favoritar">
+                <input type="hidden" name="proposta_id" value="{{ proposta.id }}">
+                <button class="botao-favoritar-proposta btn btn-primary" type="submit">
+                    {% if proposta in user.propostas_favoritas %}
+                    <i class="bi bi-star-fill"></i>
+                    Remover favorito
+                    {% else %}
+                    <i class="bi bi-star"></i>
+                    Favoritar
+                    {% endif %}
+                </button>
+            </form>
         </div>
         <div class="card-body">
             <h5 class="card-title lato-bold fs-5" style="text-align: start;">{{ proposta.titulo }}</h5>
@@ -44,17 +49,17 @@ Feed
                 <p class="card-text lato-regular descricao-do-card" style="text-align: justify;">{{ proposta.descricao
                     }}</p>
                 <div class="comentar-participar-likear-feed">
-                    <a class="anchor-like-proposta" onclick="likear_proposta('{{ proposta.id }}', '{{ id_item_feed }}')"
-                        style="text-decoration: none;">
-                        {% if proposta in user.propostas_que_dei_like %}
-                        <i class="bi bi-hand-thumbs-up-fill botao-like-proposta"></i>
-                        {% else %}
-                        <i class="bi bi-hand-thumbs-up botao-like-proposta"></i>
-                        {% endif %}
-                        <h3 class="lato-regular like-count fs-5" style="display: inline-block;">{{ proposta.likes |
-                            length }}
-                        </h3>
-                    </a>
+                    <form class="form_likear_proposta" style="margin-right: auto;">
+                        <input type="hidden" name="proposta_id" value="{{ proposta.id }}">
+                        <button class="botao-likear-proposta btn" type="submit">
+                            {% if proposta in user.propostas_que_dei_like %}
+                            <i class="bi bi-hand-thumbs-up-fill botao-like-proposta"></i>
+                            {% else %}
+                            <i class="bi bi-hand-thumbs-up botao-like-proposta"></i>
+                            {% endif %}
+                            {{ proposta.likes | length }}
+                        </button>
+                    </form>
                     <button type="button" class="card-link btn btn-info lato-bold" data-bs-toggle="modal"
                         data-bs-target="#{{ id_modal_comentarios }}">Comentar</button>
                     <button type="button" class="card-link btn btn-primary lato-bold solicitar_participar_butao"
@@ -106,18 +111,17 @@ Feed
                                         {{ comentario.texto_comentario }}
                                     </p>
                                     <div class="div-do-like">
-                                        <a class="anchor-like-comentario"
-                                            onclick="likear_comentario('{{ comentario.id }}', '{{ id_card_comentario }}')"
-                                            style="text-decoration: none;">
-                                            {% if comentario in user.comentarios_que_dei_like %}
-                                            <i class="bi bi-hand-thumbs-up-fill botao-like-comentario"></i>
-                                            {% else %}
-                                            <i class="bi bi-hand-thumbs-up botao-like-comentario"></i>
-                                            {% endif %}
-                                            <h3 class="lato-regular like-count fs-5" style="display: inline-block;">{{
-                                                comentario.likes | length }}
-                                            </h3>
-                                        </a>
+                                        <form class="form_likear_comentario" style="margin-right: auto;">
+                                            <input type="hidden" name="comentario_id" value="{{ comentario.id }}">
+                                            <button class="botao-likear-comentario btn" type="submit">
+                                                {% if comentario in user.comentarios_que_dei_like %}
+                                                <i class="bi bi-hand-thumbs-up-fill botao-like-comentario"></i>
+                                                {% else %}
+                                                <i class="bi bi-hand-thumbs-up botao-like-comentario"></i>
+                                                {% endif %}
+                                                {{ comentario.likes | length }}
+                                            </button>
+                                        </form>
                                     </div>
                             </div>
                         </div>
