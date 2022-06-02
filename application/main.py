@@ -53,11 +53,7 @@ def load_user(user_id):
     return User.query.filter_by(id=user_id).first()
 
 
-# Página inicial
-@app.route("/")
-def index():
-    formDeRegistro = FormDeRegistro()
-    return render_template("index.html", formDeRegistro=formDeRegistro, formDeLogin=FormDeLogin(), abrirModalDeRegistro=False, abrirModalDeLogin=False, user=current_user)
+from application.controllers import home
 
 
 # Autocomplete de membro
