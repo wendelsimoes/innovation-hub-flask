@@ -20,12 +20,7 @@ import cloudinary.uploader
 
 from application.models.categorias import categorias
 
-# Popular tipo de proposta
-tipo_proposta = {
-    "Projeto": 0,
-    "Ideia": 1,
-    "Problema": 2
-}
+from application.models.tipo_proposta import tipo_proposta
 
 cloudinary.config( 
   cloud_name = "dpvpgl0el", 
@@ -47,13 +42,7 @@ from application.controllers import user
 from application.controllers import feed
  
 
-# Feed / Postar proposta
-@app.route("/arquivadas", methods=["GET"])
-@login_required
-def arquivadas():
-    todas_propostas_arquivadas_e_nao_privadas = Proposta.query.filter_by(privado=False, arquivado=True).all()
-
-    return render_template("arquivadas.html", categorias=categorias, user=current_user, todas_propostas_arquivadas_e_nao_privadas=todas_propostas_arquivadas_e_nao_privadas)
+from application.controllers import proposta
 
 
 # Dar like em comentario

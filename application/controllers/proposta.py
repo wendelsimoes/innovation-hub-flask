@@ -1,7 +1,7 @@
 from application import app
 from flask_login import login_required, current_user
 from application.models.proposta import Proposta
-from flash import render_template
+from flask import render_template
 from application.models.categorias import categorias
 
 

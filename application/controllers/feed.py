@@ -6,13 +6,7 @@ from datetime import date
 from application.models.proposta import Proposta
 from application.models.categoria import Categoria
 from application import db
-
-tipo_proposta = {
-    "Projeto": 0,
-    "Ideia": 1,
-    "Problema": 2
-}
-
+from application.models.tipo_proposta import tipo_proposta
 from application.models.categorias import categorias
 
 
