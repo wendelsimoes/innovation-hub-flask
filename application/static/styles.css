@@ -91,7 +91,7 @@ textarea:focus {
     width: 70% !important;
 }
 
-.postar-membro-label {
+.postar-membro-label, .postar-titulo-membro {
     width: 100% !important;
     text-align: start !important;
     padding: 0 !important;

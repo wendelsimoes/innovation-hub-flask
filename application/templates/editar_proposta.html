@@ -8,7 +8,7 @@
             {{ formDeProposta.csrf_token }}
             <input type="hidden" name="proposta_id" value="{{ proposta_a_editar.id }}">
             <div class="mb-2">
-                {{ formDeProposta.titulo.label(class_="form-label lato-bold tamanho-padrao") }}
+                {{ formDeProposta.titulo.label(class_="form-label lato-bold postar-titulo-membro tamanho-padrao") }}
                 {{ formDeProposta.titulo(class_="form-control postar-titulo lato-regular tamanho-padrao", value_=proposta_a_editar.titulo) }}
                 {% for error in formDeProposta.titulo.errors %}
                 <span class="text-danger lato-bold">{{ error }}</span>
