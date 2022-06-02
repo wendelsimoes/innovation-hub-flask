@@ -319,17 +319,16 @@ def carregar_comentarios():
                 likeado = False
                 if comentario in comentarios_que_dei_like:
                     likeado = True
+                
+                user = dict(comentario.user.__dict__)
+                user.pop('_sa_instance_state', None)
 
-                todos_comentarios_da_proposta_array.append({
-                        "id": comentario.id,
-                        "texto_comentario": comentario.texto_comentario,
-                        "dia_criacao": comentario.dia_criacao,
-                        "mes_criacao": comentario.mes_criacao,
-                        "ano_criacao": comentario.ano_criacao,
-                        "dono_do_comentario": comentario.dono_do_comentario,
-                        "likeado": likeado,
-                        "numeros_de_like": len(comentario.likes)
-                    })
+                comentario_dicionario = dict(comentario.__dict__)
+                comentario_dicionario.pop('_sa_instance_state', None)
+                comentario_dicionario.pop('user', None)
+                comentario_dicionario['user'] = user
+
+                todos_comentarios_da_proposta_array.append(comentario_dicionario)
 
             return Response(json.dumps(todos_comentarios_da_proposta_array), mimetype="application\json")
         else:
@@ -421,11 +420,8 @@ def registrar():
     novo_usuario = User(email=formDeRegistro.email.data, nome=formDeRegistro.nome.data, sobrenome=formDeRegistro.sobrenome.data, dia_nascimento=formDeRegistro.nascimento.data.day, mes_nascimento=formDeRegistro.nascimento.data.month, ano_nascimento=formDeRegistro.nascimento.data.year, apelido=formDeRegistro.apelido.data, senha_encriptada=generate_password_hash(formDeRegistro.senha.data), foto_perfil="/static/images/foto-padrao.png")
     
     if formDeRegistro.foto_perfil.data:
-        print("reached")
         foto_perfil = formDeRegistro.foto_perfil.data
         nome_da_foto = secure_filename(foto_perfil.filename)
-
-        # imagem_em_bytes = base64.b64encode(foto_perfil.read())
 
         url = cloudinary.uploader.upload(foto_perfil, public_id = f"nome_da_foto_{novo_usuario.apelido}")
         novo_usuario.foto_perfil = url['url']
@@ -462,6 +458,14 @@ def configuracoes_usuario():
     if formDeConfiguracao.validate_on_submit():
         current_user.email = formDeConfiguracao.email.data
         current_user.senha_encriptada = generate_password_hash(formDeConfiguracao.senha.data)
+
+        if formDeConfiguracao.foto_perfil.data:
+            foto_perfil = formDeConfiguracao.foto_perfil.data
+            nome_da_foto = secure_filename(foto_perfil.filename)
+
+            url = cloudinary.uploader.upload(foto_perfil, public_id = f"nome_da_foto_{current_user.apelido}")
+            current_user.foto_perfil = url['url']
+
         db.session.commit()
         return redirect(url_for("index"))
     

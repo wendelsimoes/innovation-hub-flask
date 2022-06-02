@@ -275,7 +275,13 @@ function carregar_comentarios(comentarios, modal_comentarios) {
             class: "card-text card_de_comentario_text tamanho-padrao",
         });
 
+        var card_de_comentario_foto = $("<img>", {
+            class: "comentario-foto",
+            src: comentario["user"]["foto_perfil"]
+        });
+
         card_de_comentario_text.append(comentario["texto_comentario"]);
+        card_de_comentario_titulo.append(card_de_comentario_foto);
         card_de_comentario_titulo.append(comentario["dono_do_comentario"]);
         card_de_comentario_body.append(card_de_comentario_titulo);
         card_de_comentario_body.append(card_de_comentario_subtitulo);

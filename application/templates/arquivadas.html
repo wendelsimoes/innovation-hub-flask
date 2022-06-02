@@ -93,6 +93,7 @@ Propostas Arquivadas
                         <div class="card mx-auto mt-3 card_do_comentario" id="{{ id_card_comentario }}">
                             <div class="card-body">
                                 <h6 class="card-title lato-bold card_de_comentario_titulo fs-5">
+                                    <img class="comentario-foto" src="{{ comentario.user.foto_perfil }}" alt="user">
                                     {{ comentario.dono_do_comentario }}
                                 </h6>
                                 {% if comentario.mes_criacao < 10 %} <p

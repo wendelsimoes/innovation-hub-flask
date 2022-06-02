@@ -347,7 +347,19 @@ button, .descricao-do-card {
 .notification-list .notification-list_img img {
     height: 48px;
     width: 48px;
-    border-radius: 50px;
+    margin-right: 20px;
+}
+
+.card_de_comentario_titulo img {
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.comentario-foto {
+    height: 48px;
+    width: 48px;
     margin-right: 20px;
 }
 
