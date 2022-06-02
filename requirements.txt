@@ -1,5 +1,4 @@
 Flask
-cs50
 Flask-Session
 flask_wtf
 flask-login
