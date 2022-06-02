@@ -7,6 +7,7 @@
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Abra o Windows Powershell
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Execute "Set-ExecutionPolicy RemoteSigned"
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. Execute "yes"
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4. Volte ao passo 4
 ### 6. Execute "pip install -r requirements.txt"
 ### 7. Na pasta primeira do projeto use o comando "$env:FLASK_APP = "application/main.py""
 ### 8. Execute "flask run"
@@ -14,3 +15,4 @@
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Na pasta primeira do projeto use o comando "py"
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Execute "from application import db"
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. Execute "db.create_all()"
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4. Volte ao passo 8
