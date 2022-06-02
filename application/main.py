@@ -65,23 +65,6 @@ from application.controllers import home
 from application.controllers import user
 
 
-# Checar se usuario existe
-@app.route("/checar_usuario", methods=["GET"])
-def checar_usuario():
-    apelido = request.args.get("apelido")
-    if apelido:
-        if current_user.apelido == apelido:
-            return Response(json.dumps({"status": 400, "mensagem": "Você será adicionado automaticamente ao projeto"}), mimetype="application\json")
-
-        user = User.query.filter_by(apelido=apelido).first()
-        if user:
-            return Response(json.dumps({"status": 200, "mensagem": user.apelido}), mimetype="application\json")
-        else:
-            return Response(json.dumps({"status": 404, "mensagem": "Usuário não encontrado"}), mimetype="application\json")
-    else:
-        return Response(json.dumps({"status": 404, "mensagem": "Deve inserir um apelido"}), mimetype="application\json")
-
-
 from application.controllers import feed
  
 
