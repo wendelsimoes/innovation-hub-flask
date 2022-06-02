@@ -4,7 +4,7 @@ from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
 from datetime import date
 from application import db
 from werkzeug.security import check_password_hash
-from application.models import User
+from application.models.user import User
 from flask_wtf.file import FileField, FileAllowed
 
 

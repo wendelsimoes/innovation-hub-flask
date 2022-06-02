@@ -2,7 +2,8 @@ from flask import flash, redirect, render_template, request, Response, url_for
 from flask_login import login_required, login_user, logout_user, login_manager, current_user
 from application import app, login_manager, db
 from application.forms import FormDeLogin, FormDeRegistro, FormDeProposta, FormDeConfiguracao
-from application.models import User, Proposta, Categoria, Comentario, Notificacoes_Pedir_para_Participar
+from application.modelstemp import Proposta, Categoria, Comentario, Notificacoes_Pedir_para_Participar
+from application.models.user import User
 from datetime import date
 from werkzeug.security import generate_password_hash
 import json
