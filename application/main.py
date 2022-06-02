@@ -62,14 +62,7 @@ def load_user(user_id):
 from application.controllers import home
 
 
-# Autocomplete de membro
-@app.route("/todos_usuarios", methods=["GET"])
-def todos_usuarios():
-    todos_usuarios = User.query.all()
-    todos_usuarios_apelidos = []
-    for user in todos_usuarios:
-        todos_usuarios_apelidos.append(user.apelido)
-    return Response(json.dumps(todos_usuarios_apelidos), mimetype="application\json")
+from application.controllers import user
 
 
 # Checar se usuario existe
