@@ -4,6 +4,7 @@ from application.forms import FormDeProposta
 from flask import request, render_template, redirect, url_for
 from datetime import date
 from application.models.proposta import Proposta
+from application.models.categoria import Categoria
 from application import db
 
 tipo_proposta = {
@@ -12,26 +13,7 @@ tipo_proposta = {
     "Problema": 2
 }
 
-categorias = {
-    "Arte e Cultura": 0,
-    "Música e Entretenimento": 1,
-    "Automoveis e Veiculos": 2,
-    "Informatica e Eletrônica": 3,
-    "Educação": 4,
-    "Vida": 5,
-    "Família": 6,
-    "Negócios e Empreendedorismo": 7,
-    "Culinária e Gastronomia": 8,
-    "Saúde e Bem Estar": 9,
-    "Esporte": 10,
-    "Viagem e Turismo": 11,
-    "Economia e Finanças": 12,
-    "Política e Mundo": 13,
-    "Ciência e Tecnologia": 14,
-    "Trabalho e Carreira": 15,
-    "Psicologia e Sociedade": 16,
-    "Meio Ambiente": 17
-}
+from application.models.categorias import categorias
 
 
 @app.route("/feed", methods=["GET", "POST"])
