@@ -402,15 +402,15 @@ def deletar_proposta():
         proposta_id = request.form.get("proposta_id")
         proposta_a_deletar = Proposta.query.filter_by(id=proposta_id)
 
-        if proposta_a_deletar.first().gerente_id == current_user.id:
-            proposta_a_deletar.delete()
-            db.session.commit()
-            return redirect(url_for("index"))
-        else:
-            render_template("erro.html", codigo=405, mensagem="NÃO AUTORIZADO - VOCÊ NÃO É GERENTE DESTA PROPOSTA")
+        proposta_a_deletar.delete()
+        db.session.commit()
+        return redirect(url_for("index"))
 
     proposta_id = request.args.get("proposta_id")
     proposta_a_deletar = Proposta.query.filter_by(id=proposta_id).first()
+
+    if not proposta_a_deletar.gerente_id == current_user.id:
+        return render_template("erro.html", codigo=405, mensagem="NÃO AUTORIZADO - VOCÊ NÃO É GERENTE DESTA PROPOSTA")
 
     return render_template("deletar_proposta.html", proposta_a_deletar=proposta_a_deletar, user=current_user)
 
