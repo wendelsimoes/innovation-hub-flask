@@ -338,13 +338,14 @@ def carregar_comentarios():
 
 
 @app.route("/editar_proposta", methods=["GET", "POST"])
+@login_required
 def editar_proposta():
     formDeProposta = FormDeProposta()
 
     # Se for post
     if formDeProposta.validate_on_submit():
         proposta_id = request.form.get("proposta_id")
-        proposta_a_editar = Proposta.query.filter_by(id=proposta_id)
+        proposta_a_editar = Proposta.query.filter_by(id=proposta_id).first()
 
         proposta_a_editar.titulo = formDeProposta.titulo.data
         proposta_a_editar.descricao = formDeProposta.descricao.data
@@ -360,32 +361,35 @@ def editar_proposta():
         else:
             proposta_a_editar.arquivado = False
 
-        membros_antigos = proposta_a_editar.first().membro
+        membros_antigos = proposta_a_editar.membro
 
         # Remover todos menos o gerente se o campo de membros vier vazio
         if not request.form.getlist("membros"):
             for membro_antigo in membros_antigos:
                 if not membro_antigo == current_user:
-                    membro_antigo.propostas_que_estou.remove(proposta_a_editar.first())
+                    membro_antigo.propostas_que_estou.remove(proposta_a_editar)
             db.session.commit()
             return redirect(url_for("index"))
 
         # Remover somentes os que foram removidos da form
         for membro_antigo in membros_antigos:
             if not membro_antigo.apelido in request.form.getlist("membros"):
-                membro_antigo.propostas_que_estou.remove(proposta_a_editar.first())
+                membro_antigo.propostas_que_estou.remove(proposta_a_editar)
         
         # Adicionar os que foram adicionados na form
         for membro_novo in request.form.getlist("membros"):
             user = User.query.filter_by(apelido=membro_novo).first()
             if not user in membros_antigos:
-                user.propostas_que_estou.append(proposta_a_editar.first())
+                user.propostas_que_estou.append(proposta_a_editar)
 
         db.session.commit()
         return redirect(url_for("index"))
     
     proposta_id = request.args.get("proposta_id")
     proposta_a_editar = Proposta.query.filter_by(id=proposta_id).first()
+
+    if not proposta_a_editar.gerente_id == current_user.id:
+        return render_template("erro.html", codigo=405, mensagem="NÃO AUTORIZADO - VOCÊ NÃO É GERENTE DESTA PROPOSTA")
 
     return render_template("editar_proposta.html", proposta_a_editar=proposta_a_editar, formDeProposta=formDeProposta, user=current_user)
 
