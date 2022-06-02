@@ -363,7 +363,7 @@ def editar_proposta():
         membros_antigos = proposta_a_editar.first().membro
 
         # Remover todos menos o gerente se o campo de membros vier vazio
-        if not request.form.get("membros"):
+        if not request.form.getlist("membros"):
             for membro_antigo in membros_antigos:
                 if not membro_antigo == current_user:
                     membro_antigo.propostas_que_estou.remove(proposta_a_editar.first())
