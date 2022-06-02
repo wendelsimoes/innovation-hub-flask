@@ -45,12 +45,14 @@
           <li class="nav-item">
             <a class="nav-link active fs-5" aria-current="page" href="{{ url_for("index") }}">Início</a>
           </li>
+          {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link font-large fs-5" href="{{ url_for("feed") }}">Feed</a>
           </li>
           <li class="nav-item">
             <a class="nav-link font-large fs-5" href="{{ url_for("arquivadas") }}">Propostas Arquivadas</a>
           </li>
+          {% endif %}
         </ul>
         <div class="ml-auto">
           {% if not user.is_authenticated %}
@@ -111,7 +113,13 @@
               </div>
             </li>
           </ul>
-          <a href="/sair" class="btn btn-danger mr-3" type="button">
+
+          <a href="{{ url_for('configuracoes_usuario') }}" class="btn btn-primary mr-3" type="button">
+            <i class="bi bi-gear"></i>
+            Configurações
+          </a>
+
+          <a href="{{ url_for('logout') }}" class="btn btn-danger mr-3" type="button">
             Sair
           </a>
           {% endif %}

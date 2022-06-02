@@ -1,7 +1,7 @@
 from flask import flash, redirect, render_template, request, Response, url_for
 from flask_login import login_required, login_user, logout_user, login_manager, current_user
 from application import app, login_manager, db
-from application.forms import FormDeLogin, FormDeRegistro, FormDeProposta
+from application.forms import FormDeLogin, FormDeRegistro, FormDeProposta, FormDeConfiguracao
 from application.models import User, Proposta, Categoria, Comentario, Notificacoes_Pedir_para_Participar
 from datetime import date
 from werkzeug.security import generate_password_hash
@@ -454,6 +454,18 @@ def login():
         
     # Redirect user to home page
     return redirect(url_for("index"))
+
+@app.route("/configuracoes_usuario", methods=["GET", "POST"])
+def configuracoes_usuario():
+    formDeConfiguracao = FormDeConfiguracao()
+
+    if formDeConfiguracao.validate_on_submit():
+        current_user.email = formDeConfiguracao.email.data
+        current_user.senha_encriptada = generate_password_hash(formDeConfiguracao.senha.data)
+        db.session.commit()
+        return redirect(url_for("index"))
+    
+    return render_template("configuracoes_usuario.html", user=current_user, formDeConfiguracao=formDeConfiguracao)
 
 
 @app.route("/sair")

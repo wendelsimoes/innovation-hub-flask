@@ -8,7 +8,7 @@
             {{ formDeProposta.csrf_token }}
             <input type="hidden" name="proposta_id" value="{{ proposta_a_editar.id }}">
             <div class="mb-2">
-                {{ formDeProposta.titulo.label(class_="form-label postar-titulo-label lato-bold tamanho-padrao") }}
+                {{ formDeProposta.titulo.label(class_="form-label lato-bold tamanho-padrao") }}
                 {{ formDeProposta.titulo(class_="form-control postar-titulo lato-regular tamanho-padrao", value_=proposta_a_editar.titulo) }}
                 {% for error in formDeProposta.titulo.errors %}
                 <span class="text-danger lato-bold">{{ error }}</span>
@@ -40,6 +40,7 @@
                 </div>
             </div>
             <div class="mb-2">
+                <label class="form-label lato-bold postar-membro-label tamanho-padrao" for="descricao">Descrição</label>
                 <textarea class="form-control postar-descricao lato-regular descricao-do-card" id="descricao" maxlength="1000" minlength="50" name="descricao" placeholder="Descrição" required="">{{ proposta_a_editar.descricao }}</textarea>
                 {% for error in formDeProposta.descricao.errors %}
                 <span class="text-danger lato-bold">{{ error }}</span>

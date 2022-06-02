@@ -95,3 +95,20 @@ class FormDeProposta(FlaskForm):
     restricao_idade = IntegerField("Restrição de idade", validators=[validators.Optional()])
 
     membro = StringField("Membros", id="apelido_autocomplete", render_kw={"placeholder": "Pesquisar apelido"})
+
+# Form de Configuração do usuário
+class FormDeConfiguracao(FlaskForm):
+    email = EmailField("Email", validators=[
+        InputRequired("Este campo é necessário"), 
+        Length(min=3, max=200, message="Campo deve conter entre 3 e 200 caracteres")])
+
+    foto_perfil = FileField("Foto de Perfil", validators=[FileAllowed(['jpg', 'png'], message="Arquivo não suportado")])
+
+    senha = PasswordField("Senha", validators=[
+        InputRequired("Este campo é necessário"), 
+        Length(min=3, max=200, message="Campo deve conter entre 3 e 200 caracteres"), 
+        EqualTo("confirmar_senha", message="As senhas devem ser iguais")])
+
+    confirmar_senha = PasswordField("Confirmar Senha", validators=[
+        InputRequired("Este campo é necessário"), 
+        Length(min=3, max=200, message="Campo deve conter entre 3 e 200 caracteres")])

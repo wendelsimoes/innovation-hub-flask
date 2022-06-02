@@ -1,0 +1,43 @@
+{% extends "layout.html" %} 
+{% block title %} Configurações {% endblock %} 
+
+{% block main %}
+<div class="card mx-auto item-feed item-feed-postar">
+    <div class="card-body">
+        <form method="post" action="{{ url_for("configuracoes_usuario") }}" novalidate enctype="multipart/form-data">
+            {{ formDeConfiguracao.csrf_token }}
+            <div class="mb-2">
+                {{ formDeConfiguracao.email.label(class_="form-label lato-bold tamanho-padrao label-configuracao") }}
+                {{ formDeConfiguracao.email(class_="form-control postar-titulo lato-regular tamanho-padrao", value_=user.email) }}
+                {% for error in formDeConfiguracao.email.errors %}
+                <span class="text-danger lato-bold">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-2">
+                {{ formDeConfiguracao.foto_perfil.label(class_="form-label lato-regular tamanho-padrao label-configuracao") }}
+                {{ formDeConfiguracao.foto_perfil(class_="form-control lato-regular tamanho-padrao") }}
+                {% for error in formDeConfiguracao.foto_perfil.errors %}
+                <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-2">
+                {{ formDeConfiguracao.senha.label(class_="form-label lato-regular tamanho-padrao label-configuracao") }}
+                {{ formDeConfiguracao.senha(class_="form-control lato-regular tamanho-padrao label-configuracao") }}
+                {% for error in formDeConfiguracao.senha.errors %}
+                <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-2">
+                {{ formDeConfiguracao.confirmar_senha.label(class_="form-label lato-regular tamanho-padrao label-configuracao") }}
+                {{ formDeConfiguracao.confirmar_senha(class_="form-control lato-regular tamanho-padrao") }}
+                {% for error in formDeConfiguracao.confirmar_senha.errors %}
+                <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <br>
+            <button type="submit" class="btn btn-info lato-bold"
+                style="display: block; margin-left: auto;">Editar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

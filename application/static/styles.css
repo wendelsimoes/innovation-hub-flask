@@ -65,7 +65,8 @@ textarea:focus {
 }
 
 .restricao-idade-label,
-.tipo-proposta-label {
+.tipo-proposta-label,
+.label-configuracao {
     width: 100% !important;
     text-align: start !important;
 }
