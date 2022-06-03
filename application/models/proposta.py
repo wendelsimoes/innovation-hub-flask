@@ -17,4 +17,3 @@ class Proposta(db.Model):
     tipo_proposta = db.Column(db.String(200), nullable=False)
     gerente_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     categorias = db.relationship("Categoria", backref="proposta")
-    comentarios = db.relationship("Comentario", backref="proposta")

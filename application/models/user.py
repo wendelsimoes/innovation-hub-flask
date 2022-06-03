@@ -1,6 +1,9 @@
-from application import db
+from application import db, ma
 from werkzeug.security import check_password_hash
 from flask_login import UserMixin
+from application.models.notificacoes_pedir_para_participar import Notificacoes_Pedir_para_Participar
+from application.models.proposta import Proposta
+from application.models.categoria import Categoria
 
 
 UserProposta = db.Table('UserProposta',
@@ -11,11 +14,6 @@ UserProposta = db.Table('UserProposta',
 Like_da_Proposta = db.Table('Like_da_Proposta',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
     db.Column('proposta_id', db.Integer, db.ForeignKey('propostas.id'))
-)
-
-Like_do_Comentario = db.Table('Like_do_Comentario',
-    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-    db.Column('comentario_id', db.Integer, db.ForeignKey('comentarios.id'))
 )
 
 Proposta_Favorita = db.Table('Proposta_Favorita',
@@ -38,12 +36,15 @@ class User(db.Model, UserMixin):
     senha_encriptada = db.Column(db.String(), nullable=False)
     propostas_que_estou = db.relationship("Proposta", secondary=UserProposta, backref="membro")
     propostas_que_sou_gerente = db.relationship("Proposta", backref="gerente_de_projeto")
-    meus_comentarios = db.relationship("Comentario", backref="user")
     propostas_que_dei_like = db.relationship("Proposta", secondary=Like_da_Proposta, backref="likes")
-    comentarios_que_dei_like = db.relationship("Comentario", secondary=Like_do_Comentario, backref="likes")
     propostas_favoritas = db.relationship("Proposta", secondary=Proposta_Favorita, backref="favoritador")
     notificacoes_pedir_para_participar = db.relationship("Notificacoes_Pedir_para_Participar", backref="gerente_da_proposta")
     foto_perfil = db.Column(db.String(1000))
 
     def verificar_senha_encriptada(self, senha):
         return check_password_hash(self.senha_encriptada, senha)
+
+
+class UserSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = User

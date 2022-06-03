@@ -1,11 +1,11 @@
 from application import app, db
 from flask_login import login_required, current_user
 from application.models.proposta import Proposta
-from flask import render_template, request, Response, url_for, redirect
+from flask import render_template, request, Response, url_for, redirect, jsonify
 from application.models.categorias import categorias
 import json
 from datetime import date
-from application.models.comentario import Comentario
+from application.models.comentario import Comentario, ComentarioSchema
 
 
 @app.route("/arquivadas", methods=["GET"])
@@ -73,8 +73,10 @@ def comentar():
             return Response(json.dumps({"status": 400, "mensagem": "Campo deve conter no máximo 1000 caracteres"}), mimetype="application\json")
 
         today = date.today()
-        novo_comentario = Comentario(texto_comentario=request.form.get("texto_comentario"), dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year, dono_do_comentario=current_user.apelido, user=current_user, proposta=proposta_a_comentar)
+        novo_comentario = Comentario(texto_comentario=request.form.get("texto_comentario"), dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year, dono_do_comentario=current_user.apelido, proposta=proposta_a_comentar)
 
+        current_user.comentarios.append(novo_comentario)
+        
         db.session.commit()
 
         return redirect(url_for("carregar_comentarios", id_proposta=request.form.get("id_proposta")))
@@ -88,9 +90,12 @@ def carregar_comentarios():
 
     if id_proposta:
         comentarios_da_proposta = Comentario.query.filter_by(proposta_id=id_proposta).all()
-        comentarios_que_dei_like = current_user.comentarios_que_dei_like
+        comentarios_que_dei_like = current_user.likes
         
         if len(comentarios_da_proposta) > 0:
+            comentario_schema = ComentarioSchema(many=True)
+            comentarios_da_proposta_formatado = comentario_schema.dump(comentarios_da_proposta)
+
             todos_comentarios_da_proposta_array = []
 
             for comentario in comentarios_da_proposta:
@@ -108,7 +113,7 @@ def carregar_comentarios():
 
                 todos_comentarios_da_proposta_array.append(comentario_dicionario)
 
-            return Response(json.dumps(todos_comentarios_da_proposta_array), mimetype="application\json")
+            return jsonify(comentarios_da_proposta_formatado)
         else:
             return Response(json.dumps({"status": 200, "info": "Niguém fez um comentário ainda, que tal ser o primeiro?"}), mimetype="application\json")
     else:

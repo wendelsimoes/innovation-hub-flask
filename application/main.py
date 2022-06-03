@@ -267,3 +267,6 @@ def logout():
 def unauthorized():
     # Mostrar uma página de erro
     return render_template("erro.html", codigo=403, mensagem="NÃO AUTORIZADO - LOGIN NECESSÁRIO")
+
+
+db.create_all()
