@@ -47,6 +47,12 @@ class FormDeRegistro(FlaskForm):
         if apelidoSeExistir:
             raise ValidationError("Este apelido já está em uso")
 
+        if ' ' in apelido.data:
+            raise ValidationError("Apelido não deve conter espaços em branco")
+
+        if not apelido.data.isalnum():
+            raise ValidationError("Não deve inserir caracteres especiais")
+
 
     def validate_nascimento(self, nascimento):
         if nascimento.data > date.today():

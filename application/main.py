@@ -6,17 +6,6 @@ from application.forms import FormDeLogin, FormDeRegistro, FormDeProposta, FormD
 from application.models.user import User
 from application.models.proposta import Proposta
 
-from werkzeug.security import generate_password_hash
-from werkzeug.utils import secure_filename
-import cloudinary
-import cloudinary.uploader
-
-
-cloudinary.config( 
-  cloud_name = "dpvpgl0el", 
-  api_key = "293558758171612", 
-  api_secret = "CIhjIg0vTjEIVo_PJ-LRD8aTiuw" 
-)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -28,52 +17,6 @@ from application.controllers import user
 from application.controllers import feed
 from application.controllers import proposta
 from application.controllers import comentario
-
-
-@app.route("/deletar_proposta", methods=["GET", "POST"])
-@login_required
-def deletar_proposta():
-    # Se for post
-    if request.method == "POST":
-        proposta_id = request.form.get("proposta_id")
-        proposta_a_deletar = Proposta.query.filter_by(id=proposta_id)
-
-        proposta_a_deletar.delete()
-        db.session.commit()
-        return redirect(url_for("index"))
-
-    proposta_id = request.args.get("proposta_id")
-    proposta_a_deletar = Proposta.query.filter_by(id=proposta_id).first()
-
-    if not proposta_a_deletar.gerente_id == current_user.id:
-        return render_template("erro.html", codigo=405, mensagem="NÃO AUTORIZADO - VOCÊ NÃO É GERENTE DESTA PROPOSTA")
-
-    return render_template("deletar_proposta.html", proposta_a_deletar=proposta_a_deletar, user=current_user)
-
-
-# Registrar
-@app.route("/registrar", methods=["POST"])
-def registrar():
-    formDeRegistro = FormDeRegistro()
-
-    if not formDeRegistro.validate_on_submit():
-        return render_template("index.html", formDeRegistro=formDeRegistro, formDeLogin=FormDeLogin(), abrirModalDeRegistro=True, abrirModalDeLogin=False, user=current_user)
-
-
-    novo_usuario = User(email=formDeRegistro.email.data, nome=formDeRegistro.nome.data, sobrenome=formDeRegistro.sobrenome.data, dia_nascimento=formDeRegistro.nascimento.data.day, mes_nascimento=formDeRegistro.nascimento.data.month, ano_nascimento=formDeRegistro.nascimento.data.year, apelido=formDeRegistro.apelido.data, senha_encriptada=generate_password_hash(formDeRegistro.senha.data), foto_perfil="/static/images/foto-padrao.png")
-    
-    if formDeRegistro.foto_perfil.data:
-        foto_perfil = formDeRegistro.foto_perfil.data
-        nome_da_foto = secure_filename(foto_perfil.filename)
-
-        url = cloudinary.uploader.upload(foto_perfil, public_id = f"nome_da_foto_{novo_usuario.apelido}")
-        novo_usuario.foto_perfil = url['url']
-
-    db.session.add(novo_usuario)
-
-    db.session.commit()
-
-    return redirect("/")
 
 
 @app.route("/entrar", methods=["POST"])
@@ -93,26 +36,6 @@ def login():
         
     # Redirect user to home page
     return redirect(url_for("index"))
-
-@app.route("/configuracoes_usuario", methods=["GET", "POST"])
-def configuracoes_usuario():
-    formDeConfiguracao = FormDeConfiguracao()
-
-    if formDeConfiguracao.validate_on_submit():
-        current_user.email = formDeConfiguracao.email.data
-        current_user.senha_encriptada = generate_password_hash(formDeConfiguracao.senha.data)
-
-        if formDeConfiguracao.foto_perfil.data:
-            foto_perfil = formDeConfiguracao.foto_perfil.data
-            nome_da_foto = secure_filename(foto_perfil.filename)
-
-            url = cloudinary.uploader.upload(foto_perfil, public_id = f"nome_da_foto_{current_user.apelido}")
-            current_user.foto_perfil = url['url']
-
-        db.session.commit()
-        return redirect(url_for("index"))
-    
-    return render_template("configuracoes_usuario.html", user=current_user, formDeConfiguracao=formDeConfiguracao)
 
 
 @app.route("/sair")
