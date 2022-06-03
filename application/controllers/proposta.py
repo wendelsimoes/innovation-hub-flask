@@ -73,10 +73,8 @@ def comentar():
             return Response(json.dumps({"status": 400, "mensagem": "Campo deve conter no máximo 1000 caracteres"}), mimetype="application\json")
 
         today = date.today()
-        novo_comentario = Comentario(texto_comentario=request.form.get("texto_comentario"), dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year, dono_do_comentario=current_user.apelido, proposta=proposta_a_comentar)
+        novo_comentario = Comentario(texto_comentario=request.form.get("texto_comentario"), dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year, dono_do_comentario=current_user.apelido, proposta_id=proposta_a_comentar.id, user=current_user, proposta=proposta_a_comentar)
 
-        current_user.comentarios.append(novo_comentario)
-        
         db.session.commit()
 
         return redirect(url_for("carregar_comentarios", id_proposta=request.form.get("id_proposta")))

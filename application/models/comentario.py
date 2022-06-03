@@ -30,3 +30,4 @@ class ComentarioSchema(ma.SQLAlchemyAutoSchema):
         model = Comentario
 
     user = ma.Nested(UserSchema)
+    likes = ma.Nested(UserSchema, many=True)

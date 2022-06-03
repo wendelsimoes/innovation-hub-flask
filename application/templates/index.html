@@ -98,7 +98,7 @@
                                                     <form class="form_likear_comentario">
                                                         <input type="hidden" name="comentario_id" value="{{ comentario.id }}">
                                                         <button class="botao-likear-comentario btn" type="submit">
-                                                            {% if comentario in user.comentarios_que_dei_like %}
+                                                            {% if comentario in user.likes %}
                                                             <i class="bi bi-hand-thumbs-up-fill botao-like-comentario"></i>
                                                             {% else %}
                                                             <i class="bi bi-hand-thumbs-up botao-like-comentario"></i>
@@ -213,7 +213,7 @@
                                                     <form class="form_likear_comentario">
                                                         <input type="hidden" name="comentario_id" value="{{ comentario.id }}">
                                                         <button class="botao-likear-comentario btn" type="submit">
-                                                            {% if comentario in user.comentarios_que_dei_like %}
+                                                            {% if comentario in user.likes %}
                                                             <i class="bi bi-hand-thumbs-up-fill botao-like-comentario"></i>
                                                             {% else %}
                                                             <i class="bi bi-hand-thumbs-up botao-like-comentario"></i>
@@ -343,7 +343,7 @@
                                                     <form class="form_likear_comentario">
                                                         <input type="hidden" name="comentario_id" value="{{ comentario.id }}">
                                                         <button class="botao-likear-comentario btn" type="submit">
-                                                            {% if comentario in user.comentarios_que_dei_like %}
+                                                            {% if comentario in user.likes %}
                                                             <i class="bi bi-hand-thumbs-up-fill botao-like-comentario"></i>
                                                             {% else %}
                                                             <i class="bi bi-hand-thumbs-up botao-like-comentario"></i>
