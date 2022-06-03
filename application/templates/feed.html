@@ -8,6 +8,32 @@ Feed
 <div class="container mx-auto px-auto" style="display: flex; flex-direction: column;">
 
     {% block postar %}{% endblock %}
+    
+    <div class="mx-auto mt-3 item-feed lato-regular">
+        <div class="div-ordenar-filtrar" style="display: flex;">
+            <div class="lato-regular" style="display: flex;">
+                Ordenar por:
+                <div class="form-check" style="margin-left: 15px;">
+                    <input class="form-check-input" type="radio" name="ordenar" checked id="recente">
+                    <label class="form-check-label lato-regular" for="recente">
+                      Recente
+                    </label>
+                </div>
+                <div class="form-check" style="margin-left: 10px;">
+                    <input class="form-check-input" type="radio" name="ordenar" checked id="popular">
+                    <label class="form-check-label lato-regular" for="popular">
+                      Popular
+                    </label>
+                </div>
+            </div>
+            <select class="form-select select-ordenar" name="filtrar">
+                <option class="lato-regular" selected>Filtrar por categoria</option>
+                {% for categoria, valor in categorias.items() %}
+                <option class="lato-regular" value="{{ valor }}">{{ categoria }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
 
     {% for proposta in todas_propostas_nao_privadas %}
     {% set classe_background = "bg-" + proposta.tipo_proposta %}

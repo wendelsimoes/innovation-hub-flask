@@ -71,7 +71,8 @@ textarea:focus {
     text-align: start !important;
 }
 
-.postar-descricao, .postar-comentario {
+.postar-descricao,
+.postar-comentario {
     height: 8em !important;
 }
 
@@ -91,7 +92,8 @@ textarea:focus {
     width: 70% !important;
 }
 
-.postar-membro-label, .postar-titulo-membro {
+.postar-membro-label,
+.postar-titulo-membro {
     width: 100% !important;
     text-align: start !important;
     padding: 0 !important;
@@ -130,8 +132,8 @@ textarea:focus {
 .categorias-proposta-item {
     display: inline !important;
     margin: 3px 4px !important;
-    background-color: hsl(205,46%,92%) !important;
-    color: hsl(205,47%,42%) !important;
+    background-color: hsl(205, 46%, 92%) !important;
+    color: hsl(205, 47%, 42%) !important;
     padding: 0.2em 0.3em !important;
     border-radius: 3px !important;
 }
@@ -192,7 +194,9 @@ textarea:focus {
     text-align: justify !important;
 }
 
-.botao-like-proposta, .botao-like-comentario, .anchor-like-comentario {
+.botao-like-proposta,
+.botao-like-comentario,
+.anchor-like-comentario {
     margin-right: auto !important;
     font-size: 2rem !important;
 }
@@ -203,7 +207,8 @@ textarea:focus {
     padding: 4px 8px !important;
 }
 
-.botao-likear-proposta, .botao-likear-comentario {
+.botao-likear-proposta,
+.botao-likear-comentario {
     margin-right: auto !important;
     font-size: 1.5rem !important;
     padding: 4px 8px;
@@ -242,7 +247,8 @@ textarea:focus {
     font-size: 1.2rem !important;
 }
 
-button, .descricao-do-card {
+button,
+.descricao-do-card {
     font-size: 1.1rem !important;
 }
 
@@ -440,7 +446,9 @@ button, .descricao-do-card {
         margin: 0 0 5px 0px !important;
     }
 
-    .anchor-like-proposta, .anchor-like-comentario, botao-favoritar-proposta {
+    .anchor-like-proposta,
+    .anchor-like-comentario,
+    botao-favoritar-proposta {
         text-align: left !important;
     }
 
@@ -472,13 +480,24 @@ button, .descricao-do-card {
     .notification-list {
         margin: 0 10px !important;
     }
-    
+
     .notification-list .notification-list_img img {
         display: none !important;
     }
 
     .notification-list_detail {
         width: 220px !important;
+    }
+
+    .div-ordenar-filtrar {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .select-ordenar {
+        width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
     }
 }
 
@@ -510,4 +529,22 @@ button, .descricao-do-card {
     .item-feed {
         width: 80% !important;
     }
+}
+
+.select-ordenar {
+    width: 200px;
+    margin-left: auto;
+    border-width: 3px !important;
+    border-width: 3px !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.select-ordenar:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.div-ordenar-filtrar {
+    display: flex;
 }
