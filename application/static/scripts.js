@@ -8,9 +8,6 @@ $(document).on("click", function(event) {
 
     classes_que_foram_clicadas.every((classe) => {
         switch (classe) {
-            case "bi":
-                exibir_notificacoes();
-                return false
             case "bi-bell-fill":
                 exibir_notificacoes();
                 return false
