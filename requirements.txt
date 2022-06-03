@@ -7,6 +7,3 @@ cloudinary
 flask-marshmallow
 marshmallow-sqlalchemy
 mysqlclient
-mysql-connector
-mysql-connector-python
-pymysql
