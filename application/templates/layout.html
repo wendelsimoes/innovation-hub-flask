@@ -65,7 +65,7 @@
           <ul class="lista-das-notificacoes" style="list-style-type: none; display: inline-block; margin-right: 10px;">
             <!-- Peguei daqui: https://codepen.io/gosnippets/pen/qBNGLXp -->
             <li class="dropdown notification-ui show">
-              <a class="nav-link dropdown-toggle notification-ui_icon" onclick="exibir_notificacoes()" id="navbarDropdown" role="button"
+              <a class="nav-link dropdown-toggle notification-ui_icon" id="navbarDropdown" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {% if user.notificacoes_pedir_para_participar | length > 0 %}
                 <i class="bi bi-bell-fill"></i>
@@ -272,5 +272,40 @@
   });
 </script>
 {% endif %}
+
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div class="toast toast-padrao align-items-center text-bg-primary border-0" role="alert" aria-live="assertive"
+      aria-atomic="true">
+      <div class="d-flex">
+          <div class="toast-body lato-regular">
+              Hello, world! This is a toast message.
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+              aria-label="Close"></button>
+      </div>
+  </div>
+  <div class="toast toast-sucesso align-items-center text-bg-primary bg-success border-0" role="alert" aria-live="assertive"
+      aria-atomic="true">
+      <div class="d-flex">
+          <div class="toast-body lato-regular">
+              Hello, world! This is a toast message.
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+              aria-label="Close"></button>
+      </div>
+  </div>
+  <div class="toast toast-erro align-items-center text-bg-primary bg-danger border-0" role="alert" aria-live="assertive"
+      aria-atomic="true">
+      <div class="d-flex">
+          <div class="toast-body lato-regular">
+              Hello, world! This is a toast message.
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+              aria-label="Close"></button>
+      </div>
+  </div>
+</div>
+
 
 </html>

@@ -166,4 +166,20 @@ def aprovar_participacao():
         db.session.commit()
         return jsonify({'codigo': 200})
     else:
+        return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - USUÁRIO NÃO PEDIU PARA PARTICIPAR")
+
+    
+@app.route("/recusar_participacao", methods=["POST"])
+@login_required
+def recusar_participacao():
+    quem_pediu_para_entrar = request.form.get("quem_pediu_para_entrar")
+    proposta_id = request.form.get("proposta_id")
+
+    notificacao = Notificacoes_Pedir_para_Participar.query.filter_by(quem_pediu_para_entrar=quem_pediu_para_entrar, proposta_id=proposta_id).first()
+
+    if notificacao:
+        db.session.delete(notificacao)
+        db.session.commit()
+        return jsonify({'codigo': 200})
+    else:
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - USUÁRIO NÃO PEDIU PARA PARTICIPAR") 

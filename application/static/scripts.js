@@ -1,3 +1,41 @@
+$(document).on("click", function(event) {
+    var classes_que_foram_clicadas = $(event.target.classList);
+    classes_que_foram_clicadas = Object.keys(classes_que_foram_clicadas).map(function (key) { return classes_que_foram_clicadas[key]; });
+    notificacao = document.querySelector('.notification-ui_dd');
+    mostrar = "dropdown-menu notification-ui_dd show";
+    esconder = "dropdown-menu notification-ui_dd hide";
+    console.log(classes_que_foram_clicadas);
+
+    classes_que_foram_clicadas.every((classe) => {
+        switch (classe) {
+            case "bi":
+                exibir_notificacoes();
+                return false
+            case "bi-bell-fill":
+                exibir_notificacoes();
+                return false
+            case "dropdown-toggle":
+                exibir_notificacoes();
+                return false
+            case "notification-ui_icon":
+            case "notification-list_img":
+            case "notification-ui_dd-header":
+            case "notification-list":
+            case "notification-list--unread":
+            case "notification-form_aprovar_participacao":
+            case "btn-primary":
+            case "form_recusar_participacao":
+            case "btn-danger":
+            case "notification-list_detail":
+            case "btn":
+            case "mr-3":
+                return false
+        }
+        notificacao.className = esconder
+    });
+});
+
+
 $(document).ready(function () {
     $('.form_aprovar_participacao').submit(function (event) {
         event.preventDefault();
@@ -455,11 +493,11 @@ function exibir_notificacoes() {
     mostrar = "dropdown-menu notification-ui_dd show";
     esconder = "dropdown-menu notification-ui_dd hide";
 
-    notifications = document.querySelector('.notification-ui_dd');
+    notificacao = document.querySelector('.notification-ui_dd');
 
-    if (notifications.className == mostrar) {
-        notifications.className = esconder;
+    if (notificacao.className == mostrar) {
+        notificacao.className = esconder;
     } else {
-        notifications.className = mostrar;
+        notificacao.className = mostrar;
     }
 }
