@@ -5,22 +5,12 @@ from application.forms import FormDeLogin, FormDeRegistro, FormDeProposta, FormD
 
 from application.models.user import User
 from application.models.proposta import Proposta
-from application.models.categoria import Categoria
-from application.models.comentario import Comentario
-from application.models.notificacoes_pedir_para_participar import Notificacoes_Pedir_para_Participar
 
-from datetime import date
 from werkzeug.security import generate_password_hash
-import json
 from werkzeug.utils import secure_filename
-import base64
-import os
 import cloudinary
 import cloudinary.uploader
 
-from application.models.categorias import categorias
-
-from application.models.tipo_proposta import tipo_proposta
 
 cloudinary.config( 
   cloud_name = "dpvpgl0el", 
