@@ -21,7 +21,7 @@ class Comentario(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     proposta_id = db.Column(db.Integer, db.ForeignKey("propostas.id"))
     user = db.relationship("User", backref="comentarios")
-    likes = db.relationship("User", secondary=Like_do_Comentario, backref="likes")
+    likes = db.relationship("User", secondary=Like_do_Comentario, backref="likesComentarios")
     proposta = db.relationship("Proposta", backref="comentarios")
 
 

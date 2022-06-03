@@ -52,7 +52,7 @@ Feed
                     <form class="form_likear_proposta" style="margin-right: auto;">
                         <input type="hidden" name="proposta_id" value="{{ proposta.id }}">
                         <button class="botao-likear-proposta btn" type="submit">
-                            {% if proposta in user.propostas_que_dei_like %}
+                            {% if proposta in user.likesPropostas %}
                             <i class="bi bi-hand-thumbs-up-fill botao-like-proposta"></i>
                             {% else %}
                             <i class="bi bi-hand-thumbs-up botao-like-proposta"></i>
@@ -117,7 +117,7 @@ Feed
                                         <form class="form_likear_comentario">
                                             <input type="hidden" name="comentario_id" value="{{ comentario.id }}">
                                             <button class="botao-likear-comentario btn" type="submit">
-                                                {% if comentario in user.likes %}
+                                                {% if comentario in user.likesComentarios %}
                                                 <i class="bi bi-hand-thumbs-up-fill botao-like-comentario"></i>
                                                 {% else %}
                                                 <i class="bi bi-hand-thumbs-up botao-like-comentario"></i>

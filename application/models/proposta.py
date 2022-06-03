@@ -1,6 +1,12 @@
 from application import db
 
 
+Like_da_Proposta = db.Table('Like_da_Proposta',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('proposta_id', db.Integer, db.ForeignKey('propostas.id'))
+)
+
+
 class Proposta(db.Model):
     __tablename__ = "propostas"
 
@@ -12,8 +18,8 @@ class Proposta(db.Model):
     dia_criacao = db.Column(db.Integer, nullable=False)
     mes_criacao = db.Column(db.Integer, nullable=False)
     ano_criacao = db.Column(db.Integer, nullable=False)
-    votos = db.Column(db.Integer)
     privado = db.Column("privado", db.Boolean())
+    likes = db.relationship("User", secondary=Like_da_Proposta, backref="likesPropostas")
     tipo_proposta = db.Column(db.String(200), nullable=False)
     gerente_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     categorias = db.relationship("Categoria", backref="proposta")

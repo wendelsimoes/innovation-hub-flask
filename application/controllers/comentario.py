@@ -36,7 +36,7 @@ def likear_comentario():
     comentario_a_likear = Comentario.query.filter_by(id=request.form.get("id_comentario")).first()
 
     if comentario_a_likear:
-        comentarios_que_dei_like = current_user.likes
+        comentarios_que_dei_like = current_user.likesComentarios
 
         if comentario_a_likear in comentarios_que_dei_like:
             comentario_a_likear.likes.remove(current_user)
@@ -56,7 +56,7 @@ def carregar_comentarios():
 
     if id_proposta:
         comentarios_da_proposta = Comentario.query.filter_by(proposta_id=id_proposta).all()
-        comentarios_que_dei_like = current_user.likes
+        comentarios_que_dei_like = current_user.likesComentarios
         
         if len(comentarios_da_proposta) > 0:
             comentario_schema = ComentarioSchema(many=True)

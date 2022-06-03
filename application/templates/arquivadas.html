@@ -50,7 +50,7 @@ Propostas Arquivadas
                     <form class="form_likear_proposta" style="margin-right: auto;">
                         <input type="hidden" name="proposta_id" value="{{ proposta.id }}">
                         <button class="botao-likear-proposta btn" type="submit">
-                            {% if proposta in user.propostas_que_dei_like %}
+                            {% if proposta in user.likesPropostas %}
                             <i class="bi bi-hand-thumbs-up-fill botao-like-proposta"></i>
                             {% else %}
                             <i class="bi bi-hand-thumbs-up botao-like-proposta"></i>

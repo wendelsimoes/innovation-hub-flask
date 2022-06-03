@@ -11,11 +11,6 @@ UserProposta = db.Table('UserProposta',
     db.Column('proposta_id', db.Integer, db.ForeignKey('propostas.id'))
 )
 
-Like_da_Proposta = db.Table('Like_da_Proposta',
-    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-    db.Column('proposta_id', db.Integer, db.ForeignKey('propostas.id'))
-)
-
 Proposta_Favorita = db.Table('Proposta_Favorita',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
     db.Column('proposta_id', db.Integer, db.ForeignKey('propostas.id'))
@@ -36,7 +31,6 @@ class User(db.Model, UserMixin):
     senha_encriptada = db.Column(db.String(200), nullable=False)
     propostas_que_estou = db.relationship("Proposta", secondary=UserProposta, backref="membros")
     propostas_que_sou_gerente = db.relationship("Proposta", backref="gerente_de_projeto")
-    propostas_que_dei_like = db.relationship("Proposta", secondary=Like_da_Proposta, backref="likes")
     propostas_favoritas = db.relationship("Proposta", secondary=Proposta_Favorita, backref="favoritador")
     notificacoes_pedir_para_participar = db.relationship("Notificacoes_Pedir_para_Participar", backref="gerente_da_proposta")
     foto_perfil = db.Column(db.String(1000))
@@ -59,7 +53,6 @@ class UserSchema(ma.SQLAlchemySchema):
     apelido = ma.auto_field()
     propostas_que_estou = ma.auto_field()
     propostas_que_sou_gerente = ma.auto_field()
-    propostas_que_dei_like =  ma.auto_field()
     propostas_favoritas =  ma.auto_field()
     notificacoes_pedir_para_participar =  ma.auto_field()
     foto_perfil = ma.auto_field()
