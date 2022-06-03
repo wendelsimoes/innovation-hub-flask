@@ -5,7 +5,7 @@ Feed
 {% endblock %}
 
 {% block main %}
-<div class="container mx-auto px-auto" style="display: flex; flex-direction: column;">
+<div id="feed_container" class="container mx-auto px-auto" style="display: flex; flex-direction: column;">
 
     {% block postar %}{% endblock %}
     
@@ -14,13 +14,13 @@ Feed
             <div class="lato-regular" style="display: flex;">
                 Ordenar por:
                 <div class="form-check" style="margin-left: 15px;">
-                    <input class="form-check-input" type="radio" name="ordenar" checked id="recente">
+                    <input class="form-check-input" type="radio" name="ordenar" checked id="recente" value="recente">
                     <label class="form-check-label lato-regular" for="recente">
                       Recente
                     </label>
                 </div>
                 <div class="form-check" style="margin-left: 10px;">
-                    <input class="form-check-input" type="radio" name="ordenar" checked id="popular">
+                    <input class="form-check-input" type="radio" name="ordenar" checked id="popular" value="popular">
                     <label class="form-check-label lato-regular" for="popular">
                       Popular
                     </label>

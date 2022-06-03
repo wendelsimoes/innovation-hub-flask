@@ -23,16 +23,19 @@ def arquivadas():
 @login_required
 def likear_proposta():
     proposta_a_likear = Proposta.query.filter_by(id=request.form.get("id_proposta")).first()
+    proposta_a_likear_contador = proposta_a_likear.contador_de_like
 
     if proposta_a_likear:
         propostas_que_dei_like = current_user.likesPropostas
 
         if proposta_a_likear in propostas_que_dei_like:
             current_user.likesPropostas.remove(proposta_a_likear)
+            proposta_a_likear.contador_de_like = proposta_a_likear_contador - 1
             db.session.commit()
             return Response(json.dumps({ "likeado": False, "numeros_de_like": len(proposta_a_likear.likes) }))
         else:
             current_user.likesPropostas.append(proposta_a_likear)
+            proposta_a_likear.contador_de_like = proposta_a_likear_contador + 1
             db.session.commit()
             return Response(json.dumps({ "likeado": True, "numeros_de_like": len(proposta_a_likear.likes) }))
     else:

@@ -4,7 +4,6 @@ $(document).on("click", function(event) {
     notificacao = document.querySelector('.notification-ui_dd');
     mostrar = "dropdown-menu notification-ui_dd show";
     esconder = "dropdown-menu notification-ui_dd hide";
-    console.log(classes_que_foram_clicadas);
 
     classes_que_foram_clicadas.every((classe) => {
         switch (classe) {
@@ -500,3 +499,16 @@ function exibir_notificacoes() {
         notificacao.className = mostrar;
     }
 }
+
+//______________________________________________________________________________________________
+
+var tableElementContainer1 = document.getElementById("feed_container");
+var temptableHolder  = '';
+
+for(var i=0,len=testData.length; i<len; i++){
+    temptableHolder  += '<tr><td>' + testData[i].firstName + '</td><td>' + testData[i].lastName + '</td><td>' + testData[i].title
+        + '</td><td>' + testData[i].id + '</td><td>'  + testData[i].department +  '</td></tr>';
+}
+
+temptableHolder += '</tbody></table>';
+tableElementContainer1.innerHTML  = temptableHolder ;

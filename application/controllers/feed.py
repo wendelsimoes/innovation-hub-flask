@@ -1,13 +1,14 @@
 from application import app
 from flask_login import login_required, current_user
 from application.forms import FormDeProposta
-from flask import request, render_template, redirect, url_for
+from flask import request, render_template, redirect, url_for, jsonify
 from datetime import date
-from application.models.proposta import Proposta
+from application.models.proposta import Proposta, PropostaSchema
 from application.models.categoria import Categoria
 from application import db
 from application.models.tipo_proposta import tipo_proposta
 from application.models.categorias import categorias
+from sqlalchemy.sql.expression import desc
 
 
 @app.route("/feed", methods=["GET", "POST"])
@@ -31,7 +32,7 @@ def feed():
                 tipo_proposta_selecionado = tipo_proposta_string
         
         today = date.today()
-        nova_proposta = Proposta(titulo=formDeProposta.titulo.data, descricao=formDeProposta.descricao.data, restricao_idade=formDeProposta.restricao_idade.data, arquivado=False, dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year, privado=privado, tipo_proposta=tipo_proposta_selecionado, gerente_de_projeto=current_user)
+        nova_proposta = Proposta(titulo=formDeProposta.titulo.data, descricao=formDeProposta.descricao.data, restricao_idade=formDeProposta.restricao_idade.data, arquivado=False, dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year, privado=privado, tipo_proposta=tipo_proposta_selecionado, gerente_de_projeto=current_user, contador_de_like=0)
         db.session.add(nova_proposta)
         db.session.commit()
 
@@ -56,6 +57,16 @@ def feed():
         return redirect(url_for("feed"))
 
     # Se for GET
+    ordenar = request.args.get("ordenar")
+    proposta_schema = PropostaSchema(many=True)
+    todas_propostas_nao_privadas = []
+    if ordenar == "popular":
+        todas_propostas_nao_privadas = Proposta.query.order_by(desc(Proposta.contador_de_like)).filter_by(privado=False).all()
+        return jsonify(proposta_schema.dump(todas_propostas_nao_privadas))
+    elif ordenar == "recente":
+        todas_propostas_nao_privadas = Proposta.query.order_by(desc(Proposta.ano_criacao)).order_by(desc(Proposta.mes_criacao)).order_by(desc(Proposta.dia_criacao)).filter_by(privado=False).all()
+        return jsonify(proposta_schema.dump(todas_propostas_nao_privadas))
+
     todas_propostas_nao_privadas = Proposta.query.filter_by(privado=False).all()
 
     return render_template("postar.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user, todas_propostas_nao_privadas=todas_propostas_nao_privadas)

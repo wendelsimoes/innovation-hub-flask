@@ -1,4 +1,4 @@
-from application import db
+from application import db, ma
 from application.models.user import User
 
 
@@ -39,3 +39,9 @@ class Proposta(db.Model):
     gerente_de_projeto = db.relationship("User", backref="propostas_que_sou_gerente")
     membros = db.relationship("User", secondary=UserProposta, backref="propostas_que_estou")
     favoritador = db.relationship("User", secondary=Proposta_Favorita, backref="propostas_favoritas")
+    contador_de_like = db.Column(db.Integer)
+
+
+class PropostaSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Proposta
