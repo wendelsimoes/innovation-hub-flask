@@ -56,15 +56,15 @@ def carregar_comentarios():
 
     if id_proposta:
         comentarios_da_proposta = Comentario.query.filter_by(proposta_id=id_proposta).all()
-        comentarios_que_dei_like = current_user.likesComentarios
         
         if len(comentarios_da_proposta) > 0:
             comentario_schema = ComentarioSchema(many=True)
             comentarios_da_proposta_formatado = comentario_schema.dump(comentarios_da_proposta)
 
             for comentario in comentarios_da_proposta_formatado:
-                for user in comentario['likes']:
-                    if current_user.apelido == user['apelido']:
+                comentario['likeado'] = False
+                for like in comentario['likes']:
+                    if like['apelido'] == current_user.apelido:
                         comentario['likeado'] = True
 
             return jsonify(comentarios_da_proposta_formatado)

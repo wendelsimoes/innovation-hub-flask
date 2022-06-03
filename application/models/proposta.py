@@ -1,7 +1,20 @@
 from application import db
+from application.models.user import User
 
 
 Like_da_Proposta = db.Table('Like_da_Proposta',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('proposta_id', db.Integer, db.ForeignKey('propostas.id'))
+)
+
+
+UserProposta = db.Table('UserProposta',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('proposta_id', db.Integer, db.ForeignKey('propostas.id'))
+)
+
+
+Proposta_Favorita = db.Table('Proposta_Favorita',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
     db.Column('proposta_id', db.Integer, db.ForeignKey('propostas.id'))
 )
@@ -23,3 +36,6 @@ class Proposta(db.Model):
     tipo_proposta = db.Column(db.String(200), nullable=False)
     gerente_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     categorias = db.relationship("Categoria", backref="proposta")
+    gerente_de_projeto = db.relationship("User", backref="propostas_que_sou_gerente")
+    membros = db.relationship("User", secondary=UserProposta, backref="propostas_que_estou")
+    favoritador = db.relationship("User", secondary=Proposta_Favorita, backref="propostas_favoritas")
