@@ -63,64 +63,6 @@ def favoritar():
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
 
 
-@app.route("/comentar", methods=["POST"])
-@login_required
-def comentar():
-    proposta_a_comentar = Proposta.query.filter_by(id=request.form.get("id_proposta")).first()
-
-    if proposta_a_comentar:
-        if not request.form.get("texto_comentario"):
-            return Response(json.dumps({"status": 400, "mensagem": "Este campo é necessário"}), mimetype="application\json")
-
-        if len(request.form.get("texto_comentario")) > 1000:
-            return Response(json.dumps({"status": 400, "mensagem": "Campo deve conter no máximo 1000 caracteres"}), mimetype="application\json")
-
-        today = date.today()
-        novo_comentario = Comentario(texto_comentario=request.form.get("texto_comentario"), dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year, dono_do_comentario=current_user.apelido, proposta_id=proposta_a_comentar.id, user=current_user, proposta=proposta_a_comentar)
-
-        db.session.commit()
-
-        return redirect(url_for("carregar_comentarios", id_proposta=request.form.get("id_proposta")))
-    else:
-        return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
-
-
-@app.route("/carregar_comentarios", methods=["GET"])
-def carregar_comentarios():
-    id_proposta = request.args.get("id_proposta")
-
-    if id_proposta:
-        comentarios_da_proposta = Comentario.query.filter_by(proposta_id=id_proposta).all()
-        comentarios_que_dei_like = current_user.likes
-        
-        if len(comentarios_da_proposta) > 0:
-            comentario_schema = ComentarioSchema(many=True)
-            comentarios_da_proposta_formatado = comentario_schema.dump(comentarios_da_proposta)
-
-            todos_comentarios_da_proposta_array = []
-
-            for comentario in comentarios_da_proposta:
-                likeado = False
-                if comentario in comentarios_que_dei_like:
-                    likeado = True
-                
-                user = dict(comentario.user.__dict__)
-                user.pop('_sa_instance_state', None)
-
-                comentario_dicionario = dict(comentario.__dict__)
-                comentario_dicionario.pop('_sa_instance_state', None)
-                comentario_dicionario.pop('user', None)
-                comentario_dicionario['user'] = user
-
-                todos_comentarios_da_proposta_array.append(comentario_dicionario)
-
-            return jsonify(comentarios_da_proposta_formatado)
-        else:
-            return Response(json.dumps({"status": 200, "info": "Niguém fez um comentário ainda, que tal ser o primeiro?"}), mimetype="application\json")
-    else:
-        return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
-
-
 @app.route("/participar", methods=["POST"])
 @login_required
 def participar():

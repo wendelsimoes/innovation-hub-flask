@@ -277,6 +277,8 @@ function carregar_comentarios(comentarios, modal_comentarios) {
     div_comentarios = modal_comentarios.find('.comentarios_da_proposta');
     div_comentarios.empty();
     comentarios.forEach((comentario) => {
+        console.log(comentario);
+
         var card_de_comentario = $("<div>", {
             id: "comentario" + comentario["id"],
             class: "card mx-auto mt-3",
@@ -350,7 +352,7 @@ function carregar_comentarios(comentarios, modal_comentarios) {
         div_do_like.append(form_do_like);
         card_de_comentario_body.append(div_do_like);
 
-        texto = document.createTextNode(" " + comentario["numeros_de_like"] + " ");
+        texto = document.createTextNode(" " + comentario["likes"].length + " ");
         botao_do_like.append(texto);
     });
 }

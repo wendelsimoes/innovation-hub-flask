@@ -1,8 +1,8 @@
 from application import app, db
 from application.models.user import User
-from flask import Response, request, render_template, redirect
+from flask import Response, request, render_template, redirect, url_for
 import json
-from flask_login import current_user
+from flask_login import current_user, login_user, logout_user, login_required
 from application.forms import FormDeRegistro, FormDeLogin, FormDeConfiguracao
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
@@ -68,6 +68,7 @@ def registrar():
 
 
 @app.route("/configuracoes_usuario", methods=["GET", "POST"])
+@login_required
 def configuracoes_usuario():
     formDeConfiguracao = FormDeConfiguracao()
 
@@ -86,3 +87,30 @@ def configuracoes_usuario():
         return redirect(url_for("index"))
     
     return render_template("configuracoes_usuario.html", user=current_user, formDeConfiguracao=formDeConfiguracao)
+
+
+@app.route("/entrar", methods=["POST"])
+def login():
+    formDeLogin = FormDeLogin()
+
+    if not formDeLogin.validate_on_submit():
+        return render_template("index.html", formDeRegistro=FormDeRegistro(), formDeLogin=formDeLogin, abrirModalDeRegistro=False, abrirModalDeLogin=True, user=current_user)
+    
+    # Logar
+    user = User.query.filter_by(apelido=formDeLogin.apelido.data).first()
+
+    if request.form.get("lembrar_de_mim") == "on":
+        login_user(user, remember=True)
+    else:
+        login_user(user)
+        
+    # Redirect user to home page
+    return redirect(url_for("index"))
+
+
+@app.route("/sair")
+def logout():
+    # Deslogar qualquer usuário que tenha logado anteriormente
+    logout_user()
+
+    return redirect(url_for("index"))
