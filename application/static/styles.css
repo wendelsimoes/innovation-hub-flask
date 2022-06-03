@@ -548,3 +548,8 @@ button,
 .div-ordenar-filtrar {
     display: flex;
 }
+
+
+#input_de_ordenar:hover {
+    cursor: pointer !important
+}

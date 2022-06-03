@@ -502,13 +502,34 @@ function exibir_notificacoes() {
 
 //______________________________________________________________________________________________
 
-var tableElementContainer1 = document.getElementById("feed_container");
-var temptableHolder  = '';
+// var tableElementContainer1 = document.getElementById("feed_container");
+// var temptableHolder  = '';
 
-for(var i=0,len=testData.length; i<len; i++){
-    temptableHolder  += '<tr><td>' + testData[i].firstName + '</td><td>' + testData[i].lastName + '</td><td>' + testData[i].title
-        + '</td><td>' + testData[i].id + '</td><td>'  + testData[i].department +  '</td></tr>';
-}
+// for(var i=0,len=testData.length; i<len; i++){
+//     temptableHolder  += '<tr><td>' + testData[i].firstName + '</td><td>' + testData[i].lastName + '</td><td>' + testData[i].title
+//         + '</td><td>' + testData[i].id + '</td><td>'  + testData[i].department +  '</td></tr>';
+// }
 
-temptableHolder += '</tbody></table>';
-tableElementContainer1.innerHTML  = temptableHolder ;
+// temptableHolder += '</tbody></table>';
+// tableElementContainer1.innerHTML  = temptableHolder ;
+
+
+
+
+
+
+
+
+$(document).ready(function () {
+    $('#input_de_ordenar').on("click", function () {
+        ordenar = $('#recente').checked ? "recente" : "popular"
+
+        jQuery.ajax({
+            type: 'GET',
+            url: `feed?ordenar=${ordenar}`,
+            success: function (response) {
+                console.log(response);
+            }
+        })
+    });
+});
