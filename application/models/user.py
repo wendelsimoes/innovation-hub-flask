@@ -45,6 +45,21 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.senha_encriptada, senha)
 
 
-class UserSchema(ma.SQLAlchemyAutoSchema):
+class UserSchema(ma.SQLAlchemySchema):
     class Meta:
         model = User
+
+    id = ma.auto_field()
+    email = ma.auto_field()
+    nome = ma.auto_field()
+    sobrenome = ma.auto_field()
+    dia_nascimento = ma.auto_field()
+    mes_nascimento = ma.auto_field()
+    ano_nascimento = ma.auto_field()
+    apelido = ma.auto_field()
+    propostas_que_estou = ma.auto_field()
+    propostas_que_sou_gerente = ma.auto_field()
+    propostas_que_dei_like =  ma.auto_field()
+    propostas_favoritas =  ma.auto_field()
+    notificacoes_pedir_para_participar =  ma.auto_field()
+    foto_perfil = ma.auto_field()
