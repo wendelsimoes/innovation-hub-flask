@@ -12,8 +12,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 # Configurar banco de dados
-#app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///innovation-hub-flask.db"
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:021011wd@localhost/innovation-hub-flask"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///innovation-hub-flask.db"
+#app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:021011wd@localhost/innovation-hub-flask"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
 ma = Marshmallow(app)

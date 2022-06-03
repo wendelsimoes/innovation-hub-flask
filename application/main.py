@@ -34,47 +34,10 @@ def load_user(user_id):
 
 
 from application.controllers import home
-
-
 from application.controllers import user
-
-
 from application.controllers import feed
- 
-
 from application.controllers import proposta
-
-
 from application.controllers import comentario
-
-
-# Pedir para participar
-@app.route("/participar", methods=["POST"])
-@login_required
-def participar():
-    proposta_que_quero_entrar = Proposta.query.filter_by(id=request.form.get("id_proposta")).first()
-
-    if proposta_que_quero_entrar:
-        verificar_se_ja_pediu = Notificacoes_Pedir_para_Participar.query.filter_by(quem_pediu_para_entrar=current_user.apelido, proposta_id=proposta_que_quero_entrar.id).first()
-
-        if verificar_se_ja_pediu:
-            return Response(json.dumps({"status": 400, "mensagem": "Solicitação já foi previamente enviada"}))
-
-        if proposta_que_quero_entrar in current_user.propostas_que_estou:
-            return Response(json.dumps({"status": 400, "mensagem": "Você já participa desta proposta"}))
-
-        gerente_da_proposta = User.query.filter_by(id=proposta_que_quero_entrar.gerente_id).first()
-
-        today = date.today()
-        notificacao = Notificacoes_Pedir_para_Participar(quem_pediu_para_entrar=current_user.apelido, quem_pediu_para_entrar_foto=current_user.foto_perfil, titulo_da_proposta=proposta_que_quero_entrar.titulo, gerente_da_proposta=gerente_da_proposta, proposta_id=proposta_que_quero_entrar.id, dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year)
-
-        gerente_da_proposta.notificacoes_pedir_para_participar.append(notificacao)
-
-        db.session.commit()
-
-        return Response(json.dumps({"status": 200, "mensagem": "Solicitação enviada com sucesso"}))
-    else:
-        return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
 
 
 @app.route("/aprovar_participacao", methods=["POST"])

@@ -58,11 +58,11 @@ $(document).ready(function () {
                     id_proposta: id_proposta
                 },
                 function (response) {
-                    let codigo = JSON.parse(response)["status"];
+                    let codigo = response["status"];
     
                     if (codigo == 400) {
                         let liveToast = $('.toast-erro');
-                        liveToast.find('.toast-body').text(JSON.parse(response)["mensagem"]);
+                        liveToast.find('.toast-body').text(response["mensagem"]);
                         let toast = new bootstrap.Toast(liveToast);
                         
                         toast.show();
@@ -71,7 +71,7 @@ $(document).ready(function () {
     
                     if (codigo == 200) {
                         let liveToast = $('.toast-sucesso');
-                        liveToast.find('.toast-body').text(JSON.parse(response)["mensagem"]);
+                        liveToast.find('.toast-body').text(response["mensagem"]);
                         let toast = new bootstrap.Toast(liveToast);
                         
                         toast.show();
