@@ -323,7 +323,7 @@ button, .descricao-do-card {
 .notification-list {
     display: -webkit-box;
     display: -ms-flexbox;
-    display: flex;
+    display: block;
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
     justify-content: space-between;
@@ -333,8 +333,8 @@ button, .descricao-do-card {
 }
 
 .notification-list--unread {
-    position: absolute;
-    right: 150px;
+    position: relative;
+    right: 0;
     width: 400px;
     background-color: #fff !important;
     margin: 0 0px !important;
@@ -342,6 +342,7 @@ button, .descricao-do-card {
     padding-bottom: 20px !important;
     padding-right: 25px !important;
     padding-left: 25px !important;
+    overflow-x: hidden;
 }
 
 .notification-list .notification-list_img img {

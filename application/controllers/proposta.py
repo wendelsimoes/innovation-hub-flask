@@ -146,3 +146,24 @@ def participar():
         return jsonify({"status": 200, "mensagem": "Solicitação enviada com sucesso"})
     else:
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
+
+
+@app.route("/aprovar_participacao", methods=["POST"])
+@login_required
+def aprovar_participacao():
+    quem_pediu_para_entrar = request.form.get("quem_pediu_para_entrar")
+    proposta_id = request.form.get("proposta_id")
+
+    notificacao = Notificacoes_Pedir_para_Participar.query.filter_by(quem_pediu_para_entrar=quem_pediu_para_entrar, proposta_id=proposta_id).first()
+
+    if notificacao:
+        proposta = Proposta.query.filter_by(id=proposta_id).first()
+        usuario = User.query.filter_by(apelido=quem_pediu_para_entrar).first()
+
+        usuario.propostas_que_estou.append(proposta)
+
+        Notificacoes_Pedir_para_Participar.query.filter_by(quem_pediu_para_entrar=quem_pediu_para_entrar, proposta_id=proposta_id).delete()
+        db.session.commit()
+        return jsonify({'codigo': 200})
+    else:
+        return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - USUÁRIO NÃO PEDIU PARA PARTICIPAR") 

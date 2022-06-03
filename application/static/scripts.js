@@ -13,7 +13,7 @@ $(document).ready(function () {
                     proposta_id: id_proposta
                 },
                 function (response) {
-                    let codigo = JSON.parse(response)["codigo"];
+                    let codigo = response["codigo"];
     
                     if (codigo == 200) {
                         notificacao.remove();

@@ -75,41 +75,41 @@
                 {% endif %}
               </a>
               <div class="dropdown-menu notification-ui_dd hide" aria-labelledby="navbarDropdown">
+                <div class="notification-ui_dd-header">
+                    <h3 class="text-center">Notificações</h3>
+                </div>
                 <div class="notification-ui_dd-content">
                   {% for notificacao in user.notificacoes_pedir_para_participar %}
                   <div class="notification-list notification-list--unread">
-                    <!-- Implementar imagem de perfil -->
-                    <div class="notification-list_img">
-                      <img src="{{ notificacao.quem_pediu_para_entrar_foto }}" alt="user">
+                        <div class="notification-list_img">
+                            <img src="{{ notificacao.quem_pediu_para_entrar_foto }}" alt="user">
+                        </div>
+                        <div class="notification-list_detail mt-2">
+                            <p style="text-align: start;"><b>{{ notificacao.quem_pediu_para_entrar }}</b> pediu para entrar em <p></p><p><b>{{ notificacao.titulo_da_proposta }}</b></p>
+                            <p>
+                              {% if notificacao.mes_criacao < 10 %}
+                              <small>{{ notificacao.dia_criacao }}/0{{ notificacao.mes_criacao }}/{{
+                                notificacao.ano_criacao }}</small>
+                              {% else %}
+                              <small>{{ notificacao.dia_criacao }}/{{ notificacao.mes_criacao }}/{{
+                                notificacao.ano_criacao }}</small>
+                              {% endif %}
+                            </p>
+                        </div>
+                        <div>
+                          <form class="form_aprovar_participacao" method="post" style="display: inline-block;">
+                            <input class="input_quem_pediu" type="hidden" name="quem_pediu_para_entrar" value="{{ notificacao.quem_pediu_para_entrar }}">
+                            <input class="input_proposta_id" type="hidden" name="proposta_id" value="{{ notificacao.proposta_id }}">
+                            <button type="submit" class="btn btn-primary mr-3">Aprovar</button>
+                          </form>
+                          <form class="form_recusar_participacao" method="post" style="display: inline-block;">
+                            <input class="input_quem_pediu" type="hidden" name="quem_pediu_para_entrar" value="{{ notificacao.quem_pediu_para_entrar }}">
+                            <input class="input_proposta_id" type="hidden" name="proposta_id" value="{{ notificacao.proposta_id }}">
+                            <button type="submit" class="btn btn-danger mr-3">Recusar</button>
+                          </form>
+                        </div>
                     </div>
-                    <div class="notification-list_detail">
-                      <p><b>{{ notificacao.quem_pediu_para_entrar }}</b> pediu para entrar em <b>{{ notificacao.titulo_da_proposta }}</b></p>
-                      <!-- Implementar data -->
-                      <p>
-                        {% if notificacao.mes_criacao < 10 %}
-                        <small>{{ notificacao.dia_criacao }}/0{{ notificacao.mes_criacao }}/{{
-                          notificacao.ano_criacao }}</small>
-                        {% else %}
-                        <small>{{ notificacao.dia_criacao }}/{{ notificacao.mes_criacao }}/{{
-                          notificacao.ano_criacao }}</small>
-                        {% endif %}
-                      </p>
-                    </div>
-                    <div class="notification-list_feature-img">
-                      <form class="form_aprovar_participacao" method="post">
-                        <input class="input_quem_pediu" type="hidden" name="quem_pediu_para_entrar" value="{{ notificacao.quem_pediu_para_entrar }}">
-                        <input class="input_proposta_id" type="hidden" name="proposta_id" value="{{ notificacao.proposta_id }}">
-                        <button type="submit" class="btn btn-primary mr-3">Aprovar</button>
-                      </form>
-                      <form class="form_recusar_participacao" method="post">
-                        <input class="input_quem_pediu" type="hidden" name="quem_pediu_para_entrar" value="{{ notificacao.quem_pediu_para_entrar }}">
-                        <input class="input_proposta_id" type="hidden" name="proposta_id" value="{{ notificacao.proposta_id }}">
-                        <button type="submit" class="btn btn-danger mt-2 mr-3">Recusar</button>
-                      </form>
-                    </div>
-                  </div>
-                  {% endfor %}
-                </div>
+                    {% endfor %}
               </div>
             </li>
           </ul>
