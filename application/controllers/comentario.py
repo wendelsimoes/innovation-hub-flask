@@ -9,9 +9,9 @@ from flask import jsonify
 from application.models.user import User, UserSchema
 
 
-@app.route("/comentar", methods=["POST"])
+@app.route("/criar_comentario", methods=["POST"])
 @login_required
-def comentar():
+def criar_comentario():
     proposta_a_comentar = Proposta.query.filter_by(id=request.form.get("id_proposta")).first()
 
     if proposta_a_comentar:
@@ -24,6 +24,7 @@ def comentar():
         today = date.today()
         novo_comentario = Comentario(texto_comentario=request.form.get("texto_comentario"), dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year, dono_do_comentario=current_user.apelido, proposta_id=proposta_a_comentar.id, user=current_user, proposta=proposta_a_comentar)
 
+        proposta_a_comentar.comentarios.append(novo_comentario)
         db.session.commit()
 
         return redirect(url_for("carregar_comentarios", id_proposta=request.form.get("id_proposta")))

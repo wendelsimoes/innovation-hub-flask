@@ -10,10 +10,9 @@ $(document).ready(function () {
                 conteudo += proposta_modal_card(proposta, response["user"])
             });
             propostas_feed_container.innerHTML = conteudo;
+            carregar_todos_event_listeners();
         }
     });
-
-    carregar_todos_event_listeners();
 });
 
 function formatar_baseado_em_largura() {
@@ -441,10 +440,10 @@ function carregar_postar_comentario_listener() {
         comentar_area = $(this).children('div').children('textarea');
         modal_comentarios = $(this).parents('.modal');
         div_comentarios = modal_comentarios.find('.comentarios_da_proposta');
-    
+        
         $(function () {
             $.post(
-                'comentar',
+                'criar_comentario',
                 {
                     texto_comentario: comentario,
                     id_proposta: proposta_id
