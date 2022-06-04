@@ -5,7 +5,7 @@ Propostas Arquivadas
 {% endblock %}
 
 {% block main %}
-<div class="container mx-auto px-auto" style="display: flex; flex-direction: column;"></div>
+<div id="feed_container" class="container mx-auto px-auto" style="display: flex; flex-direction: column;">
     <div class="mx-auto mt-3 item-feed lato-regular">
         <div class="div-ordenar-filtrar" style="display: flex;">
             <div class="lato-regular input-de-ordenar" style="display: flex;">
@@ -34,6 +34,9 @@ Propostas Arquivadas
 
     <input id="query_arquivada" type="hidden" name="arquivadas" value="sim">
     <div id="propostas_feed_container" style="display: flex; flex-direction: column;">
+    </div>
+    <div class="mt-5" style="height: 200px;">
+        <h1>Você chegou ao fim desta seção :)</h1>
     </div>
 </div>
 {% endblock %}

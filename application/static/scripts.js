@@ -1,3 +1,9 @@
+pular = 0;
+
+window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+}
+
 $(document).ready(function () {
     propostas_feed_container = document.getElementById('propostas_feed_container');
 
@@ -16,6 +22,7 @@ $(document).ready(function () {
     
                 propostas_feed_container.innerHTML = conteudo;
                 carregar_event_listeners_dinamicos();
+                pular += 10;
             }
         });
     }
@@ -126,13 +133,14 @@ $(document).ready(function () {
             url: `todas_propostas_nao_privadas?ordenar=${ordenar}&filtrar=${filtrar}&arquivadas=${arquivadas}`,
             success: function (response) {
                 propostas_feed_container = document.getElementById('propostas_feed_container');
-                conteudo = ''
+                conteudo = '';
                 response["propostas"].forEach(function(proposta) {
                     conteudo += proposta_card(proposta, response["user"]);
                     conteudo += proposta_modal_card(proposta, response["user"])
                 });
                 propostas_feed_container.innerHTML = conteudo;
                 carregar_event_listeners_dinamicos();
+                pular += 10;
             }
         });
     });
@@ -479,6 +487,32 @@ function carregar_listeners_estaticos() {
                 });
             fechar_notificacoes_se_nenhuma();
         });
+    });
+
+    $(window).scroll(function() {
+        if($(window).scrollTop() + $(window).height() >= $("#feed_container").height()) {
+            ordenar = $('#recente').prop('checked') ? "recente" : "popular";
+            filtrar = document.getElementById("select_ordenar").value;
+            arquivadas = document.getElementById("query_arquivada").value;
+
+
+            jQuery.ajax({
+                type: 'GET',
+                url: `todas_propostas_nao_privadas?ordenar=${ordenar}&filtrar=${filtrar}&arquivadas=${arquivadas}&pular=${pular}`,
+                success: function (response) {
+                    propostas_feed_container = document.getElementById('propostas_feed_container');
+                    conteudo_anterior = propostas_feed_container.innerHTML;
+                    response["propostas"].forEach(function(proposta) {
+                        conteudo_anterior += proposta_card(proposta, response["user"]);
+                        conteudo_anterior += proposta_modal_card(proposta, response["user"])
+                    });
+                    propostas_feed_container.innerHTML = conteudo_anterior;
+                    carregar_event_listeners_dinamicos();
+                }
+            });
+
+            pular += 10;
+        }
     });
 
     carregar_adicionar_membro_listener();

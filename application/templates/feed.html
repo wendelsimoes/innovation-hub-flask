@@ -5,7 +5,7 @@ Feed
 {% endblock %}
 
 {% block main %}
-<div class="container mx-auto px-auto" style="display: flex; flex-direction: column;">
+<div id="feed_container" class="container mx-auto px-auto" style="display: flex; flex-direction: column;">
 
     <button id="toggle-item-feed-postar" type="button" class="btn btn-primary lato-bold">Postar nova Proposta</button>
 
@@ -112,6 +112,9 @@ Feed
 
     <input id="query_arquivada" type="hidden" value="todas">
     <div id="propostas_feed_container" style="display: flex; flex-direction: column;">
+    </div>
+    <div class="mt-5" style="height: 200px;">
+        <h1>Você chegou ao fim desta seção :)</h1>
     </div>
 </div>
 {% endblock %}

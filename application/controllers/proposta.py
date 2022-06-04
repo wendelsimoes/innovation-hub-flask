@@ -270,20 +270,24 @@ def todas_propostas_nao_privadas():
     arquivadas = request.args.get("arquivadas")
     proposta_schema = PropostaSchema(many=True)
     user_schema = UserSchema()
+    pular = request.args.get("pular")
 
-    todas_propostas_nao_privadas = Proposta.query.filter_by(privado=False)
+    query = Proposta.query.filter_by(privado=False)
 
     if not filtrar == "todas":
-        todas_propostas_nao_privadas = todas_propostas_nao_privadas.filter(Proposta.categorias.any(valor=filtrar))
+        query = query.filter(Proposta.categorias.any(valor=filtrar))
 
     if ordenar == "popular":
-        todas_propostas_nao_privadas = todas_propostas_nao_privadas.order_by(desc(Proposta.contador_de_like))
+        query = query.order_by(desc(Proposta.contador_de_like))
     else:
-        todas_propostas_nao_privadas = todas_propostas_nao_privadas.order_by(desc(Proposta.ano_criacao)).order_by(desc(Proposta.mes_criacao)).order_by(desc(Proposta.dia_criacao))
+        query = query.order_by(desc(Proposta.ano_criacao)).order_by(desc(Proposta.mes_criacao)).order_by(desc(Proposta.dia_criacao))
 
     if arquivadas == "sim":
-        todas_propostas_nao_privadas = todas_propostas_nao_privadas.filter_by(arquivado=True)
+        query = query.filter_by(arquivado=True)
     else:
-        todas_propostas_nao_privadas = todas_propostas_nao_privadas.filter_by(arquivado=False)
+        query = query.filter_by(arquivado=False)
 
-    return jsonify({ "propostas": proposta_schema.dump(todas_propostas_nao_privadas.all()), "user": user_schema.dump(current_user) })
+    if pular:
+        query = query.offset(int(pular))
+
+    return jsonify({ "propostas": proposta_schema.dump(query.limit(10).all()), "user": user_schema.dump(current_user) })
