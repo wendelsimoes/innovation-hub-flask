@@ -215,20 +215,20 @@ def editar_proposta():
         if not request.form.getlist("membros"):
             for membro_antigo in membros_antigos:
                 if not membro_antigo == current_user:
-                    membro_antigo.propostas_que_estou.remove(proposta_a_editar)
+                    proposta_a_editar.membros.remove(membro_antigo)
             db.session.commit()
             return redirect(url_for("index"))
 
         # Remover somentes os que foram removidos da form
         for membro_antigo in membros_antigos:
             if not membro_antigo.apelido in request.form.getlist("membros"):
-                membro_antigo.propostas_que_estou.remove(proposta_a_editar)
+                proposta_a_editar.membros.remove(membro_antigo)
         
         # Adicionar os que foram adicionados na form
         for membro_novo in request.form.getlist("membros"):
             user = User.query.filter_by(apelido=membro_novo).first()
             if not user in membros_antigos:
-                user.propostas_que_estou.append(proposta_a_editar)
+                proposta_a_editar.membros.append(user)
 
         db.session.commit()
         return redirect(url_for("index"))
