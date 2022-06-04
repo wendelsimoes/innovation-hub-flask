@@ -9,145 +9,27 @@ $(document).ready(function () {
                 conteudo += proposta_card(proposta, response["user"]);
                 conteudo += proposta_modal_card(proposta, response["user"])
             });
-            propostas_feed_container.innerHTML = conteudo;
-            carregar_todos_event_listeners();
-        }
-    });
-});
 
-function formatar_baseado_em_largura() {
-    if ($(window).width() < 600) {
-        $('#toggle-item-feed-postar').css("display", "inline-block");
-        $('#toggle-item-feed-postar').css("height", "38px");
-        $('.item-feed-postar').css("display", "none");
-    } else {
-        $('#toggle-item-feed-postar').css("display", "none");
-        $('#toggle-item-feed-postar').css("height", "0px");
-        $('.item-feed-postar').css("display", "flex");
-    }
-}
-
-$(document).ready(function () {
-    formatar_baseado_em_largura();
-});
-
-$(window).resize(function () {
-    formatar_baseado_em_largura();
-});
-
-$(document).ready(function () {
-    $('#toggle-item-feed-postar').on("click", function () {
-        $('#toggle-item-feed-postar').css("display", "none");
-        $('.item-feed-postar').css("display", "flex");
-    });
-});
-
-$(function () {
-    $.ajax({
-        url: 'todos_usuarios'
-    }).done(function (data) {
-        $('#apelido_autocomplete').autocomplete({
-            source: data,
-            minLenght: 2
-        })
-    });
-});
-
-$(document).ready(function () {
-    var membros = [];
-
-    inputs_invi = $('#div_invisivel_membros').children('input');
-    for (i = 0; i < inputs_invi.length; i++) {
-        membros.push(inputs_invi[i].defaultValue)
-    }
-
-    $('#adicionar_membro_btn').on("click", function () {
-        membro = $('#apelido_autocomplete').val();
-
-        jQuery.ajax({
-            url: 'checar_usuario',
-            data: {
-                apelido: membro
-            },
-            success: function (response) {
-                // Validação
-                if (response["status"] != 200) {
-                    $('#adicionar_membro_span').text(response["mensagem"]);
-                    return
-                }
-
-                // Limpar campo de membro
-                $('#apelido_autocomplete').val("")
-
-                // Validação
-                if (membros.includes(response["mensagem"])) {
-                    $('#adicionar_membro_span').text("Usuário já adicionado");
-                    return
-                }
-
-                // limpar mensagem de erro
-                $('#adicionar_membro_span').text("");
-
-                membros.push(response["mensagem"]);
-
-                aleatorio = (Math.floor(Math.random() * 3)) + 1
-
-                classe_aleatoria = aleatorio == 1 ? "membros_lista_amarelo" : aleatorio == 2 ? "membros_lista_azul" : aleatorio == 3 ? "membros_lista_bege" : "membros_lista";
-                
-                if ($('#lista_de_membros').children('div').length > 0) {
-                    var $list = $("<li>", { "class": classe_aleatoria });
-                    $list.append(response["mensagem"]);
-                    var $div_membro = $("<div>", { "class": "margem-direita" });
-                    var $anchor_remover_membro = $("<a>", { "class": "lato-bold x-remover-membro" });
-                    $anchor_remover_membro.append("X");
-                    $div_membro.append($list);
-                    $div_membro.append($anchor_remover_membro);
-                    $('#lista_de_membros').append($div_membro);
-                }
-                else {
-                    var $list = $("<li>", { "class": classe_aleatoria });
-                    $list.append(response["mensagem"]);
-                    $('#lista_de_membros').append($list);
-                }
-                
-                $('#div_invisivel_membros').text("");
-                membros.forEach(element => {
-                    $('<input>').attr({
-                        type: 'hidden',
-                        name: 'membros',
-                        value: element
-                    }).appendTo('#div_invisivel_membros');
-                });
-                carregar_on_click_para_botao(membros);
-            }
-        })
-    });
-
-    carregar_on_click_para_botao(membros);
-});
-
-function carregar_on_click_para_botao(membros) {
-    $('.x-remover-membro').on("click", function () {
-        membro = $(this).siblings('.membros_lista_azul').text();
-
-        for (i = 0; i < membros.length; i++) {
-            if (membros[i] == membro) {
-                membros.splice(i);
+            if (propostas_feed_container != null) {
+                propostas_feed_container.innerHTML = conteudo;
+                carregar_event_listeners_dinamicos();
             }
         }
-
-        inputs_invisiveis = $('#div_invisivel_membros').children('input');
-
-        for (i=0; i < inputs_invisiveis.length; i++) {
-            if (inputs_invisiveis[i].defaultValue == membro) {
-                inputs_invisiveis[i].remove();
-            }
-        }
-
-        $(this).siblings('.membros_lista_azul').css({"background-color": "red"});
-        $(this).remove();
     });
-}
+
+    $(function () {
+        $.ajax({
+            url: 'todos_usuarios'
+        }).done(function (data) {
+            $('#apelido_autocomplete').autocomplete({
+                source: data,
+                minLenght: 2
+            })
+        });
+    });
+
+    carregar_listeners_estaticos();
+});
 
 
 // Por favor Fran ignore tudo abaixo desta linha, só queria estar usando angular para mexer com dom, o importante é o backend
@@ -239,7 +121,7 @@ $(document).ready(function () {
                     conteudo += proposta_modal_card(proposta, response["user"])
                 });
                 propostas_feed_container.innerHTML = conteudo;
-                carregar_todos_event_listeners();
+                carregar_event_listeners_dinamicos();
             }
         });
     });
@@ -247,75 +129,12 @@ $(document).ready(function () {
 
 
 // Event listeners
-function carregar_todos_event_listeners() {
+function carregar_event_listeners_dinamicos() {
     carregar_likear_proposta_listener();
     carregar_likear_comentario_listener();
     carregar_pedir_participar_listener();
     carregar_favoritar_listener();
     carregar_postar_comentario_listener();
-
-    // Listeners estaticos da página
-    $('.notification-ui_icon').on('click', function () {
-        mostrar = "dropdown-menu notification-ui_dd show";
-        esconder = "dropdown-menu notification-ui_dd hide";
-        notificacao = document.querySelector('.notification-ui_dd');
-
-        if (notificacao.className == mostrar) {
-            notificacao.className = esconder;
-            return
-        }
-        notificacao.className = mostrar;
-    });
-
-    $('.form_aprovar_participacao').submit(function (event) {
-        event.preventDefault();
-        input_quem_pediu = $(this).find('.input_quem_pediu')[0].value;
-        id_proposta = $(this).find('.input_proposta_id')[0].value;
-        notificacao = $(this).parents('.notification-list');
-
-        $(function () {
-            $.post(
-                'aprovar_participacao',
-                {
-                    quem_pediu_para_entrar: input_quem_pediu,
-                    proposta_id: id_proposta
-                },
-                function (response) {
-                    let codigo = response["codigo"];
-    
-                    if (codigo == 200) {
-                        notificacao.remove();
-                        let liveToast = $('.toast-sucesso');
-                        liveToast.find('.toast-body').text("Usuário adicionado a proposta");
-                        let toast = new bootstrap.Toast(liveToast);
-                        
-                        toast.show();
-                        return
-                    }
-                });
-            fechar_notificacoes_se_nenhuma();
-        });
-    });
-    
-    $('.form_recusar_participacao').submit(function (event) {
-        event.preventDefault();
-        input_quem_pediu = $(this).find('.input_quem_pediu')[0].value;
-        id_proposta = $(this).find('.input_proposta_id')[0].value;
-        notificacao = $(this).parents('.notification-list');
-
-        $(function () {
-            $.post(
-                'recusar_participacao',
-                {
-                    quem_pediu_para_entrar: input_quem_pediu,
-                    proposta_id: id_proposta
-                },
-                function (response) {
-                    notificacao.remove();
-                });
-            fechar_notificacoes_se_nenhuma();
-        });
-    });
 }
 
 
@@ -471,6 +290,170 @@ function carregar_postar_comentario_listener() {
 }
 
 
+function carregar_on_click_para_botao(membros) {
+    $('.x-remover-membro').on("click", function () {
+        membro = $(this).siblings('.membros_lista_azul').text();
+
+        for (i = 0; i < membros.length; i++) {
+            if (membros[i] == membro) {
+                membros.splice(i);
+            }
+        }
+
+        inputs_invisiveis = $('#div_invisivel_membros').children('input');
+
+        for (i=0; i < inputs_invisiveis.length; i++) {
+            if (inputs_invisiveis[i].defaultValue == membro) {
+                inputs_invisiveis[i].remove();
+            }
+        }
+
+        $(this).siblings('.membros_lista_azul').css({"background-color": "red"});
+        $(this).remove();
+    });
+}
+
+
+function carregar_adicionar_membro_listener() {
+    var membros = [];
+
+    inputs_invi = $('#div_invisivel_membros').children('input');
+    for (i = 0; i < inputs_invi.length; i++) {
+        membros.push(inputs_invi[i].defaultValue)
+    }
+
+    carregar_on_click_para_botao(membros);
+
+    $('#adicionar_membro_btn').on("click", function () {
+        membro = $('#apelido_autocomplete').val();
+
+        jQuery.ajax({
+            url: 'checar_usuario',
+            data: {
+                apelido: membro
+            },
+            success: function (response) {
+                // Validação
+                if (response["status"] != 200) {
+                    $('#adicionar_membro_span').text(response["mensagem"]);
+                    return
+                }
+    
+                // Limpar campo de membro
+                $('#apelido_autocomplete').val("")
+    
+                // Validação
+                if (membros.includes(response["mensagem"])) {
+                    $('#adicionar_membro_span').text("Usuário já adicionado");
+                    return
+                }
+    
+                // limpar mensagem de erro
+                $('#adicionar_membro_span').text("");
+    
+                membros.push(response["mensagem"]);
+    
+                aleatorio = (Math.floor(Math.random() * 3)) + 1
+    
+                classe_aleatoria = aleatorio == 1 ? "membros_lista_amarelo" : aleatorio == 2 ? "membros_lista_azul" : aleatorio == 3 ? "membros_lista_bege" : "membros_lista";
+    
+                if ($('#lista_de_membros').children('div').length > 0) {
+                    divs_antigas = $('#lista_de_membros').html();
+                    nova_div_membro = `<div class="margem-direita"><li class="${classe_aleatoria}">${response["mensagem"]}</li><a class="lato-bold x-remover-membro">X</a></div>`;
+                    divs_antigas += nova_div_membro;
+                    $('#lista_de_membros').html(divs_antigas);
+                }
+                else {
+                    listas_antigas = $('#lista_de_membros').html();
+                    nova_lista_item_membro = `<li class="${classe_aleatoria}">${response["mensagem"]}</li>`;
+                    listas_antigas += nova_lista_item_membro;
+                    $('#lista_de_membros').html(listas_antigas);
+                }
+    
+                inputs_antigos = $('#div_invisivel_membros').html();
+
+                membros.forEach(membro => {
+                    input_novo = `<input type="hidden" name="membros" value="${membro}">`
+                    inputs_antigos += input_novo;
+                });
+
+                $('#div_invisivel_membros').html(inputs_antigos);
+    
+                carregar_on_click_para_botao(membros);
+            }});
+    });
+
+}
+
+
+function carregar_listeners_estaticos() {
+    // Listeners estaticos da página
+    $('.notification-ui_icon').on('click', function () {
+        mostrar = "dropdown-menu notification-ui_dd show";
+        esconder = "dropdown-menu notification-ui_dd hide";
+        notificacao = document.querySelector('.notification-ui_dd');
+
+        if (notificacao.className == mostrar) {
+            notificacao.className = esconder;
+            return
+        }
+        notificacao.className = mostrar;
+    });
+
+    $('.form_aprovar_participacao').submit(function (event) {
+        event.preventDefault();
+        input_quem_pediu = $(this).find('.input_quem_pediu')[0].value;
+        id_proposta = $(this).find('.input_proposta_id')[0].value;
+        notificacao = $(this).parents('.notification-list');
+
+        $(function () {
+            $.post(
+                'aprovar_participacao',
+                {
+                    quem_pediu_para_entrar: input_quem_pediu,
+                    proposta_id: id_proposta
+                },
+                function (response) {
+                    let codigo = response["codigo"];
+    
+                    if (codigo == 200) {
+                        notificacao.remove();
+                        let liveToast = $('.toast-sucesso');
+                        liveToast.find('.toast-body').text("Usuário adicionado a proposta");
+                        let toast = new bootstrap.Toast(liveToast);
+                        
+                        toast.show();
+                        return
+                    }
+                });
+            fechar_notificacoes_se_nenhuma();
+        });
+    });
+    
+    $('.form_recusar_participacao').submit(function (event) {
+        event.preventDefault();
+        input_quem_pediu = $(this).find('.input_quem_pediu')[0].value;
+        id_proposta = $(this).find('.input_proposta_id')[0].value;
+        notificacao = $(this).parents('.notification-list');
+
+        $(function () {
+            $.post(
+                'recusar_participacao',
+                {
+                    quem_pediu_para_entrar: input_quem_pediu,
+                    proposta_id: id_proposta
+                },
+                function (response) {
+                    notificacao.remove();
+                });
+            fechar_notificacoes_se_nenhuma();
+        });
+    });
+
+    carregar_adicionar_membro_listener();
+}
+
+
 // Funções auxiliares
 function fechar_notificacoes_se_nenhuma() {
     container_de_notificacoes = document.querySelector('.notification-ui_dd-content');
@@ -484,3 +467,30 @@ function fechar_notificacoes_se_nenhuma() {
         container_do_container_de_notifi.className = esconder;
     }
 }
+
+function formatar_baseado_em_largura() {
+    if ($(window).width() < 600) {
+        $('#toggle-item-feed-postar').css("display", "inline-block");
+        $('#toggle-item-feed-postar').css("height", "38px");
+        $('.item-feed-postar').css("display", "none");
+    } else {
+        $('#toggle-item-feed-postar').css("display", "none");
+        $('#toggle-item-feed-postar').css("height", "0px");
+        $('.item-feed-postar').css("display", "flex");
+    }
+}
+
+$(document).ready(function () {
+    formatar_baseado_em_largura();
+});
+
+$(window).resize(function () {
+    formatar_baseado_em_largura();
+});
+
+$(document).ready(function () {
+    $('#toggle-item-feed-postar').on("click", function () {
+        $('#toggle-item-feed-postar').css("display", "none");
+        $('.item-feed-postar').css("display", "flex");
+    });
+});
