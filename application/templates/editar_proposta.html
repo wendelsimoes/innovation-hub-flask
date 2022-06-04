@@ -22,7 +22,7 @@
                 <span class="text-danger lato-bold" id="adicionar_membro_span" style="margin-top: 6px;"></span>
                 <ul class="mt-3" id="lista_de_membros" style="list-style: none;">
                     <div></div>
-                    {% for membro in proposta_a_editar.membro %}
+                    {% for membro in proposta_a_editar.membros %}
                     {% if not membro.apelido == user.apelido  %}
                     <div class="margem-direita">
                         <li class="membros_lista_azul">{{ membro.apelido }}</li>
@@ -32,7 +32,7 @@
                     {% endfor %}
                 </ul>
                 <div id="div_invisivel_membros">
-                    {% for membro in proposta_a_editar.membro %}
+                    {% for membro in proposta_a_editar.membros %}
                     {% if not membro.apelido == user.apelido  %}
                     <input type="hidden" name="membros" value="{{ membro.apelido }}">
                     {% endif %}

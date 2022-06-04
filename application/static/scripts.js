@@ -1,37 +1,3 @@
-$(document).on("click", function(event) {
-    var classes_que_foram_clicadas = $(event.target.classList);
-    classes_que_foram_clicadas = Object.keys(classes_que_foram_clicadas).map(function (key) { return classes_que_foram_clicadas[key]; });
-    notificacao = document.querySelector('.notification-ui_dd');
-    mostrar = "dropdown-menu notification-ui_dd show";
-    esconder = "dropdown-menu notification-ui_dd hide";
-
-    classes_que_foram_clicadas.every((classe) => {
-        switch (classe) {
-            case "bi-bell-fill":
-                exibir_notificacoes();
-                return false
-            case "dropdown-toggle":
-                exibir_notificacoes();
-                return false
-            case "notification-ui_icon":
-            case "notification-list_img":
-            case "notification-ui_dd-header":
-            case "notification-list":
-            case "notification-list--unread":
-            case "notification-form_aprovar_participacao":
-            case "btn-primary":
-            case "form_recusar_participacao":
-            case "btn-danger":
-            case "notification-list_detail":
-            case "btn":
-            case "mr-3":
-                return false
-        }
-        notificacao.className = esconder
-    });
-});
-
-
 $(document).ready(function () {
     $('.form_aprovar_participacao').submit(function (event) {
         event.preventDefault();
@@ -81,39 +47,9 @@ $(document).ready(function () {
         });
     });
 
-    $('.form_pedir_participar').submit(function (event) {
-        event.preventDefault();
-        id_proposta = $(this).children('input')[0].value;
 
-        $(function () {
-            $.post(
-                'participar',
-                {
-                    id_proposta: id_proposta
-                },
-                function (response) {
-                    let codigo = response["status"];
-    
-                    if (codigo == 400) {
-                        let liveToast = $('.toast-erro');
-                        liveToast.find('.toast-body').text(response["mensagem"]);
-                        let toast = new bootstrap.Toast(liveToast);
-                        
-                        toast.show();
-                        return
-                    }
-    
-                    if (codigo == 200) {
-                        let liveToast = $('.toast-sucesso');
-                        liveToast.find('.toast-body').text(response["mensagem"]);
-                        let toast = new bootstrap.Toast(liveToast);
-                        
-                        toast.show();
-                        return
-                    }
-                });
-        });
-    });
+    carregar_event_listeners();
+
 
     $('.form_likear_proposta').submit(function ( event ) {
         event.preventDefault();
@@ -487,18 +423,6 @@ function carregar_on_click_para_botao(membros) {
     });
 }
 
-function exibir_notificacoes() {
-    mostrar = "dropdown-menu notification-ui_dd show";
-    esconder = "dropdown-menu notification-ui_dd hide";
-
-    notificacao = document.querySelector('.notification-ui_dd');
-
-    if (notificacao.className == mostrar) {
-        notificacao.className = esconder;
-    } else {
-        notificacao.className = mostrar;
-    }
-}
 
 // Por favor Fran ignore tudo abaixo desta linha, só queria estar usando angular para mexer com dom, o importante é o backend
 //______________________________________________________________________________________________
@@ -594,7 +518,57 @@ $(document).ready(function () {
                     conteudo += proposta_modal_card(id_modal_comentarios, proposta, response["user"])
                 });
                 propostas_feed_container.innerHTML = conteudo;
+                carregar_event_listeners()
             }
         })
     });
 });
+
+
+function carregar_event_listeners() {
+    $('.form_pedir_participar').submit(function (event) {
+        event.preventDefault();
+        id_proposta = $(this).children('input')[0].value;
+    
+        $(function () {
+            $.post(
+                'participar',
+                {
+                    id_proposta: id_proposta
+                },
+                function (response) {
+                    let codigo = response["status"];
+    
+                    if (codigo == 400) {
+                        let liveToast = $('.toast-erro');
+                        liveToast.find('.toast-body').text(response["mensagem"]);
+                        let toast = new bootstrap.Toast(liveToast);
+                        
+                        toast.show();
+                        return
+                    }
+    
+                    if (codigo == 200) {
+                        let liveToast = $('.toast-sucesso');
+                        liveToast.find('.toast-body').text(response["mensagem"]);
+                        let toast = new bootstrap.Toast(liveToast);
+                        
+                        toast.show();
+                        return
+                    }
+                });
+        });
+    });
+
+    $('.notification-ui_icon').on('click', function () {
+        mostrar = "dropdown-menu notification-ui_dd show";
+        esconder = "dropdown-menu notification-ui_dd hide";
+        notificacao = document.querySelector('.notification-ui_dd');
+
+        if (notificacao.className == mostrar) {
+            notificacao.className = esconder;
+            return
+        }
+        notificacao.className = mostrar;
+    });
+}

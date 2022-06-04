@@ -106,7 +106,7 @@ def aprovar_participacao():
         proposta = Proposta.query.filter_by(id=proposta_id).first()
         usuario = User.query.filter_by(apelido=quem_pediu_para_entrar).first()
 
-        usuario.propostas_que_estou.append(proposta)
+        proposta.membros.append(usuario)
 
         Notificacoes_Pedir_para_Participar.query.filter_by(quem_pediu_para_entrar=quem_pediu_para_entrar, proposta_id=proposta_id).delete()
         db.session.commit()
