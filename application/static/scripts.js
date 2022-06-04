@@ -1,4 +1,18 @@
 $(document).ready(function () {
+    jQuery.ajax({
+        type: 'GET',
+        url: 'feed?ordenar=recente',
+        success: function (response) {
+            propostas_feed_container = document.getElementById('propostas_feed_container');
+            conteudo = ''
+            response["propostas"].forEach(function(proposta) {
+                conteudo += proposta_card(proposta, response["user"]);
+                conteudo += proposta_modal_card(proposta, response["user"])
+            });
+            propostas_feed_container.innerHTML = conteudo;
+        }
+    });
+
     carregar_todos_event_listeners();
 });
 
@@ -228,7 +242,7 @@ $(document).ready(function () {
                 propostas_feed_container.innerHTML = conteudo;
                 carregar_todos_event_listeners();
             }
-        })
+        });
     });
 });
 
