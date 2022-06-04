@@ -11,7 +11,7 @@ Feed
 
     <div class="card mx-auto item-feed item-feed-postar">
         <div class="card-body">
-            <form method="post" action="{{ url_for("feed") }}" novalidate>
+            <form method="post" action="{{ url_for("criar_proposta") }}" novalidate>
                 {{ formDeProposta.csrf_token }}
                 <div class="row tipo-titulo">
                     <div class="mb-2 div-postar-tipo" style="display: inline-block;">
