@@ -504,12 +504,44 @@ function exibir_notificacoes() {
 //______________________________________________________________________________________________
 //
 
-let categorias = function(proposta) {
+let icone_likear = function(proposta, user) {
+    likeou = false;
+    likeadores = proposta["likes"];
+    for (i = 0; i < likeadores.length; i++) {
+        if (likeadores[i]["id"] == user["id"]) {
+            likeou = true;
+        }
+    };
+
+    if (likeou) {
+        return `<i class="bi bi-hand-thumbs-up-fill botao-like-proposta"></i> ${likeadores.length}`;
+    }
+    return `<i class="bi bi-hand-thumbs-up botao-like-proposta"></i> ${likeadores.length}`;
+}
+
+
+let data_criacao = function(proposta) {
     conteudo = ''
+    if (proposta["dia_criacao"] < 10) {
+        conteudo += `<h6 class="card-subtitle mb-2 text-muted lato-regular fs-6"style="text-align:start;">0${proposta.dia_criacao}`;
+    } else {
+        conteudo += `<h6 class="card-subtitle mb-2 text-muted lato-regular fs-6"style="text-align:start;">${proposta.dia_criacao}`;
+    }
+    if (proposta["mes_criacao"] < 10) {
+        conteudo += `/0${ proposta.mes_criacao }/${proposta.ano_criacao }</h6>`;
+    } else {
+        conteudo += `/${ proposta.mes_criacao }/${proposta.ano_criacao }</h6>`;
+    }
+    return conteudo;
+}
+
+
+let categorias = function(proposta) {
+    conteudo = '';
     proposta["categorias"].forEach(function(categoria) {
-        conteudo += `<h6 class="card-subtitle mb-2 text-muted categorias-proposta-item">${categoria.nome}</h6>`
+        conteudo += `<h6 class="card-subtitle mb-2 text-muted categorias-proposta-item">${categoria.nome}</h6>`;
     })
-    return conteudo
+    return conteudo;
 }
 
 let icone_favoritar = function(proposta, user) {
@@ -522,18 +554,17 @@ let icone_favoritar = function(proposta, user) {
     };
 
     if (favoritou) {
-        return '<i class="bi bi-star-fill"></i>Remover favorito'
+        return '<i class="bi bi-star-fill"></i> Remover favorito';
     }
-    return '<i class="bi bi-star"></i>Favoritar'
+    return '<i class="bi bi-star"></i> Favoritar';
 }
 
-let proposta_card = function(proposta, user, id_item_feed, classe_background, id_modal_comentarios) {return `<div id="${id_item_feed}" class="card mx-auto mt-3 item-feed ${classe_background}"><div class="card-top"style="text-align: start; padding: 16px 0 0 16px;"><form class="form_favoritar"><input type="hidden" name="proposta_id" value="${proposta.id}"><button class="botao-favoritar-proposta btn btn-primary" type="submit">${icone_favoritar(proposta, user)}</button></form></div><div class="card-body" style="padding-top: 5px;"><h5 class="card-title lato-bold fs-5" style="text-align: start;">${proposta.titulo}</h5>${data_criacao}<div class="categorias-proposta">${categorias(proposta)}</div><p class="card-text lato-regular descricao-do-card" style="text-align: justify;">${proposta.descricao}</p><div class="comentar-participar-likear-feed"><form class="form_likear_proposta" style="margin-right: auto;"><input type="hidden" name="proposta_id" value="${proposta.id}"><button class="botao-likear-proposta btn" type="submit">${likear}</button></form><button type="button" class="card-link btn btn-info lato-bold " data-bs-toggle="modal"data-bs-target="#${id_modal_comentarios}"style="margin-right: 5px;">Comentarios</button><form class="form_pedir_participar"><input type="hidden" value="${proposta.id}"><button type="submit" class="card-link btn btn-primary lato-bold solicitar_participar_butao" style="height: 100%; width: 100%;">Solicitar para participar</button></form></div></div></div>`}
-
+let proposta_card = function(proposta, user, id_item_feed, classe_background, id_modal_comentarios) {return `<div id="${id_item_feed}" class="card mx-auto mt-3 item-feed ${classe_background}"><div class="card-top"style="text-align: start; padding: 16px 0 0 16px;"><form class="form_favoritar"><input type="hidden" name="proposta_id" value="${proposta.id}"><button class="botao-favoritar-proposta btn btn-primary" type="submit">${icone_favoritar(proposta, user)}</button></form></div><div class="card-body" style="padding-top: 5px;"><h5 class="card-title lato-bold fs-5" style="text-align: start;">${proposta.titulo}</h5>${data_criacao(proposta)}<div class="categorias-proposta">${categorias(proposta)}</div><p class="card-text lato-regular descricao-do-card" style="text-align: justify;">${proposta.descricao}</p><div class="comentar-participar-likear-feed"><form class="form_likear_proposta" style="margin-right: auto;"><input type="hidden" name="proposta_id" value="${proposta.id}"><button class="botao-likear-proposta btn" type="submit">${icone_likear(proposta, user)}</button></form><button type="button" class="card-link btn btn-info lato-bold " data-bs-toggle="modal"data-bs-target="#${id_modal_comentarios}"style="margin-right: 5px;">Comentarios</button><form class="form_pedir_participar"><input type="hidden" value="${proposta.id}"><button type="submit" class="card-link btn btn-primary lato-bold solicitar_participar_butao" style="height: 100%; width: 100%;">Solicitar para participar</button></form></div></div></div>`}
 
 
 $(document).ready(function () {
     $('#input_de_ordenar').on("click", function () {
-        ordenar = $('#recente').checked ? "recente" : "popular"
+        ordenar = $('#recente').checked ? "recente" : "popular";
 
         jQuery.ajax({
             type: 'GET',
