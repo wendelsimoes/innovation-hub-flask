@@ -108,6 +108,9 @@ let proposta_card = function(proposta, user) {return `<div id="${"id_item_feed_"
 
 let comentarios = function(comentarios, user) {
     conteudo = '';
+    if (comentarios.length < 1) {
+        conteudo = '<h3>Niguém fez um comentário ainda, que tal ser o primeiro?</h3>';
+    }
     comentarios.forEach(function(comentario) {
         id_card_comentario = "id_card_comentario_" + comentario.id;
         conteudo += `<div class="card mx-auto mt-3 card_do_comentario" id="${id_card_comentario}"> <div class="card-body"> <h6 class="card-title lato-bold card_de_comentario_titulo fs-5"> <img class="comentario-foto" src="${comentario.user.foto_perfil}" alt="user"> ${comentario.dono_do_comentario} </h6> ${data_criacao(comentario)} <p class="card-text card_de_comentario_text lato-regular tamanho-padrao"> ${comentario.texto_comentario} </p> <div class="div-do-like"> <form class="form_likear_comentario"> <input type="hidden" name="comentario_id" value="${comentario.id}"> <button class="botao-likear-comentario btn" type="submit"> ${icone_likear(comentario, user)} </button> </form> </div> </div> </div>`
