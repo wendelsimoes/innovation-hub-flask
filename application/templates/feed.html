@@ -5,7 +5,7 @@ Feed
 {% endblock %}
 
 {% block main %}
-<div id="feed_container" class="container mx-auto px-auto" style="display: flex; flex-direction: column;">
+<div class="container mx-auto px-auto" style="display: flex; flex-direction: column;">
 
     {% block postar %}{% endblock %}
     
@@ -33,6 +33,10 @@ Feed
                 {% endfor %}
             </select>
         </div>
+    </div>
+
+    <div id="propostas_feed_container">
+        
     </div>
 
     {% for proposta in todas_propostas_nao_privadas %}
