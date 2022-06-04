@@ -1,53 +1,4 @@
 $(document).ready(function () {
-    $('.form_aprovar_participacao').submit(function (event) {
-        event.preventDefault();
-        input_quem_pediu = $(this).find('.input_quem_pediu')[0].value;
-        id_proposta = $(this).find('.input_proposta_id')[0].value;
-        notificacao = $(this).parents('.notification-list');
-
-        $(function () {
-            $.post(
-                'aprovar_participacao',
-                {
-                    quem_pediu_para_entrar: input_quem_pediu,
-                    proposta_id: id_proposta
-                },
-                function (response) {
-                    let codigo = response["codigo"];
-    
-                    if (codigo == 200) {
-                        notificacao.remove();
-                        let liveToast = $('.toast-sucesso');
-                        liveToast.find('.toast-body').text("Usuário adicionado a proposta");
-                        let toast = new bootstrap.Toast(liveToast);
-                        
-                        toast.show();
-                        return
-                    }
-                });
-        });
-    });
-
-    $('.form_recusar_participacao').submit(function (event) {
-        event.preventDefault();
-        input_quem_pediu = $(this).find('.input_quem_pediu')[0].value;
-        id_proposta = $(this).find('.input_proposta_id')[0].value;
-        notificacao = $(this).parents('.notification-list');
-
-        $(function () {
-            $.post(
-                'recusar_participacao',
-                {
-                    quem_pediu_para_entrar: input_quem_pediu,
-                    proposta_id: id_proposta
-                },
-                function (response) {
-                    notificacao.remove();
-                });
-        });
-    });
-
-
     carregar_event_listeners();
 
 
@@ -571,4 +522,68 @@ function carregar_event_listeners() {
         }
         notificacao.className = mostrar;
     });
+
+    $('.form_aprovar_participacao').submit(function (event) {
+        event.preventDefault();
+        input_quem_pediu = $(this).find('.input_quem_pediu')[0].value;
+        id_proposta = $(this).find('.input_proposta_id')[0].value;
+        notificacao = $(this).parents('.notification-list');
+
+        $(function () {
+            $.post(
+                'aprovar_participacao',
+                {
+                    quem_pediu_para_entrar: input_quem_pediu,
+                    proposta_id: id_proposta
+                },
+                function (response) {
+                    let codigo = response["codigo"];
+    
+                    if (codigo == 200) {
+                        notificacao.remove();
+                        let liveToast = $('.toast-sucesso');
+                        liveToast.find('.toast-body').text("Usuário adicionado a proposta");
+                        let toast = new bootstrap.Toast(liveToast);
+                        
+                        toast.show();
+                        return
+                    }
+                });
+            fechar_notificacoes_se_nenhuma();
+        });
+    });
+    
+    $('.form_recusar_participacao').submit(function (event) {
+        event.preventDefault();
+        input_quem_pediu = $(this).find('.input_quem_pediu')[0].value;
+        id_proposta = $(this).find('.input_proposta_id')[0].value;
+        notificacao = $(this).parents('.notification-list');
+
+        $(function () {
+            $.post(
+                'recusar_participacao',
+                {
+                    quem_pediu_para_entrar: input_quem_pediu,
+                    proposta_id: id_proposta
+                },
+                function (response) {
+                    notificacao.remove();
+                });
+            fechar_notificacoes_se_nenhuma();
+        });
+    });
+}
+
+
+function fechar_notificacoes_se_nenhuma() {
+    container_de_notificacoes = document.querySelector('.notification-ui_dd-content');
+    container_do_container_de_notifi = document.querySelector('.notification-ui_dd');
+    mostrar = "dropdown-menu notification-ui_dd show";
+    esconder = "dropdown-menu notification-ui_dd hide";
+
+    console.log(container_de_notificacoes.children.length);
+    console.log(container_de_notificacoes.children);
+    if (container_de_notificacoes.children.length <= 1) {
+        container_do_container_de_notifi.className = esconder;
+    }
 }

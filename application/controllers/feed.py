@@ -61,7 +61,6 @@ def feed():
     ordenar = request.args.get("ordenar")
     proposta_schema = PropostaSchema(many=True)
     user_schema = UserSchema()
-    todas_propostas_nao_privadas = []
     if ordenar == "popular":
         todas_propostas_nao_privadas = Proposta.query.order_by(desc(Proposta.contador_de_like)).filter_by(privado=False).all()
         return jsonify({ "propostas": proposta_schema.dump(todas_propostas_nao_privadas), "user": user_schema.dump(current_user) })
@@ -69,6 +68,7 @@ def feed():
         todas_propostas_nao_privadas = Proposta.query.order_by(desc(Proposta.ano_criacao)).order_by(desc(Proposta.mes_criacao)).order_by(desc(Proposta.dia_criacao)).filter_by(privado=False).all()
         return jsonify({ "propostas": proposta_schema.dump(todas_propostas_nao_privadas), "user": user_schema.dump(current_user) })
 
-    todas_propostas_nao_privadas = Proposta.query.filter_by(privado=False).all()
+    # Setando as propostas ordenadas por recentes como padrão
+    todas_propostas_nao_privadas = Proposta.query.order_by(desc(Proposta.ano_criacao)).order_by(desc(Proposta.mes_criacao)).order_by(desc(Proposta.dia_criacao)).filter_by(privado=False).all()
 
     return render_template("postar.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user, todas_propostas_nao_privadas=todas_propostas_nao_privadas)
