@@ -1,21 +1,25 @@
 $(document).ready(function () {
-    jQuery.ajax({
-        type: 'GET',
-        url: 'todas_propostas_nao_privadas?ordenar=recente&filtrar=todas',
-        success: function (response) {
-            propostas_feed_container = document.getElementById('propostas_feed_container');
-            conteudo = ''
-            response["propostas"].forEach(function(proposta) {
-                conteudo += proposta_card(proposta, response["user"]);
-                conteudo += proposta_modal_card(proposta, response["user"])
-            });
+    propostas_feed_container = document.getElementById('propostas_feed_container');
 
-            if (propostas_feed_container != null) {
+    if (propostas_feed_container != null) {
+        jQuery.ajax({
+            type: 'GET',
+            url: 'todas_propostas_nao_privadas?ordenar=recente&filtrar=todas',
+            success: function (response) {
+                propostas_feed_container = document.getElementById('propostas_feed_container');
+                conteudo = ''
+                response["propostas"].forEach(function(proposta) {
+                    conteudo += proposta_card(proposta, response["user"]);
+                    conteudo += proposta_modal_card(proposta, response["user"])
+                });
+    
                 propostas_feed_container.innerHTML = conteudo;
                 carregar_event_listeners_dinamicos();
             }
-        }
-    });
+        });
+    }
+
+    carregar_event_listeners_dinamicos();
 
     $(function () {
         $.ajax({
