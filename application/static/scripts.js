@@ -1,7 +1,7 @@
 $(document).ready(function () {
     jQuery.ajax({
         type: 'GET',
-        url: 'todas_propostas_nao_privadas?ordenar=recente',
+        url: 'todas_propostas_nao_privadas?ordenar=recente&filtrar=todas',
         success: function (response) {
             propostas_feed_container = document.getElementById('propostas_feed_container');
             conteudo = ''
@@ -108,11 +108,13 @@ let proposta_modal_card = function(proposta, user) {return `<div class="modal fa
 
 
 $(document).ready(function () {
-    $('.input-de-ordenar').on("change", function () {
+    $('.div-ordenar-filtrar').on("change", function () {
         ordenar = $('#recente').prop('checked') ? "recente" : "popular";
+        filtrar = document.getElementById("select-ordenar").value;
+
         jQuery.ajax({
             type: 'GET',
-            url: `todas_propostas_nao_privadas?ordenar=${ordenar}`,
+            url: `todas_propostas_nao_privadas?ordenar=${ordenar}&filtrar=${filtrar}`,
             success: function (response) {
                 propostas_feed_container = document.getElementById('propostas_feed_container');
                 conteudo = ''

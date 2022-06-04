@@ -2,6 +2,7 @@ from application import app, db
 from flask_login import login_required, current_user
 from application.models.proposta import Proposta, PropostaSchema
 from flask import render_template, request, Response, url_for, redirect, jsonify
+from application.models.categoria import Categoria
 from application.models.categorias import categorias
 from application.models.tipo_proposta import tipo_proposta
 import json
@@ -267,11 +268,18 @@ def deletar_proposta():
 @login_required
 def todas_propostas_nao_privadas():
     ordenar = request.args.get("ordenar")
+    filtrar = request.args.get("filtrar")
     proposta_schema = PropostaSchema(many=True)
     user_schema = UserSchema()
+
+    todas_propostas_nao_privadas = Proposta.query.filter_by(privado=False)
+
+    if not filtrar == "todas":
+        todas_propostas_nao_privadas = todas_propostas_nao_privadas.filter(Proposta.categorias.any(valor=filtrar))
+
     if ordenar == "popular":
-        todas_propostas_nao_privadas = Proposta.query.order_by(desc(Proposta.contador_de_like)).filter_by(privado=False).all()
-        return jsonify({ "propostas": proposta_schema.dump(todas_propostas_nao_privadas), "user": user_schema.dump(current_user) })
-    elif ordenar == "recente":
-        todas_propostas_nao_privadas = Proposta.query.order_by(desc(Proposta.ano_criacao)).order_by(desc(Proposta.mes_criacao)).order_by(desc(Proposta.dia_criacao)).filter_by(privado=False).all()
-        return jsonify({ "propostas": proposta_schema.dump(todas_propostas_nao_privadas), "user": user_schema.dump(current_user) })
+        todas_propostas_nao_privadas = todas_propostas_nao_privadas.order_by(desc(Proposta.contador_de_like))
+    else:
+        todas_propostas_nao_privadas = todas_propostas_nao_privadas.order_by(desc(Proposta.ano_criacao)).order_by(desc(Proposta.mes_criacao)).order_by(desc(Proposta.dia_criacao))
+
+    return jsonify({ "propostas": proposta_schema.dump(todas_propostas_nao_privadas.all()), "user": user_schema.dump(current_user) })

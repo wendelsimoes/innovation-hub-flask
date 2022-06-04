@@ -101,8 +101,8 @@ Feed
                     </label>
                 </div>
             </div>
-            <select class="form-select select-ordenar" name="filtrar">
-                <option class="lato-regular" selected>Filtrar por categoria</option>
+            <select id="select-ordenar" class="form-select select-ordenar" name="filtrar">
+                <option class="lato-regular" selected value="todas">Todas</option>
                 {% for categoria, valor in categorias.items() %}
                 <option class="lato-regular" value="{{ valor }}">{{ categoria }}</option>
                 {% endfor %}
