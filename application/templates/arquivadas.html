@@ -5,139 +5,35 @@ Propostas Arquivadas
 {% endblock %}
 
 {% block main %}
-<div class="container mx-auto px-auto" style="display: flex; flex-direction: column;">
-
-    {% for proposta in todas_propostas_arquivadas_e_nao_privadas %}
-    {% set classe_background = "bg-" + proposta.tipo_proposta %}
-    {% set id_modal_comentarios = "modal_comentarios_" + proposta.id | string %}
-    {% set id_item_feed = "id_item_feed_" + proposta.id | string %}
-
-    <div id="{{ id_item_feed }}" class="card mx-auto mt-3 item-feed {{ classe_background }}">
-        <div class="card-top"
-            style="text-align: start; padding: 16px 0 0 16px;">
-            <form class="form_favoritar">
-                <input type="hidden" name="proposta_id" value="{{ proposta.id }}">
-                <button class="botao-favoritar-proposta btn btn-primary" type="submit">
-                    {% if proposta in user.propostas_favoritas %}
-                    <i class="bi bi-star-fill"></i>
-                    Remover favorito
-                    {% else %}
-                    <i class="bi bi-star"></i>
-                    Favoritar
-                    {% endif %}
-                </button>
-            </form>
-        </div>
-        <div class="card-body" style="padding-top: 5px;">
-            <h5 class="card-title lato-bold fs-5" style="text-align: start;">{{ proposta.titulo }}</h5>
-            {% if proposta.mes_criacao < 10 %} <h6 class="card-subtitle mb-2 text-muted lato-regular fs-6"
-                style="text-align: start;">{{ proposta.dia_criacao }}/0{{ proposta.mes_criacao }}/{{
-                proposta.ano_criacao }}</h6>
-                {% else %}
-                <h6 class="card-subtitle mb-2 text-muted lato-regular fs-6" style="text-align: start;">{{
-                    proposta.dia_criacao
-                    }}/{{ proposta.mes_criacao }}/{{ proposta.ano_criacao }}</h6>
-                {% endif %}
-                <div class="categorias-proposta">
-                    {% for categoria in proposta.categorias %}
-                    <h6 class="card-subtitle mb-2 text-muted categorias-proposta-item">{{ categoria.nome }}
-                    </h6>
-                    {% endfor %}
+<div class="container mx-auto px-auto" style="display: flex; flex-direction: column;"></div>
+    <div class="mx-auto mt-3 item-feed lato-regular">
+        <div class="div-ordenar-filtrar" style="display: flex;">
+            <div class="lato-regular input-de-ordenar" style="display: flex;">
+                Ordenar por:
+                <div class="form-check" style="margin-left: 15px;">
+                    <input class="form-check-input" type="radio" name="ordenar" checked="checked" id="recente" value="recente">
+                    <label class="form-check-label lato-regular" for="recente">
+                      Recente
+                    </label>
                 </div>
-                <p class="card-text lato-regular descricao-do-card" style="text-align: justify;">{{ proposta.descricao
-                    }}</p>
-                <div class="comentar-participar-likear-feed">
-                    <form class="form_likear_proposta" style="margin-right: auto;">
-                        <input type="hidden" name="proposta_id" value="{{ proposta.id }}">
-                        <button class="botao-likear-proposta btn" type="submit">
-                            {% if proposta in user.likesPropostas %}
-                            <i class="bi bi-hand-thumbs-up-fill botao-like-proposta"></i>
-                            {% else %}
-                            <i class="bi bi-hand-thumbs-up botao-like-proposta"></i>
-                            {% endif %}
-                            {{ proposta.likes | length }}
-                        </button>
-                    </form>
-                    <button type="button" class="card-link btn btn-info lato-bold " data-bs-toggle="modal"
-                        data-bs-target="#{{ id_modal_comentarios }}" style="margin-right: 5px;">Comentarios</button>
-                    <form class="form_pedir_participar">
-                        <input type="hidden" value="{{ proposta.id }}">
-                        <button type="submit" class="card-link btn btn-primary lato-bold solicitar_participar_butao" style="height: 100%; width: 100%;">Solicitar para
-                            participar</button>
-                    </form>
-                </div>
-        </div>
-    </div>
-
-    <div class="modal fade modal-lg" id="{{ id_modal_comentarios }}" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form class="form_postar_comentario" novalidate>
-                        <div class="mb-2">
-                            <input type="hidden" name="proposta_id" value="{{ proposta.id }}">
-                            <textarea class="form-control postar-comentario lato-regular fs-5" maxlength="1000"
-                                name="texto_comentario" placeholder="Comentário"></textarea>
-                            <span class="text-danger lato-bold postar_comentario_span fs-5"
-                                style="margin-top: 6px; margin-bottom: 5px;"></span>
-                        </div>
-                        <button type="submit" class="botao-postar-comentario btn btn-info lato-bold fs-5"
-                            style="display: block; width: fit-content;">Comentar</button>
-                    </form>
-                    <div class="mx-auto mt-3 comentarios_da_proposta">
-                        {% for comentario in proposta.comentarios %}
-                        {% set id_card_comentario = "id_card_comentario_" + comentario.id | string %}
-                        <div class="card mx-auto mt-3 card_do_comentario" id="{{ id_card_comentario }}">
-                            <div class="card-body">
-                                <h6 class="card-title lato-bold card_de_comentario_titulo fs-5">
-                                    <img class="comentario-foto" src="{{ comentario.user.foto_perfil }}" alt="user">
-                                    {{ comentario.dono_do_comentario }}
-                                </h6>
-                                {% if comentario.mes_criacao < 10 %} <p
-                                    class="card-subtitle mb-2 text-muted lato-regular card_de_comentario_subtitulo fs-6">
-                                    {{
-                                    comentario.dia_criacao }}/0{{ comentario.mes_criacao }}/{{
-                                    comentario.ano_criacao }}</p>
-                                    {% else %}
-                                    <p
-                                        class="card-subtitle mb-2 text-muted lato-regular card_de_comentario_subtitulo fs-6">
-                                        {{
-                                        comentario.dia_criacao
-                                        }}/{{ comentario.mes_criacao }}/{{ comentario.ano_criacao }}</p>
-                                    {% endif %}
-                                    <p class="card-text card_de_comentario_text lato-regular tamanho-padrao">
-                                        {{ comentario.texto_comentario }}
-                                    </p>
-                                    <div class="div-do-like">
-                                        <form class="form_likear_comentario">
-                                            <input type="hidden" name="comentario_id" value="{{ comentario.id }}">
-                                            <button class="botao-likear-comentario btn" type="submit">
-                                                {% if comentario in user.likes %}
-                                                <i class="bi bi-hand-thumbs-up-fill botao-like-comentario"></i>
-                                                {% else %}
-                                                <i class="bi bi-hand-thumbs-up botao-like-comentario"></i>
-                                                {% endif %}
-                                                {{ comentario.likes | length }}
-                                            </button>
-                                        </form>
-                                    </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary lato-bold" data-bs-dismiss="modal">
-                        Fechar
-                    </button>
+                <div class="form-check" style="margin-left: 10px;">
+                    <input class="form-check-input" type="radio" name="ordenar" id="popular" value="popular">
+                    <label class="form-check-label lato-regular" for="popular">
+                      Popular
+                    </label>
                 </div>
             </div>
+            <select id="select-ordenar" class="form-select select-ordenar" name="filtrar">
+                <option class="lato-regular" selected value="todas">Todas</option>
+                {% for categoria, valor in categorias.items() %}
+                <option class="lato-regular" value="{{ valor }}">{{ categoria }}</option>
+                {% endfor %}
+            </select>
         </div>
     </div>
 
-    {% endfor %}
+    <div id="propostas_feed_container" style="display: flex; flex-direction: column;">
+        <input type="hidden" name="arquivadas" value="sim">
+    </div>
 </div>
 {% endblock %}

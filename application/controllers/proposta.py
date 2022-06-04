@@ -65,9 +65,7 @@ def criar_proposta():
 @app.route("/arquivadas", methods=["GET"])
 @login_required
 def arquivadas():
-    todas_propostas_arquivadas_e_nao_privadas = Proposta.query.filter_by(privado=False, arquivado=True).all()
-
-    return render_template("arquivadas.html", categorias=categorias, user=current_user, todas_propostas_arquivadas_e_nao_privadas=todas_propostas_arquivadas_e_nao_privadas)
+    return render_template("arquivadas.html", categorias=categorias, user=current_user)
 
 
 @app.route("/likear_proposta", methods=["POST"])
@@ -269,6 +267,7 @@ def deletar_proposta():
 def todas_propostas_nao_privadas():
     ordenar = request.args.get("ordenar")
     filtrar = request.args.get("filtrar")
+    arquivadas = request.args.get("arquivadas")
     proposta_schema = PropostaSchema(many=True)
     user_schema = UserSchema()
 
@@ -281,5 +280,10 @@ def todas_propostas_nao_privadas():
         todas_propostas_nao_privadas = todas_propostas_nao_privadas.order_by(desc(Proposta.contador_de_like))
     else:
         todas_propostas_nao_privadas = todas_propostas_nao_privadas.order_by(desc(Proposta.ano_criacao)).order_by(desc(Proposta.mes_criacao)).order_by(desc(Proposta.dia_criacao))
+
+    if arquivadas == "sim":
+        todas_propostas_nao_privadas = todas_propostas_nao_privadas.filter_by(arquivado=True)
+    else:
+        todas_propostas_nao_privadas = todas_propostas_nao_privadas.filter_by(arquivado=False)
 
     return jsonify({ "propostas": proposta_schema.dump(todas_propostas_nao_privadas.all()), "user": user_schema.dump(current_user) })

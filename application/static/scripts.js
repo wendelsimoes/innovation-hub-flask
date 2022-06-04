@@ -2,11 +2,12 @@ $(document).ready(function () {
     propostas_feed_container = document.getElementById('propostas_feed_container');
 
     if (propostas_feed_container != null) {
+        arquivadas = $('#propostas_feed_container').children('input')[0].value;
+
         jQuery.ajax({
             type: 'GET',
-            url: 'todas_propostas_nao_privadas?ordenar=recente&filtrar=todas',
+            url: `todas_propostas_nao_privadas?ordenar=recente&filtrar=todas&arquivadas=${arquivadas}`,
             success: function (response) {
-                propostas_feed_container = document.getElementById('propostas_feed_container');
                 conteudo = ''
                 response["propostas"].forEach(function(proposta) {
                     conteudo += proposta_card(proposta, response["user"]);
@@ -18,9 +19,7 @@ $(document).ready(function () {
             }
         });
     }
-
-    carregar_event_listeners_dinamicos();
-
+    
     $(function () {
         $.ajax({
             url: 'todos_usuarios'
@@ -31,7 +30,8 @@ $(document).ready(function () {
             })
         });
     });
-
+    
+    carregar_event_listeners_dinamicos();
     carregar_listeners_estaticos();
 });
 
