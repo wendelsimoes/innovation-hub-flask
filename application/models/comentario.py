@@ -1,6 +1,5 @@
 from application import db, ma
 from application.models.user import User, UserSchema
-from application.models.proposta import Proposta
 
 
 Like_do_Comentario = db.Table('Like_do_Comentario',
@@ -22,7 +21,6 @@ class Comentario(db.Model):
     proposta_id = db.Column(db.Integer, db.ForeignKey("propostas.id"))
     user = db.relationship("User", backref="comentarios")
     likes = db.relationship("User", secondary=Like_do_Comentario, backref="likesComentarios")
-    proposta = db.relationship("Proposta", backref="comentarios")
 
 
 class ComentarioSchema(ma.SQLAlchemyAutoSchema):

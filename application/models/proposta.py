@@ -1,6 +1,7 @@
 from application import db, ma
 from application.models.user import User, UserSchema
 from application.models.categoria import Categoria, CategoriaSchema
+from application.models.comentario import Comentario, ComentarioSchema
 
 
 Like_da_Proposta = db.Table('Like_da_Proposta',
@@ -41,6 +42,7 @@ class Proposta(db.Model):
     favoritadores = db.relationship("User", secondary=Proposta_Favorita, backref="propostas_favoritas")
     contador_de_like = db.Column(db.Integer)
     categorias = db.relationship("Categoria", backref="proposta")
+    comentarios = db.relationship("Comentario", backref="proposta")
 
 
 class PropostaSchema(ma.SQLAlchemyAutoSchema):
@@ -50,3 +52,4 @@ class PropostaSchema(ma.SQLAlchemyAutoSchema):
     likes = ma.Nested(UserSchema, many=True)
     favoritadores = ma.Nested(UserSchema, many=True)
     categorias = ma.Nested(CategoriaSchema, many=True)
+    comentarios = ma.Nested(ComentarioSchema, many=True)

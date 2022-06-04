@@ -504,9 +504,9 @@ function exibir_notificacoes() {
 //______________________________________________________________________________________________
 //
 
-let icone_likear = function(proposta, user) {
+let icone_likear = function(item, user) {
     likeou = false;
-    likeadores = proposta["likes"];
+    likeadores = item["likes"];
     for (i = 0; i < likeadores.length; i++) {
         if (likeadores[i]["id"] == user["id"]) {
             likeou = true;
@@ -520,17 +520,17 @@ let icone_likear = function(proposta, user) {
 }
 
 
-let data_criacao = function(proposta) {
-    conteudo = ''
-    if (proposta["dia_criacao"] < 10) {
-        conteudo += `<h6 class="card-subtitle mb-2 text-muted lato-regular fs-6"style="text-align:start;">0${proposta.dia_criacao}`;
+let data_criacao = function(item) {
+    conteudo = '';
+    if (item["dia_criacao"] < 10) {
+        conteudo += `<h6 class="card-subtitle mb-2 text-muted lato-regular fs-6"style="text-align:start;">0${item.dia_criacao}`;
     } else {
-        conteudo += `<h6 class="card-subtitle mb-2 text-muted lato-regular fs-6"style="text-align:start;">${proposta.dia_criacao}`;
+        conteudo += `<h6 class="card-subtitle mb-2 text-muted lato-regular fs-6"style="text-align:start;">${item.dia_criacao}`;
     }
-    if (proposta["mes_criacao"] < 10) {
-        conteudo += `/0${ proposta.mes_criacao }/${proposta.ano_criacao }</h6>`;
+    if (item["mes_criacao"] < 10) {
+        conteudo += `/0${ item.mes_criacao }/${item.ano_criacao }</h6>`;
     } else {
-        conteudo += `/${ proposta.mes_criacao }/${proposta.ano_criacao }</h6>`;
+        conteudo += `/${ item.mes_criacao }/${item.ano_criacao }</h6>`;
     }
     return conteudo;
 }
@@ -562,6 +562,19 @@ let icone_favoritar = function(proposta, user) {
 let proposta_card = function(proposta, user, id_item_feed, classe_background, id_modal_comentarios) {return `<div id="${id_item_feed}" class="card mx-auto mt-3 item-feed ${classe_background}"><div class="card-top"style="text-align: start; padding: 16px 0 0 16px;"><form class="form_favoritar"><input type="hidden" name="proposta_id" value="${proposta.id}"><button class="botao-favoritar-proposta btn btn-primary" type="submit">${icone_favoritar(proposta, user)}</button></form></div><div class="card-body" style="padding-top: 5px;"><h5 class="card-title lato-bold fs-5" style="text-align: start;">${proposta.titulo}</h5>${data_criacao(proposta)}<div class="categorias-proposta">${categorias(proposta)}</div><p class="card-text lato-regular descricao-do-card" style="text-align: justify;">${proposta.descricao}</p><div class="comentar-participar-likear-feed"><form class="form_likear_proposta" style="margin-right: auto;"><input type="hidden" name="proposta_id" value="${proposta.id}"><button class="botao-likear-proposta btn" type="submit">${icone_likear(proposta, user)}</button></form><button type="button" class="card-link btn btn-info lato-bold " data-bs-toggle="modal"data-bs-target="#${id_modal_comentarios}"style="margin-right: 5px;">Comentarios</button><form class="form_pedir_participar"><input type="hidden" value="${proposta.id}"><button type="submit" class="card-link btn btn-primary lato-bold solicitar_participar_butao" style="height: 100%; width: 100%;">Solicitar para participar</button></form></div></div></div>`}
 
 
+let comentarios = function(comentarios, user) {
+    conteudo = '';
+    comentarios.forEach(function(comentario) {
+        id_card_comentario = "id_card_comentario_" + comentario.id;
+        conteudo += `<div class="card mx-auto mt-3 card_do_comentario" id="${id_card_comentario}"> <div class="card-body"> <h6 class="card-title lato-bold card_de_comentario_titulo fs-5"> <img class="comentario-foto" src="${comentario.user.foto_perfil}" alt="user"> ${comentario.dono_do_comentario} </h6> ${data_criacao(comentario)} <p class="card-text card_de_comentario_text lato-regular tamanho-padrao"> ${comentario.texto_comentario} </p> <div class="div-do-like"> <form class="form_likear_comentario"> <input type="hidden" name="comentario_id" value="${comentario.id}"> <button class="botao-likear-comentario btn" type="submit"> ${icone_likear(comentario, user)} </button> </form> </div> </div> </div>`
+    });
+    return conteudo;
+}
+
+
+let proposta_modal_card = function(id_modal_comentarios, proposta, user) {return `<div class="modal fade modal-lg" id="${id_modal_comentarios}" tabindex="-1" aria-hidden="true"> <div class="modal-dialog"><div class="modal-content"> <div class="modal-header"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"> <form class="form_postar_comentario" novalidate> <div class="mb-2"> <input type="hidden" name="proposta_id" value="${proposta.id}"> <textarea class="form-control postar-comentario lato-regular fs-5" maxlength="1000" name="texto_comentario" placeholder="Comentário"></textarea> <span class="text-danger lato-bold postar_comentario_span fs-5" style="margin-top: 6px; margin-bottom: 5px;"></span></div> <button type="submit" class="botao-postar-comentario btn btn-info lato-bold fs-5" style="display: block; width: fit-content;">Comentar</button></form> <div class="mx-auto mt-3 comentarios_da_proposta">${comentarios(proposta.comentarios, user)}</div></div><div class="modal-footer"><button type="button"class="btn btn-secondary lato-bold"data-bs-dismiss="modal">Fechar</button></div></div></div></div>`;}
+
+
 $(document).ready(function () {
     $('#input_de_ordenar').on("click", function () {
         ordenar = $('#recente').checked ? "recente" : "popular";
@@ -578,6 +591,7 @@ $(document).ready(function () {
                     id_modal_comentarios = "modal_comentarios_" + proposta.id;
 
                     conteudo += proposta_card(proposta, response["user"], id_item_feed, classe_background, id_modal_comentarios);
+                    conteudo += proposta_modal_card(id_modal_comentarios, proposta, response["user"])
                 });
                 propostas_feed_container.innerHTML = conteudo;
             }
