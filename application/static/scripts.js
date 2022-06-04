@@ -1,7 +1,7 @@
 $(document).ready(function () {
     jQuery.ajax({
         type: 'GET',
-        url: 'feed?ordenar=recente',
+        url: 'todas_propostas_nao_privadas?ordenar=recente',
         success: function (response) {
             propostas_feed_container = document.getElementById('propostas_feed_container');
             conteudo = ''
@@ -231,7 +231,7 @@ $(document).ready(function () {
         ordenar = $('#recente').prop('checked') ? "recente" : "popular";
         jQuery.ajax({
             type: 'GET',
-            url: `feed?ordenar=${ordenar}`,
+            url: `todas_propostas_nao_privadas?ordenar=${ordenar}`,
             success: function (response) {
                 propostas_feed_container = document.getElementById('propostas_feed_container');
                 conteudo = ''

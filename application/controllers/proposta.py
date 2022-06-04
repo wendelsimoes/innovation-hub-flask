@@ -9,6 +9,7 @@ from application.models.comentario import Comentario, ComentarioSchema
 from application.models.notificacoes_pedir_para_participar import Notificacoes_Pedir_para_Participar
 from application.models.user import User, UserSchema
 from application.forms import FormDeProposta
+from sqlalchemy.sql.expression import desc
 
 
 @app.route("/arquivadas", methods=["GET"])
@@ -211,3 +212,17 @@ def deletar_proposta():
         return render_template("erro.html", codigo=405, mensagem="NÃO AUTORIZADO - VOCÊ NÃO É GERENTE DESTA PROPOSTA")
 
     return render_template("deletar_proposta.html", proposta_a_deletar=proposta_a_deletar, user=current_user)
+
+
+@app.route("/todas_propostas_nao_privadas", methods=["GET"])
+@login_required
+def todas_propostas_nao_privadas():
+    ordenar = request.args.get("ordenar")
+    proposta_schema = PropostaSchema(many=True)
+    user_schema = UserSchema()
+    if ordenar == "popular":
+        todas_propostas_nao_privadas = Proposta.query.order_by(desc(Proposta.contador_de_like)).filter_by(privado=False).all()
+        return jsonify({ "propostas": proposta_schema.dump(todas_propostas_nao_privadas), "user": user_schema.dump(current_user) })
+    elif ordenar == "recente":
+        todas_propostas_nao_privadas = Proposta.query.order_by(desc(Proposta.ano_criacao)).order_by(desc(Proposta.mes_criacao)).order_by(desc(Proposta.dia_criacao)).filter_by(privado=False).all()
+        return jsonify({ "propostas": proposta_schema.dump(todas_propostas_nao_privadas), "user": user_schema.dump(current_user) })

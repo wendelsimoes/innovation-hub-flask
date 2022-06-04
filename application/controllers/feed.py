@@ -8,7 +8,6 @@ from application.models.categoria import Categoria
 from application import db
 from application.models.tipo_proposta import tipo_proposta
 from application.models.categorias import categorias
-from sqlalchemy.sql.expression import desc
 from application.models.user import UserSchema
 
 
@@ -58,17 +57,4 @@ def feed():
         return redirect(url_for("feed"))
 
     # Se for GET
-    ordenar = request.args.get("ordenar")
-    proposta_schema = PropostaSchema(many=True)
-    user_schema = UserSchema()
-    if ordenar == "popular":
-        todas_propostas_nao_privadas = Proposta.query.order_by(desc(Proposta.contador_de_like)).filter_by(privado=False).all()
-        return jsonify({ "propostas": proposta_schema.dump(todas_propostas_nao_privadas), "user": user_schema.dump(current_user) })
-    elif ordenar == "recente":
-        todas_propostas_nao_privadas = Proposta.query.order_by(desc(Proposta.ano_criacao)).order_by(desc(Proposta.mes_criacao)).order_by(desc(Proposta.dia_criacao)).filter_by(privado=False).all()
-        return jsonify({ "propostas": proposta_schema.dump(todas_propostas_nao_privadas), "user": user_schema.dump(current_user) })
-
-    # Setando as propostas ordenadas por recentes como padrão
-    todas_propostas_nao_privadas = Proposta.query.order_by(desc(Proposta.ano_criacao)).order_by(desc(Proposta.mes_criacao)).order_by(desc(Proposta.dia_criacao)).filter_by(privado=False).all()
-
-    return render_template("feed.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user, todas_propostas_nao_privadas=todas_propostas_nao_privadas)
+    return render_template("feed.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user)
