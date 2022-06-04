@@ -494,7 +494,7 @@ button,
         width: 220px !important;
     }
 
-    .div-ordenar-filtrar {
+    .div-ordenar-filtrar, .div-ordenar-comentario {
         display: flex !important;
         flex-direction: column !important;
     }
@@ -550,6 +550,6 @@ button,
     box-shadow: none !important;
 }
 
-.div-ordenar-filtrar {
+.div-ordenar-filtrar, .div-ordenar-comentario {
     display: flex;
 }

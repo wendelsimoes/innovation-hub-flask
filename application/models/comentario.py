@@ -21,6 +21,7 @@ class Comentario(db.Model):
     proposta_id = db.Column(db.Integer, db.ForeignKey("propostas.id"))
     user = db.relationship("User", backref="comentarios")
     likes = db.relationship("User", secondary=Like_do_Comentario, backref="likesComentarios")
+    contador_de_like = db.Column(db.Integer)
 
 
 class ComentarioSchema(ma.SQLAlchemyAutoSchema):
