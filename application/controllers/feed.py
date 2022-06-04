@@ -71,4 +71,4 @@ def feed():
     # Setando as propostas ordenadas por recentes como padrão
     todas_propostas_nao_privadas = Proposta.query.order_by(desc(Proposta.ano_criacao)).order_by(desc(Proposta.mes_criacao)).order_by(desc(Proposta.dia_criacao)).filter_by(privado=False).all()
 
-    return render_template("postar.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user, todas_propostas_nao_privadas=todas_propostas_nao_privadas)
+    return render_template("feed.html", formDeProposta=formDeProposta, categorias=categorias, tipo_proposta=tipo_proposta, user=current_user, todas_propostas_nao_privadas=todas_propostas_nao_privadas)
