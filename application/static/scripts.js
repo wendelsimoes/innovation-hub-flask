@@ -500,7 +500,7 @@ function exibir_notificacoes() {
     }
 }
 
-// Por favor Fran não vá abaixo desta linha, só queria estar usando angular para mexer com dom, o importante é o backend
+// Por favor Fran ignore tudo abaixo desta linha, só queria estar usando angular para mexer com dom, o importante é o backend
 //______________________________________________________________________________________________
 //
 
@@ -580,9 +580,6 @@ $(document).ready(function () {
                     conteudo += proposta_card(proposta, response["user"], id_item_feed, classe_background, id_modal_comentarios);
                 });
                 propostas_feed_container.innerHTML = conteudo;
-                console.log(propostas_feed_container);
-
-                console.log(response);
             }
         })
     });
