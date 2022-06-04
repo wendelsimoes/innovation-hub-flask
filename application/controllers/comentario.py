@@ -2,10 +2,11 @@ from application import app, db
 from flask_login import login_required, current_user
 from application.models.comentario import Comentario, ComentarioSchema
 from application.models.proposta import Proposta
-from flask import request, Response, render_template, redirect, url_for
+from flask import request, Response, render_template, redirect, url_for, jsonify
 import json
 from datetime import date
 from flask import jsonify
+from application.models.user import User, UserSchema
 
 
 @app.route("/comentar", methods=["POST"])
@@ -15,10 +16,10 @@ def comentar():
 
     if proposta_a_comentar:
         if not request.form.get("texto_comentario"):
-            return Response(json.dumps({"status": 400, "mensagem": "Este campo é necessário"}), mimetype="application\json")
+            return jsonify({"status": 400, "mensagem": "Este campo é necessário"})
 
         if len(request.form.get("texto_comentario")) > 1000:
-            return Response(json.dumps({"status": 400, "mensagem": "Campo deve conter no máximo 1000 caracteres"}), mimetype="application\json")
+            return jsonify({"status": 400, "mensagem": "Campo deve conter no máximo 1000 caracteres"})
 
         today = date.today()
         novo_comentario = Comentario(texto_comentario=request.form.get("texto_comentario"), dia_criacao=today.day, mes_criacao=today.month, ano_criacao=today.year, dono_do_comentario=current_user.apelido, proposta_id=proposta_a_comentar.id, user=current_user, proposta=proposta_a_comentar)
@@ -37,15 +38,17 @@ def likear_comentario():
 
     if comentario_a_likear:
         comentarios_que_dei_like = current_user.likesComentarios
+        comentario_schema = ComentarioSchema()
+        user_schema = UserSchema()
 
         if comentario_a_likear in comentarios_que_dei_like:
             comentario_a_likear.likes.remove(current_user)
             db.session.commit()
-            return Response(json.dumps({ "likeado": False, "numeros_de_like": len(comentario_a_likear.likes) }))
         else:
             comentario_a_likear.likes.append(current_user)
             db.session.commit()
-            return Response(json.dumps({ "likeado": True, "numeros_de_like": len(comentario_a_likear.likes) }))
+
+        return jsonify({ "comentario": comentario_schema.dump(comentario_a_likear), "user": user_schema.dump(current_user) })
     else:
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - COMENTARIO NÃO ENCONTRADO")
 
@@ -59,16 +62,10 @@ def carregar_comentarios():
         
         if len(comentarios_da_proposta) > 0:
             comentario_schema = ComentarioSchema(many=True)
-            comentarios_da_proposta_formatado = comentario_schema.dump(comentarios_da_proposta)
+            user_schema = UserSchema()
 
-            for comentario in comentarios_da_proposta_formatado:
-                comentario['likeado'] = False
-                for like in comentario['likes']:
-                    if like['apelido'] == current_user.apelido:
-                        comentario['likeado'] = True
-
-            return jsonify(comentarios_da_proposta_formatado)
+            return jsonify({ "comentarios": comentario_schema.dump(comentarios_da_proposta), "user": user_schema.dump(current_user) })
         else:
-            return Response(json.dumps({"status": 200, "info": "Niguém fez um comentário ainda, que tal ser o primeiro?"}), mimetype="application\json")
+            return jsonify({ "status": 100, "info": "Niguém fez um comentário ainda, que tal ser o primeiro?" })
     else:
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")

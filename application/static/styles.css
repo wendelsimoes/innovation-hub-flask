@@ -37,6 +37,11 @@ textarea:focus {
     box-shadow: none !important;
 }
 
+select:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 .lato-regular {
     font-family: LatoRegular, sans-serif !important;
 }
@@ -547,9 +552,4 @@ button,
 
 .div-ordenar-filtrar {
     display: flex;
-}
-
-
-#input_de_ordenar:hover {
-    cursor: pointer !important
 }

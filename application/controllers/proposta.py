@@ -1,13 +1,13 @@
 from application import app, db
 from flask_login import login_required, current_user
-from application.models.proposta import Proposta
+from application.models.proposta import Proposta, PropostaSchema
 from flask import render_template, request, Response, url_for, redirect, jsonify
 from application.models.categorias import categorias
 import json
 from datetime import date
 from application.models.comentario import Comentario, ComentarioSchema
 from application.models.notificacoes_pedir_para_participar import Notificacoes_Pedir_para_Participar
-from application.models.user import User
+from application.models.user import User, UserSchema
 from application.forms import FormDeProposta
 
 
@@ -27,17 +27,19 @@ def likear_proposta():
 
     if proposta_a_likear:
         propostas_que_dei_like = current_user.likesPropostas
+        proposta_schema = PropostaSchema()
+        user_schema = UserSchema()
 
         if proposta_a_likear in propostas_que_dei_like:
             current_user.likesPropostas.remove(proposta_a_likear)
             proposta_a_likear.contador_de_like = proposta_a_likear_contador - 1
             db.session.commit()
-            return Response(json.dumps({ "likeado": False, "numeros_de_like": len(proposta_a_likear.likes) }))
         else:
             current_user.likesPropostas.append(proposta_a_likear)
             proposta_a_likear.contador_de_like = proposta_a_likear_contador + 1
             db.session.commit()
-            return Response(json.dumps({ "likeado": True, "numeros_de_like": len(proposta_a_likear.likes) }))
+
+        return jsonify({ "proposta": proposta_schema.dump(proposta_a_likear), "user": user_schema.dump(current_user) })
     else:
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
 
@@ -50,18 +52,20 @@ def favoritar():
     if proposta_a_favoritar:
         propostas_favoritas = current_user.propostas_favoritas
         propostas_que_participo = current_user.propostas_que_estou
+        proposta_schema = PropostaSchema()
+        user_schema = UserSchema()
 
         if proposta_a_favoritar in propostas_que_participo:
-            return Response(json.dumps({"status": 400, "mensagem": "Você não pode favoritar uma proposta que participe"}))
+            return jsonify({"status": 400, "mensagem": "Você não pode favoritar uma proposta que participe"})
 
         if proposta_a_favoritar in propostas_favoritas:
             current_user.propostas_favoritas.remove(proposta_a_favoritar)
             db.session.commit()
-            return Response(json.dumps({"favoritado": False, "mensagem": "Proposta removida dos favoritos", "status": 200}))
+            return jsonify({"proposta": proposta_schema.dump(proposta_a_favoritar), "user": user_schema.dump(current_user), "mensagem": "Proposta removida dos favoritos", "status": 200})
         else:
             current_user.propostas_favoritas.append(proposta_a_favoritar)
             db.session.commit()
-            return Response(json.dumps({"favoritado": True, "mensagem": "Proposta adicionada aos favoritos", "status": 200}))
+            return jsonify({"proposta": proposta_schema.dump(proposta_a_favoritar), "user": user_schema.dump(current_user), "mensagem": "Proposta adicionada dos favoritos", "status": 200})
     else:
         return render_template("erro.html", codigo=404, mensagem="ERRO NO SERVER - PROPOSTA NÃO ENCONTRADA")
 
