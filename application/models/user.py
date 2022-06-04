@@ -2,7 +2,6 @@ from application import db, ma
 from werkzeug.security import check_password_hash
 from flask_login import UserMixin
 from application.models.notificacoes_pedir_para_participar import Notificacoes_Pedir_para_Participar
-from application.models.categoria import Categoria
 
 
 class User(db.Model, UserMixin):

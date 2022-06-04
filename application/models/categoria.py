@@ -1,4 +1,4 @@
-from application import db
+from application import db, ma
 
 
 class Categoria(db.Model):
@@ -8,3 +8,8 @@ class Categoria(db.Model):
     nome = db.Column("nome", db.String(200), nullable=False)
     valor = db.Column("valor", db.Integer, nullable=False)
     proposta_id = db.Column(db.Integer, db.ForeignKey("propostas.id"))
+
+
+class CategoriaSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Categoria

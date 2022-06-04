@@ -500,21 +500,34 @@ function exibir_notificacoes() {
     }
 }
 
+// Por favor Fran não vá abaixo desta linha, só queria estar usando angular para mexer com dom, o importante é o backend
 //______________________________________________________________________________________________
+//
 
-// var tableElementContainer1 = document.getElementById("feed_container");
-// var temptableHolder  = '';
+let categorias = function(proposta) {
+    conteudo = ''
+    proposta["categorias"].forEach(function(categoria) {
+        conteudo += `<h6 class="card-subtitle mb-2 text-muted categorias-proposta-item">${categoria.nome}</h6>`
+    })
+    return conteudo
+}
 
-// for(var i=0,len=testData.length; i<len; i++){
-//     temptableHolder  += '<tr><td>' + testData[i].firstName + '</td><td>' + testData[i].lastName + '</td><td>' + testData[i].title
-//         + '</td><td>' + testData[i].id + '</td><td>'  + testData[i].department +  '</td></tr>';
-// }
+let icone_favoritar = function(proposta, user) {
+    favoritou = false;
+    favoritadores = proposta["favoritadores"];
+    for (i = 0; i < favoritadores.length; i++) {
+        if (favoritadores[i]["id"] == user["id"]) {
+            favoritou = true;
+        }
+    };
 
-// temptableHolder += '</tbody></table>';
-// tableElementContainer1.innerHTML  = temptableHolder ;
+    if (favoritou) {
+        return '<i class="bi bi-star-fill"></i>Remover favorito'
+    }
+    return '<i class="bi bi-star"></i>Favoritar'
+}
 
-
-let proposta_card = function() {return '<div id="${id_item_feed}" class="card mx-auto mt-3 item-feed ${classe_background}"><div class="card-top"style="text-align: start; padding: 16px 0 0 16px;"><form class="form_favoritar"><input type="hidden" name="${proposta_id}" value="${proposta.id}"><button class="botao-favoritar-proposta btn btn-primary" type="submit">${favoritar}</button></form></div><div class="card-body" style="padding-top: 5px;"><h5 class="card-title lato-bold fs-5" style="text-align: start;">${proposta.titulo}</h5>${data_criacao}<div class="categorias-proposta">${categorias}</div><p class="card-text lato-regular descricao-do-card" style="text-align: justify;">${proposta.descricao}</p><div class="comentar-participar-likear-feed"><form class="form_likear_proposta" style="margin-right: auto;"><input type="hidden" name="proposta_id" value="${proposta.id}"><button class="botao-likear-proposta btn" type="submit">${likear}</button></form><button type="button" class="card-link btn btn-info lato-bold " data-bs-toggle="modal"data-bs-target="#${id_modal_comentarios}"style="margin-right: 5px;">Comentarios</button><form class="form_pedir_participar"><input type="hidden" value="${proposta.id}"><button type="submit" class="card-link btn btn-primary lato-bold solicitar_participar_butao" style="height: 100%; width: 100%;">Solicitar para participar</button></form></div></div></div>'}
+let proposta_card = function(proposta, user, id_item_feed, classe_background, id_modal_comentarios) {return `<div id="${id_item_feed}" class="card mx-auto mt-3 item-feed ${classe_background}"><div class="card-top"style="text-align: start; padding: 16px 0 0 16px;"><form class="form_favoritar"><input type="hidden" name="proposta_id" value="${proposta.id}"><button class="botao-favoritar-proposta btn btn-primary" type="submit">${icone_favoritar(proposta, user)}</button></form></div><div class="card-body" style="padding-top: 5px;"><h5 class="card-title lato-bold fs-5" style="text-align: start;">${proposta.titulo}</h5>${data_criacao}<div class="categorias-proposta">${categorias(proposta)}</div><p class="card-text lato-regular descricao-do-card" style="text-align: justify;">${proposta.descricao}</p><div class="comentar-participar-likear-feed"><form class="form_likear_proposta" style="margin-right: auto;"><input type="hidden" name="proposta_id" value="${proposta.id}"><button class="botao-likear-proposta btn" type="submit">${likear}</button></form><button type="button" class="card-link btn btn-info lato-bold " data-bs-toggle="modal"data-bs-target="#${id_modal_comentarios}"style="margin-right: 5px;">Comentarios</button><form class="form_pedir_participar"><input type="hidden" value="${proposta.id}"><button type="submit" class="card-link btn btn-primary lato-bold solicitar_participar_butao" style="height: 100%; width: 100%;">Solicitar para participar</button></form></div></div></div>`}
 
 
 
@@ -527,10 +540,15 @@ $(document).ready(function () {
             url: `feed?ordenar=${ordenar}`,
             success: function (response) {
                 propostas_feed_container = document.getElementById('propostas_feed_container');
-                console.log(propostas_feed_container);
-                response.forEach(function(item) {
-                    propostas_feed_container.innerHTML = proposta_card();
+                conteudo = ''
+                response["propostas"].forEach(function(proposta) {
+                    id_item_feed = "id_item_feed_" + proposta.id;
+                    classe_background = "bg-" + proposta.tipo_proposta;
+                    id_modal_comentarios = "modal_comentarios_" + proposta.id;
+
+                    conteudo += proposta_card(proposta, response["user"], id_item_feed, classe_background, id_modal_comentarios);
                 });
+                propostas_feed_container.innerHTML = conteudo;
                 console.log(propostas_feed_container);
 
                 console.log(response);

@@ -1,5 +1,6 @@
 from application import db, ma
-from application.models.user import User
+from application.models.user import User, UserSchema
+from application.models.categoria import Categoria, CategoriaSchema
 
 
 Like_da_Proposta = db.Table('Like_da_Proposta',
@@ -35,13 +36,17 @@ class Proposta(db.Model):
     likes = db.relationship("User", secondary=Like_da_Proposta, backref="likesPropostas")
     tipo_proposta = db.Column(db.String(200), nullable=False)
     gerente_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    categorias = db.relationship("Categoria", backref="proposta")
     gerente_de_projeto = db.relationship("User", backref="propostas_que_sou_gerente")
     membros = db.relationship("User", secondary=UserProposta, backref="propostas_que_estou")
-    favoritador = db.relationship("User", secondary=Proposta_Favorita, backref="propostas_favoritas")
+    favoritadores = db.relationship("User", secondary=Proposta_Favorita, backref="propostas_favoritas")
     contador_de_like = db.Column(db.Integer)
+    categorias = db.relationship("Categoria", backref="proposta")
 
 
 class PropostaSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Proposta
+    
+    likes = ma.Nested(UserSchema, many=True)
+    favoritadores = ma.Nested(UserSchema, many=True)
+    categorias = ma.Nested(CategoriaSchema, many=True)
