@@ -2,7 +2,7 @@ $(document).ready(function () {
     propostas_feed_container = document.getElementById('propostas_feed_container');
 
     if (propostas_feed_container != null) {
-        arquivadas = $('#propostas_feed_container').children('input')[0].value;
+        arquivadas = document.getElementById("query_arquivada").value;
 
         jQuery.ajax({
             type: 'GET',
@@ -109,7 +109,7 @@ let comentarios = function(comentarios, user) {
 }
 
 
-let container_ordenar_comentario = function(proposta) {return `<div class="mr-auto mt-3 lato-regular"> <div class="div-ordenar-comentario" style="display: flex;"> <input type="hidden" name="proposta_id" value="${proposta.id}"> <div class="lato-regular input-de-ordenar" style="display: flex;"> Ordenar por: <div class="form-check" style="margin-left: 15px;"> <input class="form-check-input" type="radio" name="ordenar" checked="checked" id="recente_comentario" value="recente"> <label class="form-check-label lato-regular" for="recente"> Recente </label> </div> <div class="form-check" style="margin-left: 10px;"> <input class="form-check-input" type="radio" name="ordenar" id="popular_comentario" value="popular"> <label class="form-check-label lato-regular" for="popular"> Popular </label> </div> </div> </div> </div>`}
+let container_ordenar_comentario = function(proposta) {return `<div class="mr-auto mt-3 lato-regular"> <div class="div-ordenar-comentario" style="display: flex;"> <input type="hidden" name="proposta_id" value="${proposta.id}"> <div class="lato-regular input-de-ordenar" style="display: flex;"> Ordenar por: <div class="form-check" style="margin-left: 15px;"> <input class="form-check-input" type="radio" name="ordenar-comentario" checked="checked" id="recente_comentario" value="recente"> <label class="form-check-label lato-regular" for="recente"> Recente </label> </div> <div class="form-check" style="margin-left: 10px;"> <input class="form-check-input" type="radio" name="ordenar-comentario" id="popular_comentario" value="popular"> <label class="form-check-label lato-regular" for="popular"> Popular </label> </div> </div> </div> </div>`}
 
 
 let proposta_modal_card = function(proposta, user) {return `<div class="modal fade modal-lg" id="${"modal_comentarios_" + proposta.id}" tabindex="-1" aria-hidden="true"> <div class="modal-dialog"><div class="modal-content"> <div class="modal-header"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"> <form class="form_postar_comentario" novalidate> <div class="mb-2"> <input type="hidden" name="proposta_id" value="${proposta.id}"> <textarea class="form-control postar-comentario lato-regular fs-5" maxlength="1000" name="texto_comentario" placeholder="Comentário"></textarea> <span class="text-danger lato-bold postar_comentario_span fs-5" style="margin-top: 6px; margin-bottom: 5px;"></span></div> <button type="submit" class="botao-postar-comentario btn btn-info lato-bold fs-5" style="display: block; width: fit-content;">Comentar</button></form> ${container_ordenar_comentario(proposta)} <div class="mx-auto mt-3 comentarios_da_proposta">${comentarios(proposta.comentarios, user)}</div></div><div class="modal-footer"><button type="button"class="btn btn-secondary lato-bold"data-bs-dismiss="modal">Fechar</button></div></div></div></div>`;}
@@ -118,11 +118,12 @@ let proposta_modal_card = function(proposta, user) {return `<div class="modal fa
 $(document).ready(function () {
     $('.div-ordenar-filtrar').on("change", function () {
         ordenar = $('#recente').prop('checked') ? "recente" : "popular";
-        filtrar = document.getElementById("select-ordenar").value;
+        filtrar = document.getElementById("select_ordenar").value;
+        arquivadas = document.getElementById("query_arquivada").value;
 
         jQuery.ajax({
             type: 'GET',
-            url: `todas_propostas_nao_privadas?ordenar=${ordenar}&filtrar=${filtrar}`,
+            url: `todas_propostas_nao_privadas?ordenar=${ordenar}&filtrar=${filtrar}&arquivadas=${arquivadas}`,
             success: function (response) {
                 propostas_feed_container = document.getElementById('propostas_feed_container');
                 conteudo = ''
@@ -160,7 +161,6 @@ function carregar_ordenar_comentario_listener() {
             type: 'GET',
             url: `carregar_comentarios?id_proposta=${id_proposta}&ordenar=${ordenar}`,
             success: function (response) {
-                console.log(response);
                 div_comentarios.html(comentarios(response["comentarios"], response["user"]));
                 carregar_likear_comentario_listener();
             }
