@@ -53,7 +53,7 @@ def semear_banco():
     print("SEMEANDO PROPOSTAS...")
     novas_propostas = []
     for i in range(200):
-        nova_proposta = Proposta(id=i, titulo=fake.bs(), descricao=fake.paragraph(nb_sentences=4, variable_nb_sentences=False), restricao_idade=randint(0, 12), arquivado=fake.boolean(chance_of_getting_true=25), dia_criacao=randint(1, 28), mes_criacao=randint(1, 12), ano_criacao=randint(2000, 2022), privado=fake.boolean(chance_of_getting_true=25), tipo_proposta=fake.word(ext_word_list=tipo_proposta))
+        nova_proposta = Proposta(titulo=fake.bs(), descricao=fake.paragraph(nb_sentences=4, variable_nb_sentences=False), restricao_idade=randint(0, 12), arquivado=fake.boolean(chance_of_getting_true=25), dia_criacao=randint(1, 28), mes_criacao=randint(1, 12), ano_criacao=randint(2000, 2022), privado=fake.boolean(chance_of_getting_true=25), tipo_proposta=fake.word(ext_word_list=tipo_proposta))
 
         novas_propostas.append(nova_proposta)
 
@@ -63,9 +63,9 @@ def semear_banco():
     print("SEMEANDO USUÁRIOS...")
     novos_usuarios = []
     for i in range(100):
-        apelido= fake.user_name()
+        apelido = fake.user_name()
 
-        novo_usuario = User(id=i, email=fake.email(), nome=fake.first_name(), sobrenome=fake.last_name(), dia_nascimento=randint(1, 28), mes_nascimento=randint(1, 12), ano_nascimento=randint(1980, 2010), apelido=apelido, senha_encriptada=generate_password_hash(apelido), foto_perfil=get_foto_perfil_aleatoria())
+        novo_usuario = User(email=fake.email(), nome=fake.first_name(), sobrenome=fake.last_name(), dia_nascimento=randint(1, 28), mes_nascimento=randint(1, 12), ano_nascimento=randint(1980, 2010), apelido=apelido, senha_encriptada=generate_password_hash(apelido), foto_perfil=get_foto_perfil_aleatoria())
 
         novos_usuarios.append(novo_usuario)
 
@@ -84,7 +84,7 @@ def semear_banco():
     db.session.commit()
     
     for proposta in novas_propostas:
-        user = User.query.filter_by(id=randint(0, 99)).first()
+        user = User.query.filter_by(id=randint(1, 100)).first()
         # Definir gerente
         proposta.gerente_de_projeto == user
         proposta.gerente_id == user.id
@@ -115,7 +115,7 @@ def semear_banco():
         random_usuario = novos_usuarios[randint(0, 99)]
         random_proposta = novas_propostas[randint(0, 199)]
 
-        novo_comentario = Comentario(id=i, texto_comentario=fake.paragraph(nb_sentences=4, variable_nb_sentences=False), dia_criacao=randint(1, 28), mes_criacao=randint(1, 12), ano_criacao=randint(2000, 2022), dono_do_comentario=random_usuario.apelido, proposta_id=random_proposta.id, user=random_usuario, proposta=random_proposta)
+        novo_comentario = Comentario(texto_comentario=fake.paragraph(nb_sentences=4, variable_nb_sentences=False), dia_criacao=randint(1, 28), mes_criacao=randint(1, 12), ano_criacao=randint(2000, 2022), dono_do_comentario=random_usuario.apelido, proposta_id=random_proposta.id, user=random_usuario, proposta=random_proposta)
 
         random_proposta.comentarios.append(novo_comentario)
 
