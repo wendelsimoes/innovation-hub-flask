@@ -287,6 +287,10 @@ def todas_propostas_nao_privadas():
     else:
         query = query.filter_by(arquivado=False)
 
+    # Removendo por restrição de idade
+    print(current_user.get_idade_atual())
+    query = query.filter(Proposta.restricao_idade <= current_user.get_idade_atual())
+
     if pular:
         query = query.offset(int(pular))
 

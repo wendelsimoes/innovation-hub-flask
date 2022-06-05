@@ -2,6 +2,7 @@ from application import db, ma
 from werkzeug.security import check_password_hash
 from flask_login import UserMixin
 from application.models.notificacoes_pedir_para_participar import Notificacoes_Pedir_para_Participar
+from datetime import date
 
 
 class User(db.Model, UserMixin):
@@ -21,6 +22,11 @@ class User(db.Model, UserMixin):
 
     def verificar_senha_encriptada(self, senha):
         return check_password_hash(self.senha_encriptada, senha)
+    
+    def get_idade_atual(self):
+        hoje = date.today()
+        idade_atual = hoje.year - self.ano_nascimento - ((hoje.month, hoje.day) < (self.mes_nascimento, self.dia_nascimento))
+        return idade_atual
 
 
 class UserSchema(ma.SQLAlchemySchema):
