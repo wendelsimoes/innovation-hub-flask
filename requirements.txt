@@ -7,3 +7,5 @@ cloudinary
 flask-marshmallow
 marshmallow-sqlalchemy
 mysqlclient
+Faker
+requests

@@ -7,7 +7,6 @@ from application.models.categorias import categorias
 from application.models.tipo_proposta import tipo_proposta
 import json
 from datetime import date
-from application.models.comentario import Comentario, ComentarioSchema
 from application.models.notificacoes_pedir_para_participar import Notificacoes_Pedir_para_Participar
 from application.models.user import User, UserSchema
 from application.forms import FormDeProposta
